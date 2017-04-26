@@ -89,6 +89,7 @@ begin
         select info_session_seq.nextval into :new.session_id from dual;
     end if;
 end;
+commit;
 
 create sequence info_cache_seq start with 1 increment by 1 cache 2;
 
@@ -113,3 +114,26 @@ begin
         select info_cache_seq.nextval into :new.cache_id from dual;
     end if;
 end;
+commit;
+
+create sequence operation_seq start with 1 increment by 1 cache 2;
+
+
+create table operation(
+operation_id int not null primary key,
+first_object_id int not null,
+second_object_id int not null,
+operation_name varchar2(15) not null,
+procedure varchar2(15) not null,
+foreign key(first_object_id) references info_objects(object_id),
+foreign key(second_object_id) references info_objects(object_id));
+
+create trigger operation_trg
+before insert on operation
+for each row
+begin 
+    if :new.operation_id is null then
+        select operation_seq.nextval into :new.operation_id from dual;
+    end if;
+end;
+commit;

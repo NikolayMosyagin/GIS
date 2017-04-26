@@ -19,3 +19,11 @@ values('total_area', 1);
 insert into info_attributes(attribute_name, table_id)
 values('build_name', 1);
 commit;
+
+insert into operation(first_object_id, second_object_id, operation_name, procedure)
+values(1, 2, 'less', 'less');
+insert into operation(first_object_id, second_object_id, operation_name, procedure)
+values(1, 2, 'lessOrEqual', 'less');
+insert into operation(first_object_id, second_object_id, operation_name, procedure)
+values(1, 2, 'large', 'less');
+commit;

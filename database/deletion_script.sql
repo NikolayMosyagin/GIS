@@ -1,3 +1,7 @@
+drop trigger operation_trg;
+drop table operation;
+drop sequence operation_seq;
+
 drop trigger info_cache_trg;
 drop table info_cache;
 drop sequence info_cache_seq;
