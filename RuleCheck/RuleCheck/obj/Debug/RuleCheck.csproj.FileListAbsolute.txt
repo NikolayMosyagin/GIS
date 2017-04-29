@@ -1,0 +1,11 @@
+D:\Dissertation\GIS\RuleCheck\RuleCheck\bin\Debug\RuleCheck.exe.config
+D:\Dissertation\GIS\RuleCheck\RuleCheck\bin\Debug\RuleCheck.exe
+D:\Dissertation\GIS\RuleCheck\RuleCheck\bin\Debug\RuleCheck.pdb
+D:\Dissertation\GIS\RuleCheck\RuleCheck\bin\Debug\Oracle.ManagedDataAccess.dll
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.csprojResolveAssemblyReference.cache
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.MainForm.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.Properties.Resources.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.csproj.GenerateResource.Cache
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.exe
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.pdb
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.MessageForm.resources
