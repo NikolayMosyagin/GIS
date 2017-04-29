@@ -12,24 +12,6 @@ increment by 1
 start with 1
 cache 2;
 
--- дл€ таблицы operation
-create sequence operation_seq
-increment by 1
-start with 1
-cache 2;
-
---дл€ таблицы object
-create sequence object_seq
-increment by 1
-start with 1
-cache 2;
-
--- дл€ таблицы attribute
-create sequence attribute_seq
-increment by 1
-start with 1
-cache 2;
-
 -- создаем таблицу object_type, в которой хран€тс€ метаданные по объектам
 create table object_type(
 object_type_id int not null primary key,
