@@ -25,7 +25,7 @@ namespace RuleCheck
 
         private void onShownMainForm(object sender, EventArgs e)
         {
-            if (QueryProvider.s_connection.State == ConnectionState.Open)
+            if (QueryProvider.s_connection.State != ConnectionState.Open)
             {
                 var form = MessageForm.Create("Не удалось подключиться к базе данных.\nПроверьте подключение к сети");
                 form.FormClosing += (s, en) =>
@@ -33,6 +33,17 @@ namespace RuleCheck
                     this.Close();
                 };
             }
+        }
+
+        private void onClickObjectTypeButton(object sender, EventArgs e)
+        {
+            var form = new ObjectTypeProcessing();
+            form.Show();
+        }
+
+        private void onClickExitButton(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

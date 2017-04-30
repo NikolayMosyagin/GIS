@@ -9,3 +9,4 @@ D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.csproj.GenerateResou
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.exe
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.pdb
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.MessageForm.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ObjectTypeProcessing.resources

@@ -1,9 +1,9 @@
 insert into info_schemes(scheme_name)
-values('domodedovo_uag');
+values('DOMODEDOVO_UAG');
 commit;
 
 insert into info_tables(table_name, scheme_id, primary_column_name)
-values('buildings', 1, 'building_id');
+values('BUILDINGS', 1, 'BUILDING_ID');
 commit;
 
 insert into info_objects(table_id, table_object_id)
