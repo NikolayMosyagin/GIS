@@ -40,6 +40,7 @@
             this.currentList.FormattingEnabled = true;
             this.currentList.Location = new System.Drawing.Point(23, 46);
             this.currentList.Name = "currentList";
+            this.currentList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.currentList.Size = new System.Drawing.Size(120, 212);
             this.currentList.TabIndex = 0;
             // 
@@ -48,6 +49,7 @@
             this.availableList.FormattingEnabled = true;
             this.availableList.Location = new System.Drawing.Point(266, 46);
             this.availableList.Name = "availableList";
+            this.availableList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.availableList.Size = new System.Drawing.Size(120, 212);
             this.availableList.TabIndex = 1;
             // 
@@ -59,7 +61,7 @@
             this.exitButton.TabIndex = 2;
             this.exitButton.Text = "Отмена";
             this.exitButton.UseVisualStyleBackColor = true;
-            this.exitButton.Click += new System.EventHandler(this.onClickExitButton);
+            this.exitButton.Click += new System.EventHandler(this.OnClickExitButton);
             // 
             // addButton
             // 
@@ -69,6 +71,7 @@
             this.addButton.TabIndex = 3;
             this.addButton.Text = "Добавить";
             this.addButton.UseVisualStyleBackColor = true;
+            this.addButton.Click += new System.EventHandler(this.OnAddButtonClick);
             // 
             // deleteButton
             // 
@@ -78,6 +81,7 @@
             this.deleteButton.TabIndex = 4;
             this.deleteButton.Text = "Удалить";
             this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.OnDeleteButtonClick);
             // 
             // ObjectTypeProcessing
             // 
