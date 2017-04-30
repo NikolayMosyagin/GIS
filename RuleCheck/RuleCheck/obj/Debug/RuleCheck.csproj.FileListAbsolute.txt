@@ -10,3 +10,5 @@ D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.exe
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.pdb
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.MessageForm.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ObjectTypeProcessing.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ObjectProcessing.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ProcessingForm.resources

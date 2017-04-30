@@ -45,5 +45,11 @@ namespace RuleCheck
         {
             this.Close();
         }
+
+        private void OnClickObjectButton(object sender, EventArgs e)
+        {
+            var form = new ObjectProcessing();
+            form.Show();
+        }
     }
 }

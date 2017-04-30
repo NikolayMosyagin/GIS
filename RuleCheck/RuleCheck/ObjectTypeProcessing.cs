@@ -12,7 +12,7 @@ using Oracle.ManagedDataAccess.Types;
 
 namespace RuleCheck
 {
-    public partial class ObjectTypeProcessing : Form
+    public partial class ObjectTypeProcessing : ProcessingForm
     {
         protected List<int> currentIds;
         protected List<int> availableIds;
@@ -24,7 +24,7 @@ namespace RuleCheck
             this.SetCurrentList();
         }
 
-        protected void SetAvailableList()
+        protected override void SetAvailableList()
         {
             string query = "select object_type_id, object_name from {0}";
             var result = QueryProvider.Execute(string.Format(query, Config.s_storage_object_type), null);
@@ -39,7 +39,7 @@ namespace RuleCheck
             }
         }
 
-        protected void SetCurrentList()
+        protected override void SetCurrentList()
         {
             string query = "select table_id, table_name from {0}";
             var result = QueryProvider.Execute(string.Format(query, Config.s_tables), null);
@@ -84,11 +84,6 @@ namespace RuleCheck
                 idsOut.Add(((OracleDecimal)result.parametersOut[0]).ToInt32());
             }
             return idsOut;
-        }
-
-        private void OnClickExitButton(object sender, EventArgs e)
-        {
-            this.Close();
         }
 
         private void OnDeleteButtonClick(object sender, EventArgs e)
