@@ -62,11 +62,17 @@ namespace RuleCheck
                 {
                     new OracleParameter("table_name", objectType),
                 });
-                //int count = decimal.ToInt32((decimal)result.values[0][0]);
                 if (result.values == null || result.values.Count == 0)
                 {
-                    var form1 = new ObjectTypeProcessing();
-                    form1.Show();
+                    DecisionForm.Create(string.Format("Для добавления объекта(ов)\nнеобходимо добавить тип объекта {0}.\nДобавить?", objectType),
+                        (f) =>
+                        {
+                            if (f.result == DecisionResult.Yes)
+                            {
+                                var form1 = new ObjectTypeProcessing();
+                                form1.Show();
+                            }
+                        });
                     return null;
                 }
                 tableIds.Add(decimal.ToInt32((decimal)result.values[0][0]));

@@ -12,3 +12,4 @@ D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.MessageForm.resource
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ObjectTypeProcessing.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ObjectProcessing.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ProcessingForm.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.DecisionForm.resources
