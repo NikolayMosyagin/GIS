@@ -85,5 +85,19 @@ namespace RuleCheck
             }
             return output;
         }
+
+        protected override bool OnDelete(List<int> indices)
+        {
+            for (int i = 0; i < indices.Count; ++i)
+            {
+                string query = "delete from {0} where {0}.object_id = :object_id";
+                QueryProvider.Execute(string.Format(query, Config.s_objects),
+                    new OracleParameter[1]
+                    {
+                        new OracleParameter("object_id", this.currentIds[indices[i]]),
+                    });
+            }
+            return true;
+        }
     }
 }
