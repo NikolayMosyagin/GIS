@@ -51,6 +51,66 @@ namespace RuleCheck
         {
             for (int i = 0; i < indices.Count; ++i)
             {
+                string query = "select {0}.table_object_id from {0} where {0}.table_id = :table_id";
+                var result = QueryProvider.Execute(string.Format(query, Config.s_objects), new OracleParameter[1]
+                {
+                    new OracleParameter("table_id", this.currentIds[indices[i]]),
+                });
+                if (result != null && result.values != null && result.values.Count > 0)
+                {
+                    StringBuilder text = new StringBuilder();
+                    for (int j = 0; j < result.values.Count; ++j)
+                    {
+                        text.Append(result.values[j][0].ToString());
+                        if (j < result.values.Count - 1)
+                        {
+                            text.Append(",");
+                        }
+                    }
+                    DecisionForm.Create(string.Format("Для удаления типа(ов) объекта необходимо удалить\n объекты {0}", text.ToString()),
+                        (f) =>
+                        {
+                            if (f.result == DecisionResult.Yes)
+                            {
+                                var form = new ObjectProcessing();
+                                form.Show();
+                            }
+                        });
+                        return false;
+                    }
+            }
+            for (int i = 0; i < indices.Count; ++i)
+            {
+                string query = "select {0}.attribute_name from {0} where {0}.table_id = :table_id";
+                var result = QueryProvider.Execute(string.Format(query, Config.s_attributes), new OracleParameter[1]
+                {
+                    new OracleParameter("table_id", this.currentIds[indices[i]]),
+                });
+                if (result != null && result.values != null && result.values.Count > 0)
+                {
+                    StringBuilder text = new StringBuilder();
+                    for (int j = 0; j < result.values.Count; ++j)
+                    {
+                        text.Append(result.values[j][0].ToString());
+                        if (j < result.values.Count - 1)
+                        {
+                            text.Append(",");
+                        }
+                    }
+                    DecisionForm.Create(string.Format("Для удаления типа(ов) объекта необходимо удалить\n атрибуты {0}", text.ToString()),
+                        (f) =>
+                        {
+                            if (f.result == DecisionResult.Yes)
+                            {
+                                var form = new AttributeProcessing();
+                                form.Show();
+                            }
+                        });
+                    return false;
+                }
+            }
+            for (int i = 0; i < indices.Count; ++i)
+            {
                 string query = "delete from {0} where table_id = :table_id";
                 QueryProvider.Execute(string.Format(query, Config.s_tables),
                     new OracleParameter[1]
