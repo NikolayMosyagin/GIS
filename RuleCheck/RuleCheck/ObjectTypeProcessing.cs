@@ -67,11 +67,12 @@ namespace RuleCheck
             for (int i = 0; i < indices.Count; ++i)
             {
                 string query = "insert into {0}(table_name, scheme_id, primary_column_name) values(:table_name, :scheme_id, :primary_column_name) returning table_id into :table_id";
+                string value = this.availableList.Items[indices[i]].ToString();
                 var result = QueryProvider.Execute(string.Format(query, Config.s_tables), new OracleParameter[4]
                     {
-                        new OracleParameter("table_name", this.availableList.Items[indices[i]]),
+                        new OracleParameter("table_name", value),
                         new OracleParameter("scheme_id", 1),
-                        new OracleParameter("primary_column_name", this.availableList.Items[indices[i]].ToString() + "_ID"),
+                        new OracleParameter("primary_column_name", value.Substring(0, value.Length - 1)  + "_ID"),
                         new OracleParameter("table_id", OracleDbType.Decimal, ParameterDirection.Output),
                     });
                 idsOut.Add(((OracleDecimal)result.parametersOut[0]).ToInt32());

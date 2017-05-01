@@ -103,7 +103,7 @@ namespace RuleCheck
                 for (int i = 0; i < ids.Count; ++i)
                 {
                     this.currentIds.Add(ids[i]);
-                    this.currentList.Items.Add(this.availableList.Items[indices[i]]);
+                    this.currentList.Items.Add(this.availableList.Items[addIndices[i]]);
                 }
             }
             

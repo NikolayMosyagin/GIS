@@ -32,7 +32,9 @@ namespace RuleCheck
                 {
                     this.Close();
                 };
+                return;
             }
+            this.LoadCache();
         }
 
         private void onClickObjectTypeButton(object sender, EventArgs e)
@@ -56,6 +58,37 @@ namespace RuleCheck
         {
             var form = new AttributeProcessing();
             form.Show();
+        }
+
+        private void OnClickLoadButton(object sender, EventArgs e)
+        {
+            QueryProvider.Execute("Mosyagin.Load", null, CommandType.StoredProcedure);
+            this.LoadCache();
+        }
+
+        private void LoadCache()
+        {
+            string query = "select * from {0}";
+            var result = QueryProvider.Execute(string.Format(query, Config.s_cache), null);
+            if (result != null)
+            {
+                this.dataGridView1.Columns.Clear();
+                this.dataGridView1.Rows.Clear();
+                if (result.columnName != null)
+                {
+                    for (int i = 0; i < result.columnName.Count; ++i)
+                    {
+                        this.dataGridView1.Columns.Add(result.columnName[i], result.columnName[i]);
+                    }
+                }
+                if (result.values != null)
+                {
+                    for (int i = 0; i < result.values.Count; ++i)
+                    {
+                        this.dataGridView1.Rows.Add(result.values[i].ToArray());
+                    }
+                }
+            }
         }
     }
 }

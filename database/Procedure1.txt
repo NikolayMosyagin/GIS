@@ -1,10 +1,7 @@
-declare
-    data_type varchar2(1);
-    data_pref varchar2(10);
-    value_int int;
+create or replace procedure Load is
+    value_number number;
     value_str varchar2(2000);
     value_date date;
-    value_float float;
     id_session int;
     id_object int;
     id_table int;
@@ -59,7 +56,7 @@ begin
         into table_name, primary_column_name, scheme_name
         from info_tables
         inner join info_schemes on info_tables.scheme_id = info_schemes.scheme_id
-        where info_tables.table_id = table_id;
+        where info_tables.table_id = id_table;
         open col;
         loop
             fetch col into attribute_name, column_type, id_attribute;
@@ -68,40 +65,24 @@ begin
             end if;
             query := 'begin select ' || attribute_name || ' into :value from ' || scheme_name || '.' ||
             table_name || ' where ' || primary_column_name || '= :table_object_id' || '; end;';
-            if (lower(column_type) =  'number' or lower(column_type) = 'int') then
-                /*data_type := 'I';
-                data_pref := 'INT';*/
+            if (lower(column_type) = 'number') then
                 execute immediate query
-                using out value_int, in table_object_id;
+                using out value_number, in table_object_id;
             end if;
             if (lower(column_type) = 'varchar2') then
-                /*data_type := 'S';
-                data_pref := 'STR';*/
                 execute immediate query
                 using out value_str, in table_object_id;
             end if;
             if (lower(column_type) = 'date') then
-                /*data_type := 'D';
-                data_pref := 'DATE';*/
                 execute immediate query
                 using out value_date, in table_object_id;
             end if;
-            if (lower(column_type) = 'number' or lower(column_type) = 'float') then
-                /*data_type := 'F';
-                data_type := 'FLOAT';*/
-                execute immediate query
-                using out value_float, in table_object_id;
-            end if;
-            dbms_output.put_line(value_str);
-            dbms_output.put_line(column_type);
-            if (lower(column_type) = 'int' or lower(column_type) = 'number') then
-                insert into info_cache(session_id, attribute_id, object_id, int_val) values(id_session, id_attribute, id_object, value_int);
+            if (lower(column_type) = 'number') then
+                insert into info_cache(session_id, attribute_id, object_id, number_val) values(id_session, id_attribute, id_object, value_number);
             elsif (lower(column_type) = 'varchar2') then
                 insert into info_cache(session_id, attribute_id, object_id, str_val) values(id_session, id_attribute, id_object, value_str);
-            elsif (lower(data_type) = 'date') then
+            elsif (lower(column_type) = 'date') then
                 insert into info_cache(session_id, attribute_id, object_id, date_val) values(id_session, id_attribute, id_object, value_date);
-            elsif (lower(column_type) = 'float') then
-                insert into info_cache(session_id, attribute_id, object_id, float_val) values(id_session, id_attribute, id_object, value_float);
             end if;
         end loop;
         close col;
