@@ -51,5 +51,11 @@ namespace RuleCheck
             var form = new ObjectProcessing();
             form.Show();
         }
+
+        private void attributeButton_Click(object sender, EventArgs e)
+        {
+            var form = new AttributeProcessing();
+            form.Show();
+        }
     }
 }

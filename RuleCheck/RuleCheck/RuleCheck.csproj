@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeProcessing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AttributeProcessing.Designer.cs">
+      <DependentUpon>AttributeProcessing.cs</DependentUpon>
+    </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="DecisionForm.cs">
       <SubType>Form</SubType>

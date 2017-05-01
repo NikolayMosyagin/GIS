@@ -31,6 +31,7 @@
             this.exitButton = new System.Windows.Forms.Button();
             this.objectTypeButton = new System.Windows.Forms.Button();
             this.objectButton = new System.Windows.Forms.Button();
+            this.attributeButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // exitButton
@@ -45,7 +46,7 @@
             // 
             // objectTypeButton
             // 
-            this.objectTypeButton.Location = new System.Drawing.Point(196, 227);
+            this.objectTypeButton.Location = new System.Drawing.Point(211, 227);
             this.objectTypeButton.Name = "objectTypeButton";
             this.objectTypeButton.Size = new System.Drawing.Size(93, 23);
             this.objectTypeButton.TabIndex = 1;
@@ -55,7 +56,7 @@
             // 
             // objectButton
             // 
-            this.objectButton.Location = new System.Drawing.Point(90, 227);
+            this.objectButton.Location = new System.Drawing.Point(130, 227);
             this.objectButton.Name = "objectButton";
             this.objectButton.Size = new System.Drawing.Size(75, 23);
             this.objectButton.TabIndex = 2;
@@ -63,11 +64,22 @@
             this.objectButton.UseVisualStyleBackColor = true;
             this.objectButton.Click += new System.EventHandler(this.OnClickObjectButton);
             // 
+            // attributeButton
+            // 
+            this.attributeButton.Location = new System.Drawing.Point(49, 227);
+            this.attributeButton.Name = "attributeButton";
+            this.attributeButton.Size = new System.Drawing.Size(75, 23);
+            this.attributeButton.TabIndex = 3;
+            this.attributeButton.Text = "Атрибуты";
+            this.attributeButton.UseVisualStyleBackColor = true;
+            this.attributeButton.Click += new System.EventHandler(this.attributeButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(397, 262);
+            this.Controls.Add(this.attributeButton);
             this.Controls.Add(this.objectButton);
             this.Controls.Add(this.objectTypeButton);
             this.Controls.Add(this.exitButton);
@@ -85,6 +97,7 @@
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Button objectTypeButton;
         private System.Windows.Forms.Button objectButton;
+        private System.Windows.Forms.Button attributeButton;
     }
 }
 

@@ -43,7 +43,6 @@ end;
 create table attribute_type(
 attribute_type_id int not null primary key,
 attribute_name varchar2(15) not null,
-attribute_type varchar2(15) not null,
 object_type_id int not null,
 foreign key(object_type_id) references object_type(object_type_id));
 
