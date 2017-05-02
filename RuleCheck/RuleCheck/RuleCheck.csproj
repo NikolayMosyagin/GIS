@@ -87,6 +87,12 @@
     <Compile Include="ObjectTypeProcessing.Designer.cs">
       <DependentUpon>ObjectTypeProcessing.cs</DependentUpon>
     </Compile>
+    <Compile Include="OperationProcessing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OperationProcessing.Designer.cs">
+      <DependentUpon>OperationProcessing.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProcessingForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -90,5 +90,11 @@ namespace RuleCheck
                 }
             }
         }
+
+        private void OnClickOperationButton(object sender, EventArgs e)
+        {
+            var form = new OperationProcessing();
+            form.Show();
+        }
     }
 }

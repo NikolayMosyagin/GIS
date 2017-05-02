@@ -22,6 +22,8 @@ namespace RuleCheck
         public static string s_attributes = "info_attributes";
         public static string s_session = "info_session";
         public static string s_cache = "info_cache";
+        public static string s_operation = "info_operation";
+        public static string s_storage_operation = "operation";
         public static string s_storage_object_type = "object_type";
         public static string s_storage_object = "object";
         public static string s_storage_attribute_type = "attribute_type";
