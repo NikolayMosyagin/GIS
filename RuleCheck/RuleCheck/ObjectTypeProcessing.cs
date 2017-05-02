@@ -15,10 +15,6 @@ namespace RuleCheck
     public partial class ObjectTypeProcessing : ProcessingForm
     {
 
-        public ObjectTypeProcessing() : base()
-        {
-        }
-
         protected override void SetAvailableList()
         {
             string query = "select object_type_id, object_name from {0}";
@@ -83,6 +79,36 @@ namespace RuleCheck
             {
                 string query = "select {0}.attribute_name from {0} where {0}.table_id = :table_id";
                 var result = QueryProvider.Execute(string.Format(query, Config.s_attributes), new OracleParameter[1]
+                {
+                    new OracleParameter("table_id", this.currentIds[indices[i]]),
+                });
+                if (result != null && result.values != null && result.values.Count > 0)
+                {
+                    StringBuilder text = new StringBuilder();
+                    for (int j = 0; j < result.values.Count; ++j)
+                    {
+                        text.Append(result.values[j][0].ToString());
+                        if (j < result.values.Count - 1)
+                        {
+                            text.Append(",");
+                        }
+                    }
+                    DecisionForm.Create(string.Format("Для удаления типа(ов) объекта необходимо удалить\n атрибуты {0}", text.ToString()),
+                        (f) =>
+                        {
+                            if (f.result == DecisionResult.Yes)
+                            {
+                                var form = new AttributeProcessing();
+                                form.Show();
+                            }
+                        });
+                    return false;
+                }
+            }
+            for (int i = 0; i < indices.Count; ++i)
+            {
+                string query = "select {0}.operation_name from {0} where {0}.first_table_id = :table_id or {0}.second_table_id = :table_id";
+                var result = QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[1]
                 {
                     new OracleParameter("table_id", this.currentIds[indices[i]]),
                 });

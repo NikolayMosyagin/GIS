@@ -107,6 +107,20 @@ namespace RuleCheck
             return output;
         }
 
+        protected override bool OnDelete(List<int> indices)
+        {
+            for (int i = 0; i < indices.Count; ++i)
+            {
+                string query = "delete from {0} where {0}.operation_id = :operation_id";
+                QueryProvider.Execute(string.Format(query, Config.s_operation),
+                    new OracleParameter[1]
+                    {
+                        new OracleParameter("operation_id", this.currentIds[indices[i]]),
+                    });
+            }
+            return true;
+        }
+
         private DataTable CheckObjectType(int id, string type, out string objectType)
         {
             string query = "select {1}.object_name from {0} inner join {1} on {0}.{2} = {1}.object_type_id where {0}.operation_id = :operation_id";
