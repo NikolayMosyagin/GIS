@@ -113,4 +113,25 @@ begin
         select info_cache_seq.nextval into :new.cache_id from dual;
     end if;
 end;
+
+create table info_operation(
+operation_id int not null primary key,
+first_table_id int not null,
+second_table_id int not null,
+operation_name varchar2(30) not null,
+operation_procedure varchar2(30) not null,
+foreign key(first_table_id) references info_tables(table_id),
+foreign key(second_table_id) references info_tables(table_id));
+
+create sequence info_operation_seq start with 1 increment by 1 cache 2;
+
+create trigger info_operation_trg
+before insert on info_operation
+for each row
+begin
+    if :new.operation_id is null then
+        select info_operation_seq.nextval into :new.operation_id from dual;
+    end if;
+end;
+
 commit;

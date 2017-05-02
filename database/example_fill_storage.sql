@@ -22,4 +22,10 @@ insert into attribute_type(attribute_name, object_type_id)
 values('DATE_ACT', 2);
 insert into attribute_type(attribute_name, object_type_id)
 values('COMMENTS', 2);
-commit; 
+commit;
+ 
+insert into operation(first_object_type_id, second_object_type_id, operation_name, operation_procedure)
+values(1, 2, 'B_LESS_ST', 'LESS');
+insert into operation(first_object_type_id, second_object_type_id, operation_name, operation_procedure)
+values(1, 2, 'B_LARGE_ST', 'LARGE');
+commit;
