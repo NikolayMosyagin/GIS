@@ -19,7 +19,6 @@ create table info_tables(
 table_id int not null primary key,
 table_name varchar(100),
 scheme_id int not null,
-primary_column_name varchar(100),
 foreign key(scheme_id) references info_schemes(scheme_id)
 );
 
