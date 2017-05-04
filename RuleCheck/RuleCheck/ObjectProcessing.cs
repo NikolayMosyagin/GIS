@@ -14,7 +14,13 @@ namespace RuleCheck
 {
     public partial class ObjectProcessing : ProcessingForm
     {
-
+        protected override string TypeText
+        {
+            get
+            {
+                return "объекты";
+            }
+        }
         protected override void SetCurrentList()
         {
             string query = "select {1}.object_id, {1}.object_value from {0} " +

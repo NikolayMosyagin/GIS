@@ -15,6 +15,11 @@ namespace RuleCheck
         protected List<int> currentIds;
         protected List<int> availableIds;
 
+        protected virtual string TypeText
+        {
+            get { return ""; }
+        }
+
         public ProcessingForm()
         {
             InitializeComponent();
@@ -22,6 +27,7 @@ namespace RuleCheck
             this.availableIds = new List<int>();
             this.SetCurrentList();
             this.SetAvailableList();
+            this.SetLabels();
         }
 
         protected virtual void SetCurrentList()
@@ -40,6 +46,12 @@ namespace RuleCheck
         protected virtual List<int> OnAdd(List<int> indices)
         {
             return null;
+        }
+
+        private void SetLabels()
+        {
+            this.availableLabel.Text = string.Format("Доступные {0}", this.TypeText);
+            this.currentLabel.Text = string.Format("Добавленные {0}", this.TypeText);
         }
 
         private void OnClickExitButton(object sender, EventArgs e)
@@ -107,6 +119,18 @@ namespace RuleCheck
                 }
             }
             
+        }
+
+        private void OnSizeChangeAvailableLable(object sender, EventArgs e)
+        {
+            int x = this.availableList.Location.X + this.availableList.ClientSize.Width / 2 - this.availableLabel.ClientSize.Width / 2;
+            this.availableLabel.Location = new Point(x, this.availableLabel.Location.Y);
+        }
+
+        private void OnSizeChangedCurrentLabel(object sender, EventArgs e)
+        {
+            int x = this.currentList.Location.X + this.currentList.ClientSize.Width / 2 - this.currentLabel.ClientSize.Width / 2;
+            this.currentLabel.Location = new Point(x, this.currentLabel.Location.Y);
         }
     }
 }

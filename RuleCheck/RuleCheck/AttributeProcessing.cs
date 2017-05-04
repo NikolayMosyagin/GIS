@@ -14,6 +14,13 @@ namespace RuleCheck
 {
     public partial class AttributeProcessing : ProcessingForm
     {
+        protected override string TypeText
+        {
+            get
+            {
+                return "атрибуты";
+            }
+        }
         protected override void SetCurrentList()
         {
             string query = "select {1}.attribute_type_id, {1}.attribute_name from {0} " +
