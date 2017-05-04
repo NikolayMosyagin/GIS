@@ -31,8 +31,10 @@ namespace RuleCheck
 
         protected override void SetCurrentList()
         {
-            string query = "select table_id, table_name from {0}";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_tables), null);
+            string query = 
+                "select {1}.object_type_id, {1}.object_name from {0} " +
+                "inner join {1} on {0}.table_id = {1}.object_type_id";
+            var result = QueryProvider.Execute(string.Format(query, Config.s_tables, Config.s_storage_object_type), null);
             if (result != null && result.values != null)
             {
                 for (int i = 0; i < result.values.Count; ++i)
@@ -45,7 +47,7 @@ namespace RuleCheck
 
         protected override bool OnDelete(List <int> indices)
         {
-            for (int i = 0; i < indices.Count; ++i)
+            /*for (int i = 0; i < indices.Count; ++i)
             {
                 string query = "select {0}.table_object_id from {0} where {0}.table_id = :table_id";
                 var result = QueryProvider.Execute(string.Format(query, Config.s_objects), new OracleParameter[1]
@@ -134,10 +136,10 @@ namespace RuleCheck
                         });
                     return false;
                 }
-            }
+            }*/
             for (int i = 0; i < indices.Count; ++i)
             {
-                string query = "delete from {0} where table_id = :table_id";
+                string query = "delete from {0} where {0}.table_id = :table_id";
                 QueryProvider.Execute(string.Format(query, Config.s_tables),
                     new OracleParameter[1]
                     {
@@ -152,16 +154,14 @@ namespace RuleCheck
             List<int> idsOut = new List<int>(indices.Count);
             for (int i = 0; i < indices.Count; ++i)
             {
-                string query = "insert into {0}(table_name, scheme_id, primary_column_name) values(:table_name, :scheme_id, :primary_column_name) returning table_id into :table_id";
+                string query = "insert into {0}(table_id, scheme_id) values(:table_id, :scheme_id)";
                 string value = this.availableList.Items[indices[i]].ToString();
-                var result = QueryProvider.Execute(string.Format(query, Config.s_tables), new OracleParameter[4]
-                    {
-                        new OracleParameter("table_name", value),
-                        new OracleParameter("scheme_id", 1),
-                        new OracleParameter("primary_column_name", value.Substring(0, value.Length - 1)  + "_ID"),
-                        new OracleParameter("table_id", OracleDbType.Decimal, ParameterDirection.Output),
-                    });
-                idsOut.Add(((OracleDecimal)result.parametersOut[0]).ToInt32());
+                var result = QueryProvider.Execute(string.Format(query, Config.s_tables), new OracleParameter[2]
+                {
+                    new OracleParameter("table_id", this.availableIds[indices[i]]),
+                    new OracleParameter("scheme_id", 1),
+                });
+                idsOut.Add(this.availableIds[indices[i]]);
             }
             return idsOut;
         }

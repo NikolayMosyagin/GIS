@@ -14,14 +14,12 @@ namespace RuleCheck
 {
     public partial class ObjectProcessing : ProcessingForm
     {
-        public ObjectProcessing() : base()
-        {
-        }
 
         protected override void SetCurrentList()
         {
-            string query = "select object_id, table_object_id from {0}";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_objects), null);
+            string query = "select {1}.object_id, {1}.object_value from {0} " +
+                "inner join {1} on {0}.object_id = {1}.object_id";
+            var result = QueryProvider.Execute(string.Format(query, Config.s_objects, Config.s_storage_object), null);
             if (result != null && result.values.Count > 0)
             {
                 for (int i = 0; i < result.values.Count; ++i)
@@ -34,7 +32,7 @@ namespace RuleCheck
 
         protected override void SetAvailableList()
         {
-            string query = "select object_id, object_value from {0}";
+            string query = "select {0}.object_id, {0}.object_value from {0}";
             var result = QueryProvider.Execute(string.Format(query, Config.s_storage_object), null);
             if (result != null && result.values.Count > 0)
             {
@@ -48,21 +46,25 @@ namespace RuleCheck
 
         protected override List<int> OnAdd(List<int> indices)
         {
-            List<int> tableIds = new List<int>(indices.Count);
             for (int i = 0; i < indices.Count; ++i)
             {
-                string query = "select {1}.object_name from {0} inner join {1} on {0}.object_type_id = {1}.object_type_id where {0}.object_id = :object_id";
+                string query = "select {1}.object_type_id, {1}.object_name from {0} " +
+                    "inner join {1} on {0}.object_type_id = {1}.object_type_id " +
+                    "where {0}.object_id = :object_id";
                 var result = QueryProvider.Execute(string.Format(query, Config.s_storage_object, Config.s_storage_object_type), new OracleParameter[1]
-                    {
+                {
                     new OracleParameter("object_id", this.availableIds[indices[i]]),
-                    });
-                string objectType = result.values[0][0].ToString();
-                query = "select {0}.table_id from {0} where {0}.table_name = :table_name";
+                });
+                int objectTypeId = int.Parse(result.values[0][0].ToString());
+                string objectType = result.values[0][1].ToString();
+                query = "select count(*) from {0} " +
+                    "where {0}.table_id = :table_id";
                 result = QueryProvider.Execute(string.Format(query, Config.s_tables), new OracleParameter[1]
                 {
-                    new OracleParameter("table_name", objectType),
+                    new OracleParameter("table_id", objectTypeId)
                 });
-                if (result.values == null || result.values.Count == 0)
+                int count = int.Parse(result.values[0][0].ToString());
+                if (count == 0)
                 {
                     DecisionForm.Create(string.Format("Для добавления объекта(ов)\nнеобходимо добавить тип объекта {0}.\nДобавить?", objectType),
                         (f) =>
@@ -75,19 +77,16 @@ namespace RuleCheck
                         });
                     return null;
                 }
-                tableIds.Add(decimal.ToInt32((decimal)result.values[0][0]));
             }
             var output = new List<int>(indices.Count);
             for (int i = 0; i < indices.Count; ++i)
             {
-                string query = "insert into {0}(table_id, table_object_id) values(:table_id, :table_object_id) returning {0}.object_id into :object_id";
-                var result = QueryProvider.Execute(string.Format(query, Config.s_objects), new OracleParameter[3]
+                string query = "insert into {0}(object_id) values(:object_id)";
+                var result = QueryProvider.Execute(string.Format(query, Config.s_objects), new OracleParameter[1]
                 {
-                    new OracleParameter("table_id", tableIds[i]),
-                    new OracleParameter("table_object_id", this.availableList.Items[indices[i]]),
-                    new OracleParameter("object_id", OracleDbType.Decimal, ParameterDirection.Output),
+                    new OracleParameter("object_id", this.availableIds[indices[i]]),
                 });
-                output.Add(((OracleDecimal)result.parametersOut[0]).ToInt32());
+                output.Add(this.availableIds[indices[i]]);
             }
             return output;
         }
