@@ -17,62 +17,25 @@ commit;
 
 create table info_tables(
 table_id int not null primary key,
-table_name varchar(100),
 scheme_id int not null,
+foreign key(table_id) references object_type(object_type_id),
 foreign key(scheme_id) references info_schemes(scheme_id)
 );
-
-create sequence info_tables_seq start with 1 increment by 1 cache 2;
-
-create trigger info_tables_trg
-before insert on info_tables
-for each row
-begin
-    if :new.table_id is null then
-        select info_tables_seq.nextval into :new.table_id from dual;
-    end if;
-end;
 
 commit;
 
 create table info_objects(
 object_id int not null primary key,
-table_id int not null,
-table_object_id int not null,
-foreign key(table_id) references info_tables(table_id)
+foreign key(object_id) references object(object_id)
 );
 
-create sequence info_objects_seq start with 1 increment by 1 cache 2;
-
-create trigger info_objects_trg
-before insert on info_objects
-for each row
-begin
-    if :new.object_id is null then
-        select info_objects_seq.nextval into :new.object_id from dual;
-    end if;
-end;
 commit;
 
 create table info_attributes(
 attribute_id int not null primary key,
-attribute_name varchar(100),
-table_id int not null,
-data_type varchar(20),
-foreign key(table_id) references info_tables(table_id)
+data_type varchar2(20),
+foreign key(attribute_id) references attribute_type(attribute_type_id)
 );
-
-create sequence info_attributes_seq start with 1 increment by 1 cache 2;
-
-create trigger info_attributes_trg
-before insert on info_attributes
-for each row
-begin
-    if :new.attribute_id is null then
-        select info_attributes_seq.nextval into :new.attribute_id from dual;
-    end if;
-end;
-commit;
 
 create sequence info_session_seq start with 1 increment by 1 cache 2;
 
