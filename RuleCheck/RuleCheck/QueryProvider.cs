@@ -18,6 +18,7 @@ namespace RuleCheck
             }
         }
 
+        public static string s_cns;
         private static OracleConnection _s_connection;
 
         public static void CloseConnection()
@@ -34,7 +35,7 @@ namespace RuleCheck
             if (_s_connection == null || _s_connection.State == System.Data.ConnectionState.Closed ||
                     _s_connection.State == System.Data.ConnectionState.Broken)
             {
-                _s_connection = new OracleConnection(Config.s_connectionString);
+                _s_connection = new OracleConnection(s_cns);
                 _s_connection.Open();
             }
         }

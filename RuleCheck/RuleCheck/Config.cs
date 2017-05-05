@@ -15,7 +15,7 @@ namespace RuleCheck
         "(SERVER=DEDICATED)" +
         "(SERVICE_NAME=orcl)" +
         ")" +
-        ");User Id=mosyagin;Password=31051994";
+        ");User Id={0};Password={1}";
         public static string s_schemes = "info_schemes";
         public static string s_tables = "info_tables";
         public static string s_objects = "info_objects";
