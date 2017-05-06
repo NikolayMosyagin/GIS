@@ -15,11 +15,13 @@ namespace RuleCheck
     {
         public List<KeyValuePair<string, string>> operations;
         public List<int> operationIds;
+        public List<int> indices;
         public OperationProcessing()
         {
             InitializeComponent();
             this.operations = new List<KeyValuePair<string, string>>();
             this.operationIds = new List<int>();
+            this.indices = new List<int>();
             this.LoadAllFunction();
         }
 
@@ -57,6 +59,7 @@ namespace RuleCheck
                     }
                     string name = result.values[i][1].ToString();
                     this.operationGrid.Rows.Add(name);
+                    this.indices.Add(this.operations.Count);
                     this.operations.Add(new KeyValuePair<string, string>(name, ""));
                     query = "select {0}.operation_id from {0} where {0}.operation_procedure = :operation";
                     table = QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[1]
@@ -67,6 +70,10 @@ namespace RuleCheck
                     this.operationIds.Add(table == null || table.values == null || 
                         table.values.Count == 0 || !int.TryParse(table.values[0][0].ToString(), out id) ?
                         -1 : id);
+                }
+                if (this.indices.Count > 0)
+                {
+                    this.operationGrid.Rows[0].Selected = true;
                 }
             }
         }
@@ -80,12 +87,14 @@ namespace RuleCheck
         {
             string value = this.searchTextBox.Text;
             this.operationGrid.Rows.Clear();
+            this.indices.Clear();
             for (int i = 0; i < this.operations.Count; ++i)
             {
                 string name = this.operations[i].Key;
                 if (name.StartsWith(value))
                 {
                     this.operationGrid.Rows.Add(this.operations[i].Key);
+                    this.indices.Add(i);
                 }
             }
         }
@@ -107,8 +116,41 @@ namespace RuleCheck
                 var form = MessageForm.Create("Необходимо выбрать только одну операцию!");
                 return;
             }
-            string name = this.operationGrid.SelectedRows[0].Cells[0].Value.ToString();
-            var o = InfoOperation.Create(name, TypeOperation.Add);
+            int num = this.operationGrid.SelectedRows[0].Index;
+            if (num >= this.indices.Count)
+            {
+                var form = MessageForm.Create("В данной строке нет операции!");
+                return;
+            }
+            //string name = this.operationGrid.SelectedRows[0].Cells[0].Value.ToString();
+            var o = InfoOperation.Create(this.operations[indices[num]].Key, TypeOperation.Add);
+        }
+
+        private void OnRowEnterOperationGrid(object sender, DataGridViewCellEventArgs e)
+        {
+            int index;
+            if (this.operationGrid.SelectedRows.Count <= 0 || 
+                this.operationGrid.SelectedRows.Count > 1 || 
+                (index = this.operationGrid.SelectedRows[0].Index) >= this.indices.Count)
+            {
+                this.addButton.Enabled = false;
+                this.updateButton.Enabled = false;
+                this.deleteButton.Enabled = false;
+                return;
+            }
+            if (this.operationIds[this.indices[index]] <= 0)
+            {
+                this.addButton.Enabled = true;
+                this.updateButton.Enabled = false;
+                this.deleteButton.Enabled = false;
+            }
+            else
+            {
+                this.addButton.Enabled = false;
+                this.updateButton.Enabled = true;
+                this.deleteButton.Enabled = true;
+            }
+            
         }
     }
 }

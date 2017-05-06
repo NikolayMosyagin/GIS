@@ -57,23 +57,31 @@
             this.nameColumn,
             this.DescriptionColumn});
             this.operationGrid.Location = new System.Drawing.Point(12, 66);
+            this.operationGrid.MultiSelect = false;
             this.operationGrid.Name = "operationGrid";
+            this.operationGrid.ReadOnly = true;
+            this.operationGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.operationGrid.Size = new System.Drawing.Size(346, 150);
             this.operationGrid.TabIndex = 1;
+            this.operationGrid.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnRowEnterOperationGrid);
             // 
             // nameColumn
             // 
             this.nameColumn.HeaderText = "Имя";
             this.nameColumn.Name = "nameColumn";
+            this.nameColumn.ReadOnly = true;
             // 
             // DescriptionColumn
             // 
             this.DescriptionColumn.HeaderText = "Описание";
             this.DescriptionColumn.Name = "DescriptionColumn";
+            this.DescriptionColumn.ReadOnly = true;
             this.DescriptionColumn.Width = 205;
             // 
             // addButton
             // 
+            this.addButton.BackColor = System.Drawing.SystemColors.Control;
+            this.addButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.addButton.Location = new System.Drawing.Point(12, 233);
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(75, 23);
