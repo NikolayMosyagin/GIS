@@ -1,0 +1,14 @@
+create function BSLESS(first in number, second in number) return number
+is
+    result number;
+begin
+    RETURN 1;
+end;
+
+
+create function BSLARGE(first in number, second in number) return number
+is
+    result number;
+begin
+    RETURN 0;
+end;

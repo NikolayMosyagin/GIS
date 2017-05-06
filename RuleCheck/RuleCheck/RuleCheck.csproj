@@ -69,6 +69,12 @@
     <Compile Include="DecisionForm.Designer.cs">
       <DependentUpon>DecisionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="InfoOperation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InfoOperation.Designer.cs">
+      <DependentUpon>InfoOperation.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DecisionForm.resx">
       <DependentUpon>DecisionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InfoOperation.resx">
+      <DependentUpon>InfoOperation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

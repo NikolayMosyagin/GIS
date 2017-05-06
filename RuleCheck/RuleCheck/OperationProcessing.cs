@@ -19,6 +19,7 @@ namespace RuleCheck
         {
             InitializeComponent();
             this.operations = new List<KeyValuePair<string, string>>();
+            this.operationIds = new List<int>();
             this.LoadAllFunction();
         }
 
@@ -63,8 +64,8 @@ namespace RuleCheck
                         new OracleParameter("operation", name),
                     });
                     int id;
-                    this.operationIds.Add(
-                        table == null || table.values == null || !int.TryParse(table.values[0][0].ToString(), out id) ?
+                    this.operationIds.Add(table == null || table.values == null || 
+                        table.values.Count == 0 || !int.TryParse(table.values[0][0].ToString(), out id) ?
                         -1 : id);
                 }
             }
@@ -92,6 +93,22 @@ namespace RuleCheck
         private void OnEnterSearchTextBox(object sender, EventArgs e)
         {
             this.searchTextBox.Text = "";
+        }
+
+        private void OnClickAddButton(object sender, EventArgs e)
+        {
+            if (this.operationGrid.SelectedRows.Count <= 0)
+            {
+                var form = MessageForm.Create("Необходимо выбрать операцию!");
+                return;
+            }
+            if (this.operationGrid.SelectedRows.Count > 1)
+            {
+                var form = MessageForm.Create("Необходимо выбрать только одну операцию!");
+                return;
+            }
+            string name = this.operationGrid.SelectedRows[0].Cells[0].Value.ToString();
+            var o = InfoOperation.Create(name, TypeOperation.Add);
         }
     }
 }
