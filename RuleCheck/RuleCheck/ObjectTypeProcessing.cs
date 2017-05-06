@@ -21,7 +21,7 @@ namespace RuleCheck
                 return "типы объектов";
             }
         }
-        protected override void SetAvailableList()
+        protected override void GetAvailableData()
         {
             string query = "select object_type_id, object_name from {0}";
             var result = QueryProvider.Execute(string.Format(query, Config.s_storage_object_type), null);
@@ -29,13 +29,13 @@ namespace RuleCheck
             {
                 for (int i = 0; i < result.values.Count; ++i)
                 {
-                    this.availableList.Items.Add(result.values[i][1]);
+                    this.availableData.Add(result.values[i][1]);
                     this.availableIds.Add(int.Parse(result.values[i][0].ToString()));
                 }
             }
         }
 
-        protected override void SetCurrentList()
+        protected override void GetCurrentData()
         {
             string query = 
                 "select {1}.object_type_id, {1}.object_name from {0} " +
@@ -45,13 +45,13 @@ namespace RuleCheck
             {
                 for (int i = 0; i < result.values.Count; ++i)
                 {
-                    this.currentList.Items.Add(result.values[i][1]);
+                    this.currentData.Add(result.values[i][1]);
                     this.currentIds.Add(int.Parse(result.values[i][0].ToString()));
                 }
             }
         }
 
-        protected override bool OnDelete(List <int> indices)
+        protected override bool CanDelete(List <int> indices)
         {
             /*for (int i = 0; i < indices.Count; ++i)
             {
@@ -143,33 +143,31 @@ namespace RuleCheck
                     return false;
                 }
             }*/
-            for (int i = 0; i < indices.Count; ++i)
-            {
-                string query = "delete from {0} where {0}.table_id = :table_id";
-                QueryProvider.Execute(string.Format(query, Config.s_tables),
-                    new OracleParameter[1]
-                    {
-                        new OracleParameter("table_id", this.currentIds[indices[i]]),
-                    });
-            }
             return true;
         }
 
-        protected override List<int> OnAdd(List<int> indices)
+        protected override void Delete(int id)
         {
-            List<int> idsOut = new List<int>(indices.Count);
-            for (int i = 0; i < indices.Count; ++i)
+            string query = "delete from {0} where {0}.table_id = :table_id";
+            QueryProvider.Execute(string.Format(query, Config.s_tables), new OracleParameter[1]
             {
-                string query = "insert into {0}(table_id, scheme_id) values(:table_id, :scheme_id)";
-                string value = this.availableList.Items[indices[i]].ToString();
-                var result = QueryProvider.Execute(string.Format(query, Config.s_tables), new OracleParameter[2]
-                {
-                    new OracleParameter("table_id", this.availableIds[indices[i]]),
-                    new OracleParameter("scheme_id", 1),
-                });
-                idsOut.Add(this.availableIds[indices[i]]);
-            }
-            return idsOut;
+                new OracleParameter("table_id", id),
+            });
+        }
+
+        protected override bool CanAdd(List<int> indices)
+        {
+            return true;
+        }
+
+        protected override void Add(int id)
+        {
+            string query = "insert into {0}(table_id, scheme_id) values(:table_id, :scheme_id)";
+            var result = QueryProvider.Execute(string.Format(query, Config.s_tables), new OracleParameter[2]
+            {
+                new OracleParameter("table_id", id),
+                new OracleParameter("scheme_id", 1),
+            });
         }
     }
 }

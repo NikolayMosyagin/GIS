@@ -35,6 +35,7 @@
             this.exitButton = new System.Windows.Forms.Button();
             this.availableLabel = new System.Windows.Forms.Label();
             this.currentLabel = new System.Windows.Forms.Label();
+            this.applyButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // currentList
@@ -77,9 +78,9 @@
             // 
             // exitButton
             // 
-            this.exitButton.Location = new System.Drawing.Point(370, 274);
+            this.exitButton.Location = new System.Drawing.Point(365, 274);
             this.exitButton.Name = "exitButton";
-            this.exitButton.Size = new System.Drawing.Size(75, 23);
+            this.exitButton.Size = new System.Drawing.Size(80, 23);
             this.exitButton.TabIndex = 6;
             this.exitButton.Text = "Отмена";
             this.exitButton.UseVisualStyleBackColor = true;
@@ -105,11 +106,22 @@
             this.currentLabel.Text = "Добавленные";
             this.currentLabel.SizeChanged += new System.EventHandler(this.OnSizeChangedCurrentLabel);
             // 
+            // applyButton
+            // 
+            this.applyButton.Location = new System.Drawing.Point(253, 274);
+            this.applyButton.Name = "applyButton";
+            this.applyButton.Size = new System.Drawing.Size(80, 23);
+            this.applyButton.TabIndex = 9;
+            this.applyButton.Text = "Применить";
+            this.applyButton.UseVisualStyleBackColor = true;
+            this.applyButton.Click += new System.EventHandler(this.OnClickApplyButton);
+            // 
             // ProcessingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(457, 309);
+            this.Controls.Add(this.applyButton);
             this.Controls.Add(this.currentLabel);
             this.Controls.Add(this.availableLabel);
             this.Controls.Add(this.exitButton);
@@ -133,5 +145,6 @@
         protected System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Label availableLabel;
         private System.Windows.Forms.Label currentLabel;
+        private System.Windows.Forms.Button applyButton;
     }
 }

@@ -21,7 +21,7 @@ namespace RuleCheck
                 return "атрибуты";
             }
         }
-        protected override void SetCurrentList()
+        protected override void GetCurrentData()
         {
             string query = "select {1}.attribute_type_id, {1}.attribute_name from {0} " +
                 "inner join {1} on {0}.attribute_id = {1}.attribute_type_id";
@@ -30,13 +30,13 @@ namespace RuleCheck
             {
                 for (int i = 0; i < result.values.Count; ++i)
                 {
-                    this.currentList.Items.Add(result.values[i][1]);
+                    this.currentData.Add(result.values[i][1]);
                     this.currentIds.Add(int.Parse(result.values[i][0].ToString()));
                 }
             }
         }
 
-        protected override void SetAvailableList()
+        protected override void GetAvailableData()
         {
             string query = "select {0}.attribute_type_id, {0}.attribute_name from {0}";
             var result = QueryProvider.Execute(string.Format(query, Config.s_storage_attribute_type), null);
@@ -44,13 +44,13 @@ namespace RuleCheck
             {
                 for (int i = 0; i < result.values.Count; ++i)
                 {
-                    this.availableList.Items.Add(result.values[i][1]);
+                    this.availableData.Add(result.values[i][1]);
                     this.availableIds.Add(int.Parse(result.values[i][0].ToString()));
                 }
             }
         }
 
-        protected override List<int> OnAdd(List<int> indices)
+        protected override bool CanAdd(List<int> indices)
         {
             for (int i = 0; i < indices.Count; ++i)
             {
@@ -81,33 +81,32 @@ namespace RuleCheck
                                 form1.Show();
                             }
                         });
-                    return null;
+                    return false;
                 }
             }
-            var output = new List<int>(indices.Count);
-            for (int i = 0; i < indices.Count; ++i)
-            {
-                string query = "insert into {0}(attribute_id) values(:attribute_id)";
-                var result = QueryProvider.Execute(string.Format(query, Config.s_attributes), new OracleParameter[1]
-                {
-                    new OracleParameter("attribute_id", this.availableIds[indices[i]]),
-                });
-                output.Add(this.availableIds[indices[i]]);
-            }
-            return output;
+            return true;
         }
 
-        protected override bool OnDelete(List<int> indices)
+        protected override void Add(int id)
         {
-            for (int i = 0; i < indices.Count; ++i)
+            string query = "insert into {0}(attribute_id) values(:attribute_id)";
+            var result = QueryProvider.Execute(string.Format(query, Config.s_attributes), new OracleParameter[1]
             {
-                string query = "delete from {0} where {0}.attribute_id = :attribute_id";
-                QueryProvider.Execute(string.Format(query, Config.s_attributes),
-                    new OracleParameter[1]
-                    {
-                        new OracleParameter("attribute_id", this.currentIds[indices[i]]),
-                    });
-            }
+                    new OracleParameter("attribute_id", id),
+            });
+        }
+
+        protected override void Delete(int id)
+        {
+            string query = "delete from {0} where {0}.attribute_id = :attribute_id";
+            QueryProvider.Execute(string.Format(query, Config.s_attributes), new OracleParameter[1]
+            {
+                    new OracleParameter("attribute_id", id),
+            });
+        }
+
+        protected override bool CanDelete(List<int> indices)
+        {
             return true;
         }
     }

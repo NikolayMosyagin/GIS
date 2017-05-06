@@ -50,15 +50,15 @@ namespace RuleCheck
             };
         }
 
-        private void OnClickUserTextBox(object sender, EventArgs e)
-        {
-            this.userTextBox.Text = "";
-        }
-
-        private void OnClickPasswordTextBox(object sender, EventArgs e)
+        private void OnEnterPasswordTextBox(object sender, EventArgs e)
         {
             this.passwordTextBox.Text = "";
             this.passwordTextBox.UseSystemPasswordChar = true;
+        }
+
+        private void OnEnterUserTextBox(object sender, EventArgs e)
+        {
+            this.userTextBox.Text = "";
         }
     }
 }

@@ -81,7 +81,7 @@
             this.userTextBox.Size = new System.Drawing.Size(100, 20);
             this.userTextBox.TabIndex = 4;
             this.userTextBox.Text = "Введите имя...";
-            this.userTextBox.Click += new System.EventHandler(this.OnClickUserTextBox);
+            this.userTextBox.Enter += new System.EventHandler(this.OnEnterUserTextBox);
             // 
             // passwordTextBox
             // 
@@ -90,7 +90,7 @@
             this.passwordTextBox.Size = new System.Drawing.Size(100, 20);
             this.passwordTextBox.TabIndex = 5;
             this.passwordTextBox.Text = "Введите пароль...";
-            this.passwordTextBox.Click += new System.EventHandler(this.OnClickPasswordTextBox);
+            this.passwordTextBox.Enter += new System.EventHandler(this.OnEnterPasswordTextBox);
             // 
             // ConnectionForm
             // 
@@ -104,6 +104,7 @@
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.EnterButton);
             this.Name = "ConnectionForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Подключение";
             this.ResumeLayout(false);
             this.PerformLayout();

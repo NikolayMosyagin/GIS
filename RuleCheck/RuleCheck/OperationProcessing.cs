@@ -14,7 +14,7 @@ namespace RuleCheck
 {
     public partial class OperationProcessing : ProcessingForm
     {
-        protected override void SetCurrentList()
+        protected override void GetCurrentData()
         {
             string query = "select {0}.operation_id, {0}.operation_name from {0}";
             var result = QueryProvider.Execute(string.Format(query, Config.s_operation), null);
@@ -28,7 +28,7 @@ namespace RuleCheck
             }
         }
 
-        protected override void SetAvailableList()
+        protected override void GetAvailableData()
         {
             string query = "select {0}.operation_id, {0}.operation_name from {0}";
             var result = QueryProvider.Execute(string.Format(query, Config.s_storage_operation), null);
@@ -42,7 +42,7 @@ namespace RuleCheck
             }
         }
 
-        protected override List<int> OnAdd(List<int> indices)
+        protected override bool CanAdd(List<int> indices)
         {
             List<int> tableIds = new List<int>(2 * indices.Count);
             List<string> operation = new List<string>(indices.Count);
@@ -62,7 +62,7 @@ namespace RuleCheck
                                 form1.Show();
                             }
                         });
-                    return null;
+                    return false;
                 }
                 tableIds.Add(decimal.ToInt32((decimal)result.values[0][0]));
                 result = this.CheckObjectType(this.availableIds[indices[i]], "second_object_type_id", out objectType);
@@ -77,7 +77,7 @@ namespace RuleCheck
                                 form1.Show();
                             }
                         });
-                    return null;
+                    return false;
                 }
                 tableIds.Add(decimal.ToInt32((decimal)result.values[0][0]));
                 string query = "select {0}.operation_name, {0}.operation_procedure from {0} where {0}.operation_id = :operation_id";
@@ -104,10 +104,10 @@ namespace RuleCheck
                 j += 2;
                 output.Add(((OracleDecimal)result.parametersOut[0]).ToInt32());
             }
-            return output;
+            return true;
         }
 
-        protected override bool OnDelete(List<int> indices)
+        protected override bool CanDelete(List<int> indices)
         {
             for (int i = 0; i < indices.Count; ++i)
             {
