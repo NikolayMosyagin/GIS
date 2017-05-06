@@ -8,134 +8,90 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Oracle.ManagedDataAccess.Client;
-using Oracle.ManagedDataAccess.Types;
 
 namespace RuleCheck
 {
-    public partial class OperationProcessing : ProcessingForm
+    public partial class OperationProcessing : Form
     {
-        protected override void GetCurrentData()
+        public List<KeyValuePair<string, string>> operations;
+        public List<int> operationIds;
+        public OperationProcessing()
         {
-            string query = "select {0}.operation_id, {0}.operation_name from {0}";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_operation), null);
+            InitializeComponent();
+            this.operations = new List<KeyValuePair<string, string>>();
+            this.LoadAllFunction();
+        }
+
+        private void LoadAllFunction()
+        {
+            var query = "select {0}.object_id, {0}.object_name from {0} " +
+                "where {0}.object_type = 'FUNCTION'";
+            var result = QueryProvider.Execute(string.Format(query, Config.s_user_procedures), null);
             if (result != null && result.values != null)
             {
                 for (int i = 0; i < result.values.Count; ++i)
                 {
-                    this.currentList.Items.Add(result.values[i][1]);
-                    this.currentIds.Add(int.Parse(result.values[i][0].ToString()));
-                }
-            }
-        }
-
-        protected override void GetAvailableData()
-        {
-            string query = "select {0}.operation_id, {0}.operation_name from {0}";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_storage_operation), null);
-            if (result != null && result.values != null)
-            {
-                for (int i = 0; i < result.values.Count; ++i)
-                {
-                    this.availableList.Items.Add(result.values[i][1]);
-                    this.availableIds.Add(int.Parse(result.values[i][0].ToString()));
-                }
-            }
-        }
-
-        protected override bool CanAdd(List<int> indices)
-        {
-            List<int> tableIds = new List<int>(2 * indices.Count);
-            List<string> operation = new List<string>(indices.Count);
-            List<string> procedure = new List<string>(indices.Count);
-            for (int i = 0; i < indices.Count; ++i)
-            {
-                string objectType;
-                var result = this.CheckObjectType(this.availableIds[indices[i]], "first_object_type_id", out objectType);
-                if (result.values == null || result.values.Count == 0)
-                {
-                    DecisionForm.Create(string.Format("Для добавления объекта(ов)\nнеобходимо добавить тип объекта {0}.\nДобавить?", objectType),
-                        (f) =>
-                        {
-                            if (f.result == DecisionResult.Yes)
-                            {
-                                var form1 = new ObjectTypeProcessing();
-                                form1.Show();
-                            }
-                        });
-                    return false;
-                }
-                tableIds.Add(decimal.ToInt32((decimal)result.values[0][0]));
-                result = this.CheckObjectType(this.availableIds[indices[i]], "second_object_type_id", out objectType);
-                if (result.values == null || result.values.Count == 0)
-                {
-                    DecisionForm.Create(string.Format("Для добавления объекта(ов)\nнеобходимо добавить тип объекта {0}.\nДобавить?", objectType),
-                        (f) =>
-                        {
-                            if (f.result == DecisionResult.Yes)
-                            {
-                                var form1 = new ObjectTypeProcessing();
-                                form1.Show();
-                            }
-                        });
-                    return false;
-                }
-                tableIds.Add(decimal.ToInt32((decimal)result.values[0][0]));
-                string query = "select {0}.operation_name, {0}.operation_procedure from {0} where {0}.operation_id = :operation_id";
-                result = QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[1]
-                {
-                    new OracleParameter("operation_id", this.availableIds[indices[i]]),
-                });
-                procedure.Add(result.values[0][1].ToString());
-                operation.Add(result.values[0][0].ToString());
-            }
-            var output = new List<int>(indices.Count);
-            int j = 0;
-            for (int i = 0; i < indices.Count; ++i)
-            {
-                string query = "insert into {0}(first_table_id, second_table_id, operation_name, operation_procedure) values(:first_object_type_id, :second_object_type_id, :operation_name, :operation_procedure) returning {0}.operation_id into :operation_id";
-                var result = QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[5]
-                {
-                    new OracleParameter("first_table_id", tableIds[j]),
-                    new OracleParameter("second_table_id", tableIds[j + 1]),
-                    new OracleParameter("operation_name", operation[i]),
-                    new OracleParameter("operation_procedure", procedure[i]),
-                    new OracleParameter("operation_id", OracleDbType.Decimal, ParameterDirection.Output),
-                });
-                j += 2;
-                output.Add(((OracleDecimal)result.parametersOut[0]).ToInt32());
-            }
-            return true;
-        }
-
-        protected override bool CanDelete(List<int> indices)
-        {
-            for (int i = 0; i < indices.Count; ++i)
-            {
-                string query = "delete from {0} where {0}.operation_id = :operation_id";
-                QueryProvider.Execute(string.Format(query, Config.s_operation),
-                    new OracleParameter[1]
+                    int objectId = int.Parse(result.values[i][0].ToString());
+                    query = "select count(*) from {0} where {0}.object_id = :object_id " +
+                        "and {0}.in_out = 'IN' and {0}.data_type = 'NUMBER'";
+                    var table = QueryProvider.Execute(string.Format(query, Config.s_user_arguments), new OracleParameter[1]
                     {
-                        new OracleParameter("operation_id", this.currentIds[indices[i]]),
+                        new OracleParameter("object_id", objectId)
                     });
+                    if (table == null || table.values == null ||
+                        int.Parse(table.values[0][0].ToString()) != 2)
+                    {
+                        continue;
+                    }
+                    query = "select count(*) from {0} where {0}.object_id = :object_id " +
+                        "and {0}.in_out = 'OUT' and {0}.data_type = 'NUMBER'";
+                    table = QueryProvider.Execute(string.Format(query, Config.s_user_arguments), new OracleParameter[1]
+                    {
+                        new OracleParameter("object_id", objectId)
+                    });
+                    if (table == null || table.values == null ||
+                        int.Parse(table.values[0][0].ToString()) != 1)
+                    {
+                        continue;
+                    }
+                    string name = result.values[i][1].ToString();
+                    this.operationGrid.Rows.Add(name);
+                    this.operations.Add(new KeyValuePair<string, string>(name, ""));
+                    query = "select {0}.operation_id from {0} where {0}.operation_procedure = :operation";
+                    table = QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[1]
+                    {
+                        new OracleParameter("operation", name),
+                    });
+                    int id;
+                    this.operationIds.Add(
+                        table == null || table.values == null || !int.TryParse(table.values[0][0].ToString(), out id) ?
+                        -1 : id);
+                }
             }
-            return true;
         }
 
-        private DataTable CheckObjectType(int id, string type, out string objectType)
+        private void OnClickCloseButton(object sender, EventArgs e)
         {
-            string query = "select {1}.object_name from {0} inner join {1} on {0}.{2} = {1}.object_type_id where {0}.operation_id = :operation_id";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_storage_operation, Config.s_storage_object_type, type), new OracleParameter[1]
-            {
-                    new OracleParameter("operation_id", id),
-            });
-            objectType = result.values[0][0].ToString();
+            this.Close();
+        }
 
-            query = "select {0}.table_id from {0} where {0}.table_name = :table_name";
-            result = QueryProvider.Execute(string.Format(query, Config.s_tables), new OracleParameter[1]
+        private void OnChangeTextSearchTextBox(object sender, EventArgs e)
+        {
+            string value = this.searchTextBox.Text;
+            this.operationGrid.Rows.Clear();
+            for (int i = 0; i < this.operations.Count; ++i)
             {
-               new OracleParameter("table_name", objectType),
-            });
-            return result;
+                string name = this.operations[i].Key;
+                if (name.StartsWith(value))
+                {
+                    this.operationGrid.Rows.Add(this.operations[i].Key);
+                }
+            }
+        }
+
+        private void OnEnterSearchTextBox(object sender, EventArgs e)
+        {
+            this.searchTextBox.Text = "";
         }
     }
 }

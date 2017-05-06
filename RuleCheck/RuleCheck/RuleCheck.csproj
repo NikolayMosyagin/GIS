@@ -126,6 +126,9 @@
     <EmbeddedResource Include="ObjectTypeProcessing.resx">
       <DependentUpon>ObjectTypeProcessing.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="OperationProcessing.resx">
+      <DependentUpon>OperationProcessing.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProcessingForm.resx">
       <DependentUpon>ProcessingForm.cs</DependentUpon>
     </EmbeddedResource>

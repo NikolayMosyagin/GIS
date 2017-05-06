@@ -14,3 +14,4 @@ D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ObjectProcessing.res
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ProcessingForm.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.DecisionForm.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ConnectionForm.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.OperationProcessing.resources

@@ -27,5 +27,7 @@ namespace RuleCheck
         public static string s_storage_object_type = "object_type";
         public static string s_storage_object = "object";
         public static string s_storage_attribute_type = "attribute_type";
+        public static string s_user_procedures = "user_procedures";
+        public static string s_user_arguments = "user_arguments";
     }
 }
