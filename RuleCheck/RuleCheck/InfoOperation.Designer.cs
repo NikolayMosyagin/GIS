@@ -143,6 +143,7 @@
             this.Controls.Add(this.closeButton);
             this.Name = "InfoOperation";
             this.Text = "InfoOperation";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnClosingForm);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -104,33 +104,47 @@ namespace RuleCheck
             this.searchTextBox.Text = "";
         }
 
-        private void OnClickAddButton(object sender, EventArgs e)
+        private bool CheckSelectOperation()
         {
             if (this.operationGrid.SelectedRows.Count <= 0)
             {
                 var form = MessageForm.Create("Необходимо выбрать операцию!");
-                return;
+                return false;
             }
             if (this.operationGrid.SelectedRows.Count > 1)
             {
                 var form = MessageForm.Create("Необходимо выбрать только одну операцию!");
-                return;
+                return false;
             }
             int num = this.operationGrid.SelectedRows[0].Index;
             if (num >= this.indices.Count)
             {
                 var form = MessageForm.Create("В данной строке нет операции!");
-                return;
+                return false;
             }
-            //string name = this.operationGrid.SelectedRows[0].Cells[0].Value.ToString();
-            var o = InfoOperation.Create(this.operations[indices[num]].Key, TypeOperation.Add);
+            return true;
         }
 
-        private void OnRowEnterOperationGrid(object sender, DataGridViewCellEventArgs e)
+        private void OnClickAddButton(object sender, EventArgs e)
+        {
+            if (!CheckSelectOperation())
+            {
+                return;
+            }
+            int num = this.operationGrid.SelectedRows[0].Index;
+            var o = InfoOperation.Create(this.operations[indices[num]].Key, TypeOperation.Add);
+            o.onClose = (f) =>
+            {
+                this.operationIds[num] = f.id;
+                this.RefreshButtons();
+            };
+        }
+
+        private void RefreshButtons()
         {
             int index;
-            if (this.operationGrid.SelectedRows.Count <= 0 || 
-                this.operationGrid.SelectedRows.Count > 1 || 
+            if (this.operationGrid.SelectedRows.Count <= 0 ||
+                this.operationGrid.SelectedRows.Count > 1 ||
                 (index = this.operationGrid.SelectedRows[0].Index) >= this.indices.Count)
             {
                 this.addButton.Enabled = false;
@@ -138,19 +152,48 @@ namespace RuleCheck
                 this.deleteButton.Enabled = false;
                 return;
             }
-            if (this.operationIds[this.indices[index]] <= 0)
+            bool result = this.operationIds[this.indices[index]] <= 0;
+            this.addButton.Enabled = result;
+            this.updateButton.Enabled = !result;
+            this.deleteButton.Enabled = !result;
+        }
+
+        private void OnRowEnterOperationGrid(object sender, DataGridViewCellEventArgs e)
+        {
+            this.RefreshButtons();
+        }
+
+        private void OnClickDeleteButton(object sender, EventArgs e)
+        {
+            if (!CheckSelectOperation())
             {
-                this.addButton.Enabled = true;
-                this.updateButton.Enabled = false;
-                this.deleteButton.Enabled = false;
+                return;
             }
-            else
+            int num = this.operationGrid.SelectedRows[0].Index;
+            if (this.operationIds[this.indices[num]] == -1)
             {
-                this.addButton.Enabled = false;
-                this.updateButton.Enabled = true;
-                this.deleteButton.Enabled = true;
+                return;
             }
-            
+            int id = this.operationIds[this.indices[num]];
+            this.operationIds[this.indices[num]] = -1;
+            string query = "delete from {0} where {0}.operation_id = :operation_id";
+            QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[1]
+            {
+                new OracleParameter("operation_id", id),
+            });
+            this.RefreshButtons();
+            var form = MessageForm.Create("Операция успешно удалена!");
+        }
+
+        private void OnClickUpdateButton(object sender, EventArgs e)
+        {
+            if (!CheckSelectOperation())
+            {
+                return;
+            }
+            int num = this.operationGrid.SelectedRows[0].Index;
+            var form = InfoOperation.Create(this.operations[this.indices[num]].Key, TypeOperation.Change, this.operationIds[this.indices[num]]);
+
         }
     }
 }

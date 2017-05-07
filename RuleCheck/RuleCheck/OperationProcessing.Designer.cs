@@ -98,6 +98,7 @@
             this.updateButton.TabIndex = 3;
             this.updateButton.Text = "Изменить";
             this.updateButton.UseVisualStyleBackColor = true;
+            this.updateButton.Click += new System.EventHandler(this.OnClickUpdateButton);
             // 
             // deleteButton
             // 
@@ -107,6 +108,7 @@
             this.deleteButton.TabIndex = 4;
             this.deleteButton.Text = "Удалить";
             this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.OnClickDeleteButton);
             // 
             // searchLabel
             // 
