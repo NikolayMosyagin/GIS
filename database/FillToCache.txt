@@ -18,9 +18,9 @@ create or replace procedure Load is
     cursor o is
     select info_objects.object_id from info_objects;
     cursor types is
-    select info_attributes.attribute_id from info_attributes;
+    select attribute_type.attribute_type_id from attribute_type;
     cursor col is
-    select info_attributes.attribute_id, info_attributes.data_type from info_attributes inner join attribute_type on attribute_id=attribute_type_id where attribute_type.object_type_id = id_table;
+    select attribute_type.attribute_type_id, attribute_type.data_type, attribute_type.attribute_name from attribute_type where attribute_type.object_type_id = id_table;
 begin
     -- Получаем текущее время(для сессии)
     select sysdate into now from dual;
@@ -46,7 +46,7 @@ begin
         execute immediate query
         using out column_type;
 	-- Устанавливаем данный тип в таблицу info_attributes
-        update info_attributes set info_attributes.data_type = column_type where info_attributes.attribute_id = id_attribute;
+        update attribute_type set attribute_type.data_type = column_type where attribute_type.attribute_type_id = id_attribute;
         commit;
     end loop;
 	--Здесь мы игнорируем то, что находится в info_tables. Возможно ли, что для данного атрибута его таблица не добавлена в info_tables? Правильно ли, что выше?
@@ -76,11 +76,10 @@ begin
 	-- открываем курсор, который проходится по всем типам атрибута
         open col;
         loop
-            fetch col into id_attribute, column_type;
+            fetch col into id_attribute, column_type, attribute_name;
             if (col%notfound) then
                 exit;
             end if;
-	    select attribute_type.attribute_name into attribute_name from attribute_type where attribute_type_id=id_attribute; 
 	    -- выполняем динамический запрос, для получение значения атрибута
             query := 'begin select ' || attribute_name || ' into :value from ' || scheme_name || '.' ||
             table_name || ' where ' || primary_column_name || '= :table_object_id' || '; end;';

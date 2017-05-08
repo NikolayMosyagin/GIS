@@ -31,7 +31,6 @@
             this.exitButton = new System.Windows.Forms.Button();
             this.objectTypeButton = new System.Windows.Forms.Button();
             this.objectButton = new System.Windows.Forms.Button();
-            this.attributeButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.operationButton = new System.Windows.Forms.Button();
@@ -69,16 +68,6 @@
             this.objectButton.UseVisualStyleBackColor = true;
             this.objectButton.Click += new System.EventHandler(this.OnClickObjectButton);
             // 
-            // attributeButton
-            // 
-            this.attributeButton.Location = new System.Drawing.Point(124, 198);
-            this.attributeButton.Name = "attributeButton";
-            this.attributeButton.Size = new System.Drawing.Size(106, 23);
-            this.attributeButton.TabIndex = 3;
-            this.attributeButton.Text = "Атрибуты...";
-            this.attributeButton.UseVisualStyleBackColor = true;
-            this.attributeButton.Click += new System.EventHandler(this.attributeButton_Click);
-            // 
             // LoadButton
             // 
             this.LoadButton.Location = new System.Drawing.Point(12, 227);
@@ -115,7 +104,6 @@
             this.Controls.Add(this.operationButton);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.LoadButton);
-            this.Controls.Add(this.attributeButton);
             this.Controls.Add(this.objectButton);
             this.Controls.Add(this.objectTypeButton);
             this.Controls.Add(this.exitButton);
@@ -133,7 +121,6 @@
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Button objectTypeButton;
         private System.Windows.Forms.Button objectButton;
-        private System.Windows.Forms.Button attributeButton;
         private System.Windows.Forms.Button LoadButton;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button operationButton;
