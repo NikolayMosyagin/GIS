@@ -184,4 +184,33 @@ begin
     end if;
 end;
 
+-- Создаем последовательность для генерации первичных ключей таблицы rule
+create sequence rule_seq
+increment by 1
+start with 1
+cache 2;
+
+-- Создаем таблицу Rule, для хранения возможных правил.
+create table rule(
+rule_id int not null primary key,
+rule_name varchar2(100) not null,
+rule_description varchar2(2000) not null);
+
+-- cоздаем триггер для таблицы Rule. генерирует первичный ключ таблицы, если при добавление кортежа он отсутствует.
+create trigger rule_trg
+before insert on rule
+for each row
+begin 
+    if :new.rule_id is null then
+        select rule_seq.nextval into :new.rule_id from dual;
+    end if;
+end;
+
+-- Создаем таблицу связи между operation и rule
+create table rule_operation(
+rule_id int not null,
+operation_id int not null,
+orderBy int not null,
+foreign key(rule_id) references rule(rule_id),
+foreign key(operation_id) references operation(operation_id));
 commit;
