@@ -2,21 +2,28 @@ insert into info_schemes(scheme_name)
 values('DOMODEDOVO_UAG');
 commit;
 
-insert into info_tables(table_name, scheme_id)
-values('BUILDINGS', 1);
+insert into object_type(object_name)
+values('BUILDINGS');
+insert into object_type(object_name)
+values('STREETS');
 commit;
 
-insert into info_objects(table_id, table_object_id)
+insert into object(object_type_id, object_value)
 values(1, 17501);
-insert into info_objects(table_id, table_object_id)
+insert into object(object_type_id, object_value)
 values(1, 17567);
+insert into object(object_type_id, object_value)
+values(2, 875);
+insert into object(object_type_id, object_value)
+values(2, 881);
 commit;
 
-insert into info_attributes(attribute_name, table_id)
-values('floors', 1);
-insert into info_attributes(attribute_name, table_id)
-values('total_area', 1);
-insert into info_attributes(attribute_name, table_id)
-values('build_name', 1);
+insert into attribute_type(attribute_name, object_type_id)
+values('FLOORS', 1);
+insert into attribute_type(attribute_name, object_type_id)
+values('TOTAL_AREA', 1);
+insert into attribute_type(attribute_name, object_type_id)
+values('DATE_ACT', 2);
+insert into attribute_type(attribute_name, object_type_id)
+values('COMMENTS', 2);
 commit;
-
