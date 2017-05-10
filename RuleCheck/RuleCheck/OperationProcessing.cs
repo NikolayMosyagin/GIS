@@ -58,18 +58,17 @@ namespace RuleCheck
                         continue;
                     }
                     string name = result.values[i][1].ToString();
-                    this.operationGrid.Rows.Add(name);
                     this.indices.Add(this.operations.Count);
-                    this.operations.Add(new KeyValuePair<string, string>(name, ""));
-                    query = "select {0}.operation_id from {0} where {0}.operation_procedure = :operation";
+                    
+                    query = "select {0}.operation_id, {0}.operation_description from {0} where {0}.operation_procedure = :operation";
                     table = QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[1]
                     {
                         new OracleParameter("operation", name),
                     });
-                    int id;
-                    this.operationIds.Add(table == null || table.values == null || 
-                        table.values.Count == 0 || !int.TryParse(table.values[0][0].ToString(), out id) ?
-                        -1 : id);
+                    this.operationIds.Add(table.values.Count == 0 ? -1 : int.Parse(table.values[0][0].ToString()));
+                    string description = table.values.Count == 0 ? "" : table.values[0][1].ToString();
+                    this.operationGrid.Rows.Add(name, description);
+                    this.operations.Add(new KeyValuePair<string, string>(name, description));
                 }
                 if (this.indices.Count > 0)
                 {
@@ -90,10 +89,10 @@ namespace RuleCheck
             this.indices.Clear();
             for (int i = 0; i < this.operations.Count; ++i)
             {
-                string name = this.operations[i].Key;
-                if (name.StartsWith(value))
+                var pr = this.operations[i];
+                if (pr.Key.StartsWith(value))
                 {
-                    this.operationGrid.Rows.Add(this.operations[i].Key);
+                    this.operationGrid.Rows.Add(pr.Key, pr.Value);
                     this.indices.Add(i);
                 }
             }
@@ -135,7 +134,10 @@ namespace RuleCheck
             var o = InfoOperation.Create(this.operations[indices[num]].Key, TypeOperation.Add);
             o.onClose = (f) =>
             {
-                this.operationIds[num] = f.id;
+                this.operationIds[this.indices[num]] = f.id;
+                var value = this.operations[this.indices[num]];
+                this.operations[this.indices[num]] = new KeyValuePair<string, string>(value.Key, f.description);
+                this.operationGrid.Rows[num].SetValues(value.Key, f.description);
                 this.RefreshButtons();
             };
         }
@@ -193,7 +195,12 @@ namespace RuleCheck
             }
             int num = this.operationGrid.SelectedRows[0].Index;
             var form = InfoOperation.Create(this.operations[this.indices[num]].Key, TypeOperation.Change, this.operationIds[this.indices[num]]);
-
+            form.onClose = (f) =>
+            {
+                var value = this.operations[this.indices[num]];
+                this.operationGrid.Rows[num].SetValues(value.Key, f.description);
+                this.operations[this.indices[num]] = new KeyValuePair<string, string>(value.Key, f.description);
+            };
         }
     }
 }

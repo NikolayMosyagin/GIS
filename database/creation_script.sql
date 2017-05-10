@@ -171,6 +171,7 @@ first_object_type_id int not null,
 second_object_type_id int not null,
 operation_name varchar2(15) not null,
 operation_procedure varchar2(15) not null,
+Operation_description varchar2(2000),
 foreign key(first_object_type_id) references object_type(object_type_id),
 foreign key(second_object_type_id) references object_type(object_type_id));
 

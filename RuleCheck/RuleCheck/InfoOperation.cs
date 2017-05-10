@@ -20,6 +20,7 @@ namespace RuleCheck
     public partial class InfoOperation : Form
     {
         public int id;
+        public string description;
         private TypeOperation _type;
         private List<int> objectTypeIds;
 
@@ -73,7 +74,9 @@ namespace RuleCheck
         private void LoadOperationData()
         {
             string query = "select {0}.first_object_type_id, {0}.second_object_type_id," +
-                " {0}.operation_procedure from {0} where {0}.operation_id = :operation_id";
+                " {0}.operation_procedure, {0}.operation_description" +
+                " from {0} where {0}.operation_id = :operation_id";
+
             var result = QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[1]
             {
                 new OracleParameter("operation_id", this.id),
@@ -83,7 +86,9 @@ namespace RuleCheck
                 int first_id = int.Parse(result.values[0][0].ToString());
                 int second_id = int.Parse(result.values[0][1].ToString());
                 string procedure = result.values[0][2].ToString();
+                string description = result.values[0][3] != null ? result.values[0][3].ToString() : "";
                 this.operationTextBox.Text = procedure;
+                this.descriptionTextBox.Text = description;
                 for (int i = 0; i < this.objectTypeIds.Count; ++i)
                 {
                     if (this.objectTypeIds[i] == first_id)
@@ -135,17 +140,19 @@ namespace RuleCheck
             {
                 return;
             }
-            string query = "insert into {0}(first_object_type_id, second_object_type_id, operation_name, operation_procedure)" +
-                " values(:id1, :id2, :name, :procedure) returning {0}.operation_id into :operation_id";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[5]
+            string query = "insert into {0}(first_object_type_id, second_object_type_id, operation_name, operation_procedure, operation_description)" +
+                " values(:id1, :id2, :name, :procedure, :description) returning {0}.operation_id into :operation_id";
+            var result = QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[6]
             {
                 new OracleParameter("id1", this.objectTypeIds[this.objectTypeBox1.SelectedIndex]),
                 new OracleParameter("id2", this.objectTypeIds[this.objectTypeBox2.SelectedIndex]),
                 new OracleParameter("name", "FIRST"),
                 new OracleParameter("procedure", this.operationTextBox.Text),
+                new OracleParameter("description", this.descriptionTextBox.Text),
                 new OracleParameter("operation_id", OracleDbType.Decimal, ParameterDirection.Output)
             });
             this.id = ((OracleDecimal)result.parametersOut[0]).ToInt32();
+            this.description = this.descriptionTextBox.Text;
         }
 
         private void Change()
@@ -155,15 +162,18 @@ namespace RuleCheck
                 return;
             }
             string query = "update {0} set {0}.first_object_type_id = :first," +
-                " {0}.second_object_type_id = :second, {0}.operation_procedure = :procedure" +
+                " {0}.second_object_type_id = :second, {0}.operation_procedure = :procedure," +
+                " {0}.operation_description = :description" +
                 " where {0}.operation_id = :operation_id";
-            QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[4]
+            QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[5]
             {
                 new OracleParameter("first", this.objectTypeIds[this.objectTypeBox1.SelectedIndex]),
                 new OracleParameter("second", this.objectTypeIds[this.objectTypeBox2.SelectedIndex]),
                 new OracleParameter("procedure", this.operationTextBox.Text),
+                new OracleParameter("description", this.descriptionTextBox.Text),
                 new OracleParameter("operation_id", this.id),
             });
+            this.description = this.descriptionTextBox.Text;
         }
 
         private void OnClosingForm(object sender, FormClosingEventArgs e)
