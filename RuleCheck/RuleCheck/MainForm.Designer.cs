@@ -34,6 +34,7 @@
             this.LoadButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.operationButton = new System.Windows.Forms.Button();
+            this.ruleButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -96,11 +97,22 @@
             this.operationButton.UseVisualStyleBackColor = true;
             this.operationButton.Click += new System.EventHandler(this.OnClickOperationButton);
             // 
+            // ruleButton
+            // 
+            this.ruleButton.Location = new System.Drawing.Point(124, 198);
+            this.ruleButton.Name = "ruleButton";
+            this.ruleButton.Size = new System.Drawing.Size(106, 23);
+            this.ruleButton.TabIndex = 7;
+            this.ruleButton.Text = "Правила...";
+            this.ruleButton.UseVisualStyleBackColor = true;
+            this.ruleButton.Click += new System.EventHandler(this.OnClickRuleButton);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(468, 262);
+            this.Controls.Add(this.ruleButton);
             this.Controls.Add(this.operationButton);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.LoadButton);
@@ -124,6 +136,7 @@
         private System.Windows.Forms.Button LoadButton;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button operationButton;
+        private System.Windows.Forms.Button ruleButton;
     }
 }
 

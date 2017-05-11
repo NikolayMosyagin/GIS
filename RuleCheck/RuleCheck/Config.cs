@@ -16,6 +16,7 @@ namespace RuleCheck
         "(SERVICE_NAME=orcl)" +
         ")" +
         ");User Id={0};Password={1}";
+        public static string s_rule = "rule";
         public static string s_schemes = "info_schemes";
         public static string s_tables = "info_tables";
         public static string s_objects = "info_objects";

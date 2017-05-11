@@ -178,6 +178,10 @@ namespace RuleCheck
             }
             int id = this.operationIds[this.indices[num]];
             this.operationIds[this.indices[num]] = -1;
+            this.operations[this.indices[num]] = new KeyValuePair<string, string>(
+                this.operations[this.indices[num]].Key,
+                "");
+            this.operationGrid.Rows[num].SetValues(this.operations[this.indices[num]].Key, "");
             string query = "delete from {0} where {0}.operation_id = :operation_id";
             QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[1]
             {

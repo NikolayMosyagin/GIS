@@ -63,6 +63,24 @@
     <Compile Include="ConnectionForm.Designer.cs">
       <DependentUpon>ConnectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConstructorBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConstructorBase.Designer.cs">
+      <DependentUpon>ConstructorBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConstructorOperation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConstructorOperation.Designer.cs">
+      <DependentUpon>ConstructorOperation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConstructorRule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConstructorRule.Designer.cs">
+      <DependentUpon>ConstructorRule.cs</DependentUpon>
+    </Compile>
     <Compile Include="DecisionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,8 +132,17 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryProvider.cs" />
+    <Compile Include="RuleProcessing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RuleProcessing.Designer.cs">
+      <DependentUpon>RuleProcessing.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ConnectionForm.resx">
       <DependentUpon>ConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConstructorBase.resx">
+      <DependentUpon>ConstructorBase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DecisionForm.resx">
       <DependentUpon>DecisionForm.cs</DependentUpon>
@@ -150,6 +177,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RuleProcessing.resx">
+      <DependentUpon>RuleProcessing.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

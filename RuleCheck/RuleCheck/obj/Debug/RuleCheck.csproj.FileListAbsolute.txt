@@ -16,3 +16,5 @@ D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.DecisionForm.resourc
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ConnectionForm.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.OperationProcessing.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.InfoOperation.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ConstructorBase.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.RuleProcessing.resources

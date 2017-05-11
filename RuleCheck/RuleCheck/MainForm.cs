@@ -73,7 +73,13 @@ namespace RuleCheck
 
         private void OnClickOperationButton(object sender, EventArgs e)
         {
-            var form = new OperationProcessing();
+            var form = new ConstructorOperation();
+            form.Show();
+        }
+
+        private void OnClickRuleButton(object sender, EventArgs e)
+        {
+            var form = new ConstructorRule();
             form.Show();
         }
     }

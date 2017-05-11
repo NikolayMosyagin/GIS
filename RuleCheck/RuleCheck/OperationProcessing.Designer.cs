@@ -5,7 +5,7 @@
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        protected System.ComponentModel.IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -151,14 +151,14 @@
 
         #endregion
 
-        private System.Windows.Forms.Button closeButton;
-        private System.Windows.Forms.DataGridView operationGrid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
-        private System.Windows.Forms.Button addButton;
-        private System.Windows.Forms.Button updateButton;
-        private System.Windows.Forms.Button deleteButton;
-        private System.Windows.Forms.Label searchLabel;
-        private System.Windows.Forms.TextBox searchTextBox;
+        protected System.Windows.Forms.Button closeButton;
+        protected System.Windows.Forms.DataGridView operationGrid;
+        protected System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
+        protected System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
+        protected System.Windows.Forms.Button addButton;
+        protected System.Windows.Forms.Button updateButton;
+        protected System.Windows.Forms.Button deleteButton;
+        protected System.Windows.Forms.Label searchLabel;
+        protected System.Windows.Forms.TextBox searchTextBox;
     }
 }

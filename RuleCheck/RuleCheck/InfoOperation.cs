@@ -86,9 +86,10 @@ namespace RuleCheck
                 int first_id = int.Parse(result.values[0][0].ToString());
                 int second_id = int.Parse(result.values[0][1].ToString());
                 string procedure = result.values[0][2].ToString();
-                string description = result.values[0][3] != null ? result.values[0][3].ToString() : "";
+                this.description = result.values[0][3] != null ? result.values[0][3].ToString() : "";
                 this.operationTextBox.Text = procedure;
-                this.descriptionTextBox.Text = description;
+                this.descriptionTextBox.Text = this.description;
+                
                 for (int i = 0; i < this.objectTypeIds.Count; ++i)
                 {
                     if (this.objectTypeIds[i] == first_id)
