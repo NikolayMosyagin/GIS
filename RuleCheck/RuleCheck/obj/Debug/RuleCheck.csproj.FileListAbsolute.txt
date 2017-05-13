@@ -18,3 +18,5 @@ D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.OperationProcessing.
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.InfoOperation.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ConstructorBase.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.RuleProcessing.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.SearchBase.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.SelectOperation.resources

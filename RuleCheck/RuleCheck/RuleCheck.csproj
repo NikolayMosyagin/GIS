@@ -138,6 +138,18 @@
     <Compile Include="RuleProcessing.Designer.cs">
       <DependentUpon>RuleProcessing.cs</DependentUpon>
     </Compile>
+    <Compile Include="SearchBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SearchBase.Designer.cs">
+      <DependentUpon>SearchBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectOperation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectOperation.Designer.cs">
+      <DependentUpon>SelectOperation.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ConnectionForm.resx">
       <DependentUpon>ConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -179,6 +191,12 @@
     </Compile>
     <EmbeddedResource Include="RuleProcessing.resx">
       <DependentUpon>RuleProcessing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchBase.resx">
+      <DependentUpon>SearchBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectOperation.resx">
+      <DependentUpon>SelectOperation.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

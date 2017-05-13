@@ -123,6 +123,7 @@
             this.addButton.TabIndex = 6;
             this.addButton.Text = "Добавить";
             this.addButton.UseVisualStyleBackColor = true;
+            this.addButton.Click += new System.EventHandler(this.OnAddButtonClick);
             // 
             // deleteButton
             // 
@@ -133,6 +134,7 @@
             this.deleteButton.TabIndex = 7;
             this.deleteButton.Text = "Удалить";
             this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.OnClickDeleteButton);
             // 
             // closeButton
             // 

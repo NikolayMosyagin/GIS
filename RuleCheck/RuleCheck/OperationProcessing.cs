@@ -61,7 +61,7 @@ namespace RuleCheck
                     this.indices.Add(this.operations.Count);
                     
                     query = "select {0}.operation_id, {0}.operation_description from {0} where {0}.operation_procedure = :operation";
-                    table = QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[1]
+                    table = QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[1]
                     {
                         new OracleParameter("operation", name),
                     });
@@ -183,7 +183,7 @@ namespace RuleCheck
                 "");
             this.operationGrid.Rows[num].SetValues(this.operations[this.indices[num]].Key, "");
             string query = "delete from {0} where {0}.operation_id = :operation_id";
-            QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[1]
+            QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[1]
             {
                 new OracleParameter("operation_id", id),
             });

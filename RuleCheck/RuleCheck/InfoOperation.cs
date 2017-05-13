@@ -77,7 +77,7 @@ namespace RuleCheck
                 " {0}.operation_procedure, {0}.operation_description" +
                 " from {0} where {0}.operation_id = :operation_id";
 
-            var result = QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[1]
+            var result = QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[1]
             {
                 new OracleParameter("operation_id", this.id),
             });
@@ -143,7 +143,7 @@ namespace RuleCheck
             }
             string query = "insert into {0}(first_object_type_id, second_object_type_id, operation_name, operation_procedure, operation_description)" +
                 " values(:id1, :id2, :name, :procedure, :description) returning {0}.operation_id into :operation_id";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[6]
+            var result = QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[6]
             {
                 new OracleParameter("id1", this.objectTypeIds[this.objectTypeBox1.SelectedIndex]),
                 new OracleParameter("id2", this.objectTypeIds[this.objectTypeBox2.SelectedIndex]),
@@ -166,7 +166,7 @@ namespace RuleCheck
                 " {0}.second_object_type_id = :second, {0}.operation_procedure = :procedure," +
                 " {0}.operation_description = :description" +
                 " where {0}.operation_id = :operation_id";
-            QueryProvider.Execute(string.Format(query, Config.s_storage_operation), new OracleParameter[5]
+            QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[5]
             {
                 new OracleParameter("first", this.objectTypeIds[this.objectTypeBox1.SelectedIndex]),
                 new OracleParameter("second", this.objectTypeIds[this.objectTypeBox2.SelectedIndex]),
