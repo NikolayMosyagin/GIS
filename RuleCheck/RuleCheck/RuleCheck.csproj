@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Analysis.Designer.cs">
+      <DependentUpon>Analysis.cs</DependentUpon>
+    </Compile>
     <Compile Include="AttributeProcessing.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +156,9 @@
     <Compile Include="SelectOperation.Designer.cs">
       <DependentUpon>SelectOperation.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Analysis.resx">
+      <DependentUpon>Analysis.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConnectionForm.resx">
       <DependentUpon>ConnectionForm.cs</DependentUpon>
     </EmbeddedResource>

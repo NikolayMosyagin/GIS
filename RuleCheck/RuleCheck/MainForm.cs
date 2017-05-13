@@ -82,5 +82,11 @@ namespace RuleCheck
             var form = new ConstructorRule();
             form.Show();
         }
+
+        private void OnClickAnalysisButton(object sender, EventArgs e)
+        {
+            var form = new Analysis();
+            form.Show();
+        }
     }
 }

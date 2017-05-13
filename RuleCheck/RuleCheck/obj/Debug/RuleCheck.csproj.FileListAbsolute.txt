@@ -20,3 +20,4 @@ D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ConstructorBase.reso
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.RuleProcessing.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.SearchBase.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.SelectOperation.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.Analysis.resources

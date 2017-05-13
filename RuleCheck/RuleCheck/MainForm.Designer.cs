@@ -35,6 +35,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.operationButton = new System.Windows.Forms.Button();
             this.ruleButton = new System.Windows.Forms.Button();
+            this.analysisButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -107,11 +108,22 @@
             this.ruleButton.UseVisualStyleBackColor = true;
             this.ruleButton.Click += new System.EventHandler(this.OnClickRuleButton);
             // 
+            // analysisButton
+            // 
+            this.analysisButton.Location = new System.Drawing.Point(12, 198);
+            this.analysisButton.Name = "analysisButton";
+            this.analysisButton.Size = new System.Drawing.Size(106, 23);
+            this.analysisButton.TabIndex = 8;
+            this.analysisButton.Text = "Анализ...";
+            this.analysisButton.UseVisualStyleBackColor = true;
+            this.analysisButton.Click += new System.EventHandler(this.OnClickAnalysisButton);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(468, 262);
+            this.Controls.Add(this.analysisButton);
             this.Controls.Add(this.ruleButton);
             this.Controls.Add(this.operationButton);
             this.Controls.Add(this.dataGridView1);
@@ -137,6 +149,7 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button operationButton;
         private System.Windows.Forms.Button ruleButton;
+        private System.Windows.Forms.Button analysisButton;
     }
 }
 
