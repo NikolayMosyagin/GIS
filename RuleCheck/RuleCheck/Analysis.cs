@@ -62,7 +62,8 @@ namespace RuleCheck
                 if ((bool)row.Cells[0].Value)
                 {
                     this.Log.Items.Add(string.Format("Выполнение правила {0}", row.Cells[1].Value));
-                    string query = "select {1}.operation_name from {0}" +
+                    string query = "select {1}.operation_name, {1}.first_object_type_id" + 
+                        ", {1}.second_object_type_id, {1}.operation_procedure from {0}" +
                         " inner join {1} on {0}.operation_id = {1}.operation_id" +
                         " where {0}.rule_id = :id";
                     var result = QueryProvider.Execute(string.Format(query, Config.s_rule_operation, Config.s_operation), new OracleParameter[1]
@@ -72,6 +73,30 @@ namespace RuleCheck
                     for (int j = 0; j < result.values.Count; ++j)
                     {
                         this.Log.Items.Add(string.Format("    Выполнение операции {0}", result.values[j][0]));
+                        // вытаскиваем все объекты первого типа и второго.
+                        query = "select {0}.object_value from {0} where {0}.object_type_id = :id";
+                        var result1 = QueryProvider.Execute(string.Format(query, Config.s_storage_object), new OracleParameter[1]
+                        {
+                            new OracleParameter("id", result.values[j][1]),
+                        });
+                        var result2 = QueryProvider.Execute(string.Format(query, Config.s_storage_object), new OracleParameter[1]
+                        {
+                            new OracleParameter("id", result.values[j][2]),
+                        });
+                        for (int k1 = 0; k1 < result1.values.Count; ++k1)
+                        {
+                            for (int k2 = 0; k2 < result2.values.Count; ++k2)
+                            {
+                                // выполнить процедуру
+                                query = "select {0}(:first, :second) from dual";
+                                var resultFunction = QueryProvider.Execute(string.Format(query, result.values[j][3]), new OracleParameter[2]
+                                {
+                                    new OracleParameter("first", result1.values[k1][0]),
+                                    new OracleParameter("second", result2.values[k2][0]),
+                                });
+                                this.Log.Items.Add(string.Format("      Результат выполнения {0}-{1}: {2}", result1.values[k1][0], result2.values[k2][0], resultFunction.values[0][0]));
+                            }
+                        }
                     }
                 }
             }

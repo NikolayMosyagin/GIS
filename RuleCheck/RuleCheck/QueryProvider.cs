@@ -57,7 +57,8 @@ namespace RuleCheck
                 {
                     for (int i = 0; i < command.Parameters.Count; ++i)
                     {
-                        if (command.Parameters[i].Direction == System.Data.ParameterDirection.Output)
+                        if (command.Parameters[i].Direction == System.Data.ParameterDirection.Output ||
+                            command.Parameters[i].Direction == System.Data.ParameterDirection.ReturnValue)
                         {
                             result.parametersOut.Add(command.Parameters[i].Value);
                         }
