@@ -74,14 +74,14 @@ namespace RuleCheck
         private void LoadOperationData()
         {
             string query = "select {0}.first_object_type_id, {0}.second_object_type_id," +
-                " {0}.operation_procedure, {0}.operation_description" +
+                " {0}.operation_procedure, {0}.operation_description, {0}.operation_name" +
                 " from {0} where {0}.operation_id = :operation_id";
 
             var result = QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[1]
             {
                 new OracleParameter("operation_id", this.id),
             });
-            if (result != null && result.values != null && result.values.Count > 0)
+            if (result.values.Count > 0)
             {
                 int first_id = int.Parse(result.values[0][0].ToString());
                 int second_id = int.Parse(result.values[0][1].ToString());
@@ -89,6 +89,7 @@ namespace RuleCheck
                 this.description = result.values[0][3] != null ? result.values[0][3].ToString() : "";
                 this.operationTextBox.Text = procedure;
                 this.descriptionTextBox.Text = this.description;
+                this.nameTextBox.Text = result.values[0][4].ToString();
                 
                 for (int i = 0; i < this.objectTypeIds.Count; ++i)
                 {
@@ -132,6 +133,11 @@ namespace RuleCheck
                 var f = MessageForm.Create("Необходимо выбрать тип объекта 2");
                 return false;
             }
+            if (string.IsNullOrEmpty(this.nameTextBox.Text))
+            {
+                MessageForm.Create("Необходимо задать название операции");
+                return false;
+            }
             return true;
         }
 
@@ -147,7 +153,7 @@ namespace RuleCheck
             {
                 new OracleParameter("id1", this.objectTypeIds[this.objectTypeBox1.SelectedIndex]),
                 new OracleParameter("id2", this.objectTypeIds[this.objectTypeBox2.SelectedIndex]),
-                new OracleParameter("name", "FIRST"),
+                new OracleParameter("name", this.nameTextBox.Text),
                 new OracleParameter("procedure", this.operationTextBox.Text),
                 new OracleParameter("description", this.descriptionTextBox.Text),
                 new OracleParameter("operation_id", OracleDbType.Decimal, ParameterDirection.Output)
@@ -164,14 +170,15 @@ namespace RuleCheck
             }
             string query = "update {0} set {0}.first_object_type_id = :first," +
                 " {0}.second_object_type_id = :second, {0}.operation_procedure = :procedure," +
-                " {0}.operation_description = :description" +
+                " {0}.operation_description = :description, {0}.operation_name = :name" +
                 " where {0}.operation_id = :operation_id";
-            QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[5]
+            QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[6]
             {
                 new OracleParameter("first", this.objectTypeIds[this.objectTypeBox1.SelectedIndex]),
                 new OracleParameter("second", this.objectTypeIds[this.objectTypeBox2.SelectedIndex]),
                 new OracleParameter("procedure", this.operationTextBox.Text),
                 new OracleParameter("description", this.descriptionTextBox.Text),
+                new OracleParameter("name", this.nameTextBox.Text),
                 new OracleParameter("operation_id", this.id),
             });
             this.description = this.descriptionTextBox.Text;
