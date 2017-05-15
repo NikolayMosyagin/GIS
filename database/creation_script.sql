@@ -6,7 +6,7 @@ scheme_id int not null primary key,
 scheme_name varchar(100)
 );
 
--- Создаем последовательность для генерации первичных ключе таблицы info_schemes
+-- Создаем последовательность для генерации первичных ключей таблицы info_schemes
 create sequence info_schemes_seq start with 1 increment by 1 cache 2;
 
 -- Создаем триггер для таблицы info_schemes, которые при добавлении кортежа если не установлен первичный ключ генерирует его
@@ -21,7 +21,7 @@ end;
 
 commit;
 
--- Создаем последовательность для генерации первичных ключе таблицы object_type;
+-- Создаем последовательность для генерации первичных ключей таблицы object_type;
 create sequence object_type_seq
 increment by 1
 start with 1
@@ -213,5 +213,5 @@ rule_id int not null,
 operation_id int not null,
 orderBy int not null,
 foreign key(rule_id) references rule(rule_id),
-foreign key(operation_id) references operation(operation_id));
+foreign key(operation_id) references operation(operation_id) on delete cascade);
 commit;
