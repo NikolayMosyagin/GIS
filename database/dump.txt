@@ -1,0 +1,15 @@
+-- Создаем таблицу info_tables. Храним название таблиц, которые будут использовать в анализе.
+create table info_tables(
+table_id int not null primary key,
+scheme_id int not null,
+foreign key(table_id) references object_type(object_type_id),
+foreign key(scheme_id) references info_schemes(scheme_id)
+);
+
+-- Создаем таблицу info_objects для хранения объектов которые будут использовать при анализе.
+create table info_objects(
+object_id int not null primary key,
+foreign key(object_id) references object(object_id)
+);
+
+commit;

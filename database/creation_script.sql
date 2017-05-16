@@ -1,21 +1,21 @@
 -- Создание таблицы для хранения владельца таблиц
 
---Создаем таблицу info_schemes
-create table info_schemes(
-scheme_id int not null primary key,
-scheme_name varchar(100)
+--Создаем таблицу owner
+create table owner(
+owner_id int not null primary key,
+owner_name varchar(100)
 );
 
--- Создаем последовательность для генерации первичных ключей таблицы info_schemes
-create sequence info_schemes_seq start with 1 increment by 1 cache 2;
+-- Создаем последовательность для генерации первичных ключей таблицы owner
+create sequence owner_seq start with 1 increment by 1 cache 2;
 
--- Создаем триггер для таблицы info_schemes, которые при добавлении кортежа если не установлен первичный ключ генерирует его
-create trigger info_schemes_trg
-before insert on info_schemes
+-- Создаем триггер для таблицы owner, которые при добавлении кортежа если не установлен первичный ключ генерирует его
+create trigger owner_trg
+before insert on owner
 for each row
 begin
-    if :new.scheme_id is null then
-        select info_schemes_seq.nextval into :new.scheme_id from dual;
+    if :new.owner_id is null then
+        select owner_seq.nextval into :new.owner_id from dual;
     end if;
 end;
 
@@ -30,7 +30,9 @@ cache 2;
 -- создаем таблицу object_type, в которой хранятся метаданные по объектам
 create table object_type(
 object_type_id int not null primary key,
-object_name varchar2(15) not null);
+owner_id int not null,
+object_name varchar2(15) not null,
+foreign key(owner_id) references owner(owner_id));
 
 -- создаем триггер для таблицы object_type. Он генерирует первичный ключ таблицы, если при добавление кортежа он отсутствует.
 create trigger object_type_trg
@@ -42,62 +44,47 @@ begin
     end if;
 end;
 
--- Создаем таблицу info_tables. Храним название таблиц, которые будут использовать в анализе.
-create table info_tables(
-table_id int not null primary key,
-scheme_id int not null,
-foreign key(table_id) references object_type(object_type_id),
-foreign key(scheme_id) references info_schemes(scheme_id)
-);
-
 commit;
 
--- Создаем последовательность для генерации первичных ключей таблицы object;
-create sequence object_seq
+-- Создаем последовательность для генерации первичных ключей таблицы cache_object;
+create sequence cache_object_seq
 increment by 1
 start with 1
 cache 2;
 
--- Создаем таблицу object, для хранения объектов доступных для анализа.
-create table object(
+-- Создаем таблицу cache_object, для хранения объектов доступных для анализа.
+create table cache_object(
 object_id int not null primary key,
 object_type_id int not null,
 object_value int not null,
 foreign key(object_type_id) references object_type(object_type_id));
 
--- создаем триггер для таблицы object. Он генерирует первичный ключ таблицы, если при добавление кортежа он отсутствует.
-create trigger object_trg
-before insert on object
+-- создаем триггер для таблицы cache_object. Он генерирует первичный ключ таблицы, если при добавление кортежа он отсутствует.
+create trigger cache_object_trg
+before insert on cache_object
 for each row
 begin 
     if :new.object_id is null then
-        select object_seq.nextval into :new.object_id from dual;
+        select cache_object_seq.nextval into :new.object_id from dual;
     end if;
 end;
 
--- Создаем таблицу info_objects для хранения объектов которые будут использовать при анализе.
-create table info_objects(
-object_id int not null primary key,
-foreign key(object_id) references object(object_id)
-);
+-- Создаем последовательность для генерации первичных ключей таблицы session;
+create sequence cache_session_seq start with 1 increment by 1 cache 2;
 
-commit;
-
--- Создаем последовательность для генерации первичных ключей таблицы info_session;
-create sequence info_session_seq start with 1 increment by 1 cache 2;
-
--- Создаем таблицу info_session для хранение информации по сессии анализа.
-create table info_session(
+-- Создаем таблицу session для хранение информации по сессии анализа.
+create table cache_session(
 session_id int not null primary key,
-creation_date date not null);
+creation_date date not null,
+session_description varchar2(1000));
 
--- создаем триггер для таблицы object. Он генерирует первичный ключ таблицы, если при добавление кортежа он отсутствует.
-create trigger info_session_trg
-before insert on info_session
+-- создаем триггер для таблицы session. Он генерирует первичный ключ таблицы, если при добавление кортежа он отсутствует.
+create trigger session_trg
+before insert on cache_session
 for each row
 begin
     if :new.session_id is null then
-        select info_session_seq.nextval into :new.session_id from dual;
+        select session_seq.nextval into :new.session_id from dual;
     end if;
 end;
 
@@ -130,11 +117,11 @@ end;
 commit;
 
 
--- Создаем последовательность для генерации первичных ключей таблицы info_cache;
-create sequence info_cache_seq start with 1 increment by 1 cache 2;
+-- Создаем последовательность для генерации первичных ключей таблицы cache_attribute;
+create sequence cache_attribute_seq start with 1 increment by 1 cache 2;
 
--- Создаем таблицу info_cache, для хранения значений атрибутов.
-create table info_cache(
+-- Создаем таблицу cache_attribute, для хранения значений атрибутов.
+create table cache_attribute(
 cache_id int not null primary key,
 session_id int not null,
 attribute_id int not null,
@@ -142,17 +129,17 @@ object_id int not null,
 str_val varchar2(2000),
 number_val number,
 date_val date,
-foreign key(session_id) references info_session(session_id),
+foreign key(session_id) references cache_session(session_id),
 foreign key(attribute_id) references attribute_type(attribute_type_id),
-foreign key(object_id) references info_objects(object_id));
+foreign key(object_id) references cache_object(object_id));
 
--- cоздаем триггер для таблицы info_cache. генерирует первичный ключ таблицы, если при добавление кортежа он отсутствует.
-create trigger info_cache_trg
-before insert on info_cache
+-- cоздаем триггер для таблицы cache_attribute. генерирует первичный ключ таблицы, если при добавление кортежа он отсутствует.
+create trigger cache_attribute_trg
+before insert on cache_attribute
 for each row
 begin
     if :new.cache_id is null then
-        select info_cache_seq.nextval into :new.cache_id from dual;
+        select cache_attribute_seq.nextval into :new.cache_id from dual;
     end if;
 end;
 

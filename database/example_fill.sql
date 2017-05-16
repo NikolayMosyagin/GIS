@@ -1,20 +1,20 @@
-insert into info_schemes(scheme_name)
+insert into owner(owner_name)
 values('DOMODEDOVO_UAG');
 commit;
 
-insert into object_type(object_name)
-values('BUILDINGS');
-insert into object_type(object_name)
-values('STREETS');
+insert into object_type(object_name, owner_id)
+values('BUILDINGS', 1);
+insert into object_type(object_name, owner_id)
+values('STREETS', 1);
 commit;
 
-insert into object(object_type_id, object_value)
+insert into cache_object(object_type_id, object_value)
 values(1, 17501);
-insert into object(object_type_id, object_value)
+insert into cache_object(object_type_id, object_value)
 values(1, 17567);
-insert into object(object_type_id, object_value)
+insert into cache_object(object_type_id, object_value)
 values(2, 875);
-insert into object(object_type_id, object_value)
+insert into cache_object(object_type_id, object_value)
 values(2, 881);
 commit;
 
