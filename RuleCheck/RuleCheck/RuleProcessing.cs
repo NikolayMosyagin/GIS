@@ -96,6 +96,7 @@ namespace RuleCheck
                     }
                 }
             }
+            this.RefreshButtons();
         }
 
         private void OnClickCloseButton(object sender, EventArgs e)
@@ -246,6 +247,16 @@ namespace RuleCheck
             this._allOperationIds.Add(id);
             this._allInfoOperations.Add(info);
             this.OnChangedOperations(id, false);
+        }
+
+        private void OnRowEnterOperations(object sender, DataGridViewCellEventArgs e)
+        {
+            this.RefreshButtons();
+        }
+
+        private void RefreshButtons()
+        {
+            this.deleteButton.Enabled = this.operations.SelectedRows.Count > 0;
         }
     }
 }

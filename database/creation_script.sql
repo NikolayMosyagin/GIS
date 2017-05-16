@@ -84,7 +84,7 @@ before insert on cache_session
 for each row
 begin
     if :new.session_id is null then
-        select session_seq.nextval into :new.session_id from dual;
+        select cache_session_seq.nextval into :new.session_id from dual;
     end if;
 end;
 

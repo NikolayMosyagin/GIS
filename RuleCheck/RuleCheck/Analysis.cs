@@ -42,21 +42,6 @@ namespace RuleCheck
 
         private void OnClickAnalysisButton(object sender, EventArgs e)
         {
-            bool find = false;
-            for (int i = 0; i < this.table.RowCount; ++i)
-            {
-                var row = this.table.Rows[i];
-                if ((bool)row.Cells[0].Value)
-                {
-                    find = true;
-                    break;
-                }
-            }
-            if (!find)
-            {
-                MessageForm.Create("Выберите хотя бы одно правило!");
-                return;
-            }
             // создание сессии 
             string query = "select sysdate from dual";
             var result = QueryProvider.Execute(query, null);
@@ -112,6 +97,34 @@ namespace RuleCheck
                         }
                     }
                 }
+            }
+        }
+
+        private void OnEnterRowTable(object sender, DataGridViewCellEventArgs e)
+        {
+            this.RefreshButtons();
+        }
+
+        private void RefreshButtons()
+        {
+            bool find = false;
+            for (int i = 0; i < this.table.RowCount; ++i)
+            {
+                var row = this.table.Rows[i];
+                if ((bool)row.Cells[0].Value)
+                {
+                    find = true;
+                    break;
+                }
+            }
+            this.analysisButton.Enabled = find;
+        }
+
+        private void table_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 0)
+            {
+                this.RefreshButtons();
             }
         }
     }

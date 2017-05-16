@@ -33,7 +33,7 @@ namespace RuleCheck
             this.SelectedRow();
         }
 
-        protected override string TextForm
+        public override string TextForm
         {
             get
             {

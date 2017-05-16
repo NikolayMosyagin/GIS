@@ -54,11 +54,13 @@ namespace RuleCheck
         {
             this.passwordTextBox.Text = "";
             this.passwordTextBox.UseSystemPasswordChar = true;
+            this.passwordTextBox.Enter -= this.OnEnterPasswordTextBox;
         }
 
         private void OnEnterUserTextBox(object sender, EventArgs e)
         {
             this.userTextBox.Text = "";
+            this.userTextBox.Enter -= this.OnEnterUserTextBox;
         }
     }
 }

@@ -90,14 +90,22 @@
             // 
             // operations
             // 
+            this.operations.AllowUserToAddRows = false;
+            this.operations.AllowUserToDeleteRows = false;
+            this.operations.AllowUserToResizeColumns = false;
+            this.operations.AllowUserToResizeRows = false;
             this.operations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.operations.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnName,
             this.ColumnDescription});
             this.operations.Location = new System.Drawing.Point(140, 151);
+            this.operations.MultiSelect = false;
             this.operations.Name = "operations";
+            this.operations.ReadOnly = true;
+            this.operations.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.operations.Size = new System.Drawing.Size(382, 187);
             this.operations.TabIndex = 5;
+            this.operations.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnRowEnterOperations);
             // 
             // ColumnName
             // 

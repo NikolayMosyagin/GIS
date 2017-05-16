@@ -41,7 +41,7 @@ namespace RuleCheck
             get { return ""; }
         }
 
-        protected virtual string TextForm
+        public virtual string TextForm
         {
             get { return "Поиск"; }
         }

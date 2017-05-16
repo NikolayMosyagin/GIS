@@ -40,7 +40,7 @@ namespace RuleCheck
             return true;
         }
 
-        protected override string TextForm
+        public override string TextForm
         {
             get
             {
@@ -53,9 +53,12 @@ namespace RuleCheck
             var form = RuleProcessing.Create();
             form.onClose = (f) =>
             {
-                this.operationIds.Add(f.id);
-                this.operations.Add(new KeyValuePair<string, string>(f.name, f.description));
-                this.UpdateTable();
+                if (f.id != -1)
+                {
+                    this.operationIds.Add(f.id);
+                    this.operations.Add(new KeyValuePair<string, string>(f.name, f.description));
+                    this.UpdateTable();
+                }
             };
         }
 

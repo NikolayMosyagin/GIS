@@ -73,7 +73,7 @@ namespace RuleCheck
             return true;
         }
 
-        protected override string TextForm
+        public override string TextForm
         {
             get
             {

@@ -68,11 +68,16 @@
             // 
             // table
             // 
+            this.table.AllowUserToAddRows = false;
+            this.table.AllowUserToDeleteRows = false;
+            this.table.AllowUserToResizeColumns = false;
+            this.table.AllowUserToResizeRows = false;
             this.table.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.table.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameColumn,
             this.DescriptionColumn});
             this.table.Location = new System.Drawing.Point(12, 69);
+            this.table.MultiSelect = false;
             this.table.Name = "table";
             this.table.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.table.Size = new System.Drawing.Size(460, 183);
@@ -105,7 +110,6 @@
             this.Controls.Add(this.searchTextBox);
             this.Controls.Add(this.searchLabel);
             this.Name = "SearchBase";
-            this.Text = this.TextForm;
             ((System.ComponentModel.ISupportInitialize)(this.table)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
