@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Oracle.ManagedDataAccess.Client;
+using Oracle.ManagedDataAccess.Types;
 
 namespace RuleCheck
 {
@@ -56,17 +57,29 @@ namespace RuleCheck
                 MessageForm.Create("Выберите хотя бы одно правило!");
                 return;
             }
+            // создание сессии 
+            string query = "select sysdate from dual";
+            var result = QueryProvider.Execute(query, null);
+            query = "insert into {0}(creation_date, session_description) values(:idate, :descr)" + 
+                " returning {0}.session_id into :session_id";
+            result = QueryProvider.Execute(string.Format(query, Config.s_session), new OracleParameter[3]
+            {
+                new OracleParameter("idate", result.values[0][0]),
+                new OracleParameter("descr", this.sessionDescription.Text),
+                new OracleParameter("session_id", OracleDbType.Decimal, ParameterDirection.Output),
+            });
+            int session_id = ((OracleDecimal)result.parametersOut[0]).ToInt32();
             for (int i = 0; i < this.table.RowCount; ++i)
             {
                 var row = this.table.Rows[i];
                 if ((bool)row.Cells[0].Value)
                 {
                     this.Log.Items.Add(string.Format("Выполнение правила {0}", row.Cells[1].Value));
-                    string query = "select {1}.operation_name, {1}.first_object_type_id" + 
+                    query = "select {1}.operation_name, {1}.first_object_type_id" + 
                         ", {1}.second_object_type_id, {1}.operation_procedure from {0}" +
                         " inner join {1} on {0}.operation_id = {1}.operation_id" +
                         " where {0}.rule_id = :id";
-                    var result = QueryProvider.Execute(string.Format(query, Config.s_rule_operation, Config.s_operation), new OracleParameter[1]
+                    result = QueryProvider.Execute(string.Format(query, Config.s_rule_operation, Config.s_operation), new OracleParameter[1]
                     {
                         new OracleParameter("id", this._ruleIds[i]),
                     });

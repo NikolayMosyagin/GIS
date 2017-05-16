@@ -36,7 +36,7 @@
             this.exitButton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.analysisLabel = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.sessionDescription = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.table)).BeginInit();
             this.SuspendLayout();
             // 
@@ -110,20 +110,20 @@
             this.analysisLabel.TabIndex = 5;
             this.analysisLabel.Text = "Описание \r\n  анализа";
             // 
-            // textBox1
+            // sessionDescription
             // 
-            this.textBox1.Location = new System.Drawing.Point(94, 31);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(478, 67);
-            this.textBox1.TabIndex = 6;
+            this.sessionDescription.Location = new System.Drawing.Point(94, 31);
+            this.sessionDescription.Multiline = true;
+            this.sessionDescription.Name = "sessionDescription";
+            this.sessionDescription.Size = new System.Drawing.Size(478, 67);
+            this.sessionDescription.TabIndex = 6;
             // 
             // Analysis
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 562);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.sessionDescription);
             this.Controls.Add(this.analysisLabel);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.exitButton);
@@ -148,6 +148,6 @@
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label analysisLabel;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox sessionDescription;
     }
 }
