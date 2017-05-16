@@ -57,7 +57,7 @@ namespace RuleCheck
                 string query = "select {1}.object_type_id, {1}.object_name from {0} " +
                     "inner join {1} on {0}.object_type_id = {1}.object_type_id " +
                     "where {0}.attribute_type_id = :attribute_type_id";
-                var result = QueryProvider.Execute(string.Format(query, Config.s_storage_attribute_type, Config.s_storage_object_type), new OracleParameter[1]
+                var result = QueryProvider.Execute(string.Format(query, Config.s_storage_attribute_type, Config.s_object_type), new OracleParameter[1]
                 {
                     new OracleParameter("attribute_type_id", this.availableIds[indices[i]]),
                 });

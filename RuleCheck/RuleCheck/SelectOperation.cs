@@ -33,6 +33,14 @@ namespace RuleCheck
             this.SelectedRow();
         }
 
+        protected override string TextForm
+        {
+            get
+            {
+                return "Выбор операции";
+            }
+        }
+
         public static SelectOperation Create(List<int> id, List<KeyValuePair<string, string>> info)
         {
             var form = new SelectOperation(id, info);

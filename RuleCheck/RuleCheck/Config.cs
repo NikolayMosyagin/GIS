@@ -18,16 +18,16 @@ namespace RuleCheck
         ");User Id={0};Password={1}";
         public static string s_rule = "rule";
         public static string s_rule_operation = "rule_operation";
-        public static string s_schemes = "info_schemes";
-        public static string s_tables = "info_tables";
-        public static string s_objects = "info_objects";
-        public static string s_attributes = "info_attributes";
-        public static string s_session = "info_session";
-        public static string s_cache = "info_cache";
+        public static string s_schemes = "owner";
+        public static string s_tables = "info_tables"; // нету
+        public static string s_object = "cache_object";
+        public static string s_attributes = "info_attributes"; // нету
+        public static string s_session = "cache_session";
+        public static string s_attribute = "cache_attribute";
         public static string s_operation = "operation";
-        public static string s_storage_object_type = "object_type";
-        public static string s_storage_object = "object";
-        public static string s_storage_attribute_type = "attribute_type";
+        public static string s_object_type = "object_type";
+        public static string s_storage_object = ""; // нету
+        public static string s_storage_attribute_type = "attribute_type"; // нету
         public static string s_user_procedures = "user_procedures";
         public static string s_user_arguments = "user_arguments";
     }

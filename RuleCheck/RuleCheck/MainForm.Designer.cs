@@ -133,7 +133,7 @@
             this.Controls.Add(this.exitButton);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MainForm";
+            this.Text = "Главная";
             this.Shown += new System.EventHandler(this.onShownMainForm);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

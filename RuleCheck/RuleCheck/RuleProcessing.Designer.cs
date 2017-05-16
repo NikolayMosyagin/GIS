@@ -174,7 +174,7 @@
             this.Controls.Add(this.nameText);
             this.Controls.Add(this.nameLabel);
             this.Name = "RuleProcessing";
-            this.Text = "RuleProcessing";
+            this.Text = "Правило";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnClosingForm);
             ((System.ComponentModel.ISupportInitialize)(this.operations)).EndInit();
             this.ResumeLayout(false);

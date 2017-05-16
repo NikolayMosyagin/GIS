@@ -40,6 +40,14 @@ namespace RuleCheck
             return true;
         }
 
+        protected override string TextForm
+        {
+            get
+            {
+                return "Конструктор правил";
+            }
+        }
+
         protected override void OnAdd()
         {
             var form = RuleProcessing.Create();

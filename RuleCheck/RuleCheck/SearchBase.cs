@@ -41,6 +41,11 @@ namespace RuleCheck
             get { return ""; }
         }
 
+        protected virtual string TextForm
+        {
+            get { return "Поиск"; }
+        }
+
 
         protected virtual void LoadData()
         {

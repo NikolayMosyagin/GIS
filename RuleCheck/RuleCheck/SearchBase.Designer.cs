@@ -105,7 +105,7 @@
             this.Controls.Add(this.searchTextBox);
             this.Controls.Add(this.searchLabel);
             this.Name = "SearchBase";
-            this.Text = "SearchBase";
+            this.Text = this.TextForm;
             ((System.ComponentModel.ISupportInitialize)(this.table)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

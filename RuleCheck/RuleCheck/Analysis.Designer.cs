@@ -131,7 +131,7 @@
             this.Controls.Add(this.table);
             this.Name = "Analysis";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Analysis";
+            this.Text = "Анализ";
             ((System.ComponentModel.ISupportInitialize)(this.table)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

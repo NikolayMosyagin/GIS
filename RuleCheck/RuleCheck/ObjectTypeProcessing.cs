@@ -24,7 +24,7 @@ namespace RuleCheck
         protected override void GetAvailableData()
         {
             string query = "select object_type_id, object_name from {0}";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_storage_object_type), null);
+            var result = QueryProvider.Execute(string.Format(query, Config.s_object_type), null);
             if (result != null && result.values != null)
             {
                 for (int i = 0; i < result.values.Count; ++i)
@@ -40,7 +40,7 @@ namespace RuleCheck
             string query = 
                 "select {1}.object_type_id, {1}.object_name from {0} " +
                 "inner join {1} on {0}.table_id = {1}.object_type_id";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_tables, Config.s_storage_object_type), null);
+            var result = QueryProvider.Execute(string.Format(query, Config.s_tables, Config.s_object_type), null);
             if (result != null && result.values != null)
             {
                 for (int i = 0; i < result.values.Count; ++i)

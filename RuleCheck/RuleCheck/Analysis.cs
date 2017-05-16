@@ -75,11 +75,11 @@ namespace RuleCheck
                         this.Log.Items.Add(string.Format("    Выполнение операции {0}", result.values[j][0]));
                         // вытаскиваем все объекты первого типа и второго.
                         query = "select {0}.object_value from {0} where {0}.object_type_id = :id";
-                        var result1 = QueryProvider.Execute(string.Format(query, Config.s_storage_object), new OracleParameter[1]
+                        var result1 = QueryProvider.Execute(string.Format(query, Config.s_object), new OracleParameter[1]
                         {
                             new OracleParameter("id", result.values[j][1]),
                         });
-                        var result2 = QueryProvider.Execute(string.Format(query, Config.s_storage_object), new OracleParameter[1]
+                        var result2 = QueryProvider.Execute(string.Format(query, Config.s_object), new OracleParameter[1]
                         {
                             new OracleParameter("id", result.values[j][2]),
                         });

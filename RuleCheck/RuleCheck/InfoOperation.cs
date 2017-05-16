@@ -59,7 +59,7 @@ namespace RuleCheck
         private void FillObjectType()
         {
             string query = "select {0}.object_type_id, {0}.object_name from {0}";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_storage_object_type), null);
+            var result = QueryProvider.Execute(string.Format(query, Config.s_object_type), null);
             if (result != null && result.values != null)
             {
                 for (int i = 0; i < result.values.Count; ++i)

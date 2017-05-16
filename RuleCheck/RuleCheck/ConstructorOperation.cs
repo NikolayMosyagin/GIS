@@ -73,6 +73,14 @@ namespace RuleCheck
             return true;
         }
 
+        protected override string TextForm
+        {
+            get
+            {
+                return "Конструктор операций";
+            }
+        }
+
         protected override void OnAdd()
         {
             if (!this.CheckSelectRow())

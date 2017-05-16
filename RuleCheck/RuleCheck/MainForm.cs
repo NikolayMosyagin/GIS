@@ -35,8 +35,8 @@ namespace RuleCheck
 
         private void OnClickObjectButton(object sender, EventArgs e)
         {
-            var form = new ObjectProcessing();
-            form.Show();
+            /*var form = new ObjectProcessing();
+            form.Show();*/
         }
 
 
@@ -49,7 +49,7 @@ namespace RuleCheck
         private void LoadCache()
         {
             string query = "select * from {0}";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_cache), null);
+            var result = QueryProvider.Execute(string.Format(query, Config.s_attribute), null);
             if (result != null)
             {
                 this.dataGridView1.Columns.Clear();
