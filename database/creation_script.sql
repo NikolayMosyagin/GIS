@@ -202,3 +202,29 @@ orderBy int not null,
 foreign key(rule_id) references rule(rule_id),
 foreign key(operation_id) references operation(operation_id) on delete cascade);
 commit;
+
+-- Создаем последовательность для генерации первичных ключей таблицы cache_log
+create sequence cache_log_seq
+increment by 1
+start with 1
+cache 2;
+
+create table cache_log(
+log_id int not null primary key,
+session_id int not null,
+operation_id int not null,
+first_object_id int not null,
+second_object_id int not null,
+result int not null,
+foreign key(session_id) references cache_session(session_id) on delete cascade,
+foreign key(operation_id) references operation(operation_id) on delete cascade);
+
+-- cоздаем триггер для таблицы cache_log. генерирует первичный ключ таблицы, если при добавление кортежа он отсутствует.
+create trigger cache_log_trg
+before insert on cache_log
+for each row
+begin 
+    if :new.log_id is null then
+        select cache_log_seq.nextval into :new.log_id from dual;
+    end if;
+end;

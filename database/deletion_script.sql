@@ -1,3 +1,6 @@
+drop sequence cache_log_seq;
+drop table cache_log;
+
 drop table rule_operation;
 
 drop sequence rule_seq;

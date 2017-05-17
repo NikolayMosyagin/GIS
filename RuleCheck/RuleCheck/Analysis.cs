@@ -54,6 +54,12 @@ namespace RuleCheck
                 new OracleParameter("session_id", OracleDbType.Decimal, ParameterDirection.Output),
             });
             int session_id = ((OracleDecimal)result.parametersOut[0]).ToInt32();
+            query = "begin LOAD(:session_id); end;";
+            QueryProvider.Execute(query, new OracleParameter[1]
+            {
+                new OracleParameter("session_id", OracleDbType.Decimal, session_id, ParameterDirection.Input),
+            });
+
             for (int i = 0; i < this.table.RowCount; ++i)
             {
                 var row = this.table.Rows[i];
@@ -61,7 +67,7 @@ namespace RuleCheck
                 {
                     this.Log.Items.Add(string.Format("Выполнение правила {0}", row.Cells[1].Value));
                     query = "select {1}.operation_name, {1}.first_object_type_id" + 
-                        ", {1}.second_object_type_id, {1}.operation_procedure from {0}" +
+                        ", {1}.second_object_type_id, {1}.operation_procedure, {1}.operation_id from {0}" +
                         " inner join {1} on {0}.operation_id = {1}.operation_id" +
                         " where {0}.rule_id = :id";
                     result = QueryProvider.Execute(string.Format(query, Config.s_rule_operation, Config.s_operation), new OracleParameter[1]
@@ -93,6 +99,16 @@ namespace RuleCheck
                                     new OracleParameter("second", result2.values[k2][0]),
                                 });
                                 this.Log.Items.Add(string.Format("      Результат выполнения {0}-{1}: {2}", result1.values[k1][0], result2.values[k2][0], resultFunction.values[0][0]));
+                                query = "insert into {0}(session_id, operation_id, first_object_id, second_object_id, result)" +
+                                    " values(:s_id, :o_id, :fo_id, :so_id, :result)";
+                                QueryProvider.Execute(string.Format(query, Config.s_log), new OracleParameter[5]
+                                {
+                                    new OracleParameter("s_id", session_id),
+                                    new OracleParameter("o_id", result.values[j][4]),
+                                    new OracleParameter("fo_id", result1.values[k1][0]),
+                                    new OracleParameter("so_id", result2.values[k2][0]),
+                                    new OracleParameter("result", resultFunction.values[0][0]),
+                                });
                             }
                         }
                     }

@@ -1,108 +1,93 @@
-create or replace procedure Load is
+create or replace procedure Load(session_id in number) is
     value_number number;
     value_str varchar2(2000);
     value_date date;
-    session_id int;
-    id_object int;
-    id_table int;
+    t_object_id int;
+    t_object_type_id int;
+    t_object_value int;
     table_object_id int;
-    table_name varchar2(100);
+    t_object_name varchar2(100);
+    t_owner_name varchar2(100);
     query varchar2(1000);
     primary_column_name varchar2(100);
-    scheme_name varchar2(100);
     column_type varchar2(100);
-    attribute_name varchar2(100);
+    t_attribute_name varchar2(100);
     now date;
-    id_attribute int;
+    t_attribute_type_id int;
     count_row int;
     cursor o is
-    select info_objects.object_id from info_objects;
+    select cache_object.object_id, cache_object.object_type_id, cache_object.object_value from cache_object;
     cursor types is
-    select attribute_type.attribute_type_id from attribute_type;
+    select attribute_type.attribute_type_id, attribute_type.attribute_name, attribute_type.object_type_id from attribute_type;
     cursor col is
-    select attribute_type.attribute_type_id, attribute_type.data_type, attribute_type.attribute_name from attribute_type where attribute_type.object_type_id = id_table;
+    select attribute_type.attribute_type_id, attribute_type.data_type, attribute_type.attribute_name from attribute_type where attribute_type.object_type_id = t_object_type_id;
 begin
-    -- Получаем текущее время(для сессии)
-    select sysdate into now from dual;
-    -- Добавляем новую сессию и возвращаем значение первичного ключа
-    insert into info_session(creation_date) values(now) returning info_session.session_id into session_id;
-    commit;
     -- Открываем курсор, который проходится по всем типам атрибутов в info_attribute
     open types;
     loop
-        fetch types into id_attribute;
+        fetch types into t_attribute_type_id, t_attribute_name, t_object_type_id;
         if (types%notfound) then
             exit;
         end if;
-	-- Получаем номер таблицы, в которой хранится данный столбец, и имя столбца
-	select attribute_type.object_type_id, attribute_type.attribute_name into id_table, attribute_name from attribute_type where attribute_type_id=id_attribute;
 	-- Получаем имя владельца и имя таблицы в которой находится этот атрибут
-	select object_name into table_name from object_type where object_type_id = id_table;
-	select info_schemes.scheme_name into scheme_name from info_tables
-	inner join info_schemes on info_tables.scheme_id = info_schemes.scheme_id
-	where info_tables.table_id = id_table;
+	select object_type.object_name, owner.owner_name into t_object_name, t_owner_name from object_type
+	inner join owner on owner.owner_id = object_type.owner_id
+	where object_type.object_type_id = t_object_type_id;
 	-- Выполняем динамический запрос для нахождения типа значения атрибута
-        query := 'begin select data_type into :column_type from all_tab_columns where owner = ''' || upper(scheme_name) || ''' and table_name = ''' || upper(table_name) || ''' and column_name = ''' || upper(attribute_name) || '''; end;';
+        query := 'begin select data_type into :column_type from all_tab_columns where owner = ''' || upper(t_owner_name) || ''' and table_name = ''' || upper(t_object_name) || ''' and column_name = ''' || upper(t_attribute_name) || '''; end;';
         execute immediate query
         using out column_type;
-	-- Устанавливаем данный тип в таблицу info_attributes
-        update attribute_type set attribute_type.data_type = column_type where attribute_type.attribute_type_id = id_attribute;
+	-- Устанавливаем данный тип в таблицу attribute_type
+        update attribute_type set attribute_type.data_type = column_type where attribute_type.attribute_type_id = t_attribute_type_id;
         commit;
     end loop;
-	--Здесь мы игнорируем то, что находится в info_tables. Возможно ли, что для данного атрибута его таблица не добавлена в info_tables? Правильно ли, что выше?
     -- Открываем курсор, который проходится по всем объектам
     open o;
     loop
-        fetch o into id_object;
+        fetch o into t_object_id, t_object_type_id, t_object_value;
         if (o%notfound) then
             exit;
         end if;
-	-- Получаем номер таблицы, к которой принадлежит данный	объект, и номер этого объекта в таблице
-
-	select object.object_type_id, object.object_value into id_table, table_object_id from object where object.object_id=id_object;
-	--Косяк выше, имена равны?
-	-- Получаем имя таблицы, в которой находится объект
-        select object_name into table_name from object_type where object_type_id = id_table;
 	-- Получаем имя владельца и имя таблицы, в которой находится объект
-	select info_schemes.scheme_name into scheme_name from info_tables
-	inner join info_schemes on info_tables.scheme_id = info_schemes.scheme_id
-	where info_tables.table_id = id_table;
+	select owner.owner_name, object_type.object_name into t_owner_name, t_object_name from object_type
+	inner join owner on owner.owner_id = object_type.owner_id
+	where object_type.object_type_id = t_object_type_id;
 	-- Выполняем динамический запрос, для поиска названия столбца, который является первичным ключом
 	query := 'begin select acc.column_name into :primary_column_name from all_constraints ac ' ||
 	'inner join all_cons_columns acc on ac.constraint_name = acc.constraint_name ' || 
 	'where ac.table_name = :table_name and ac.constraint_type = ''' || 'P''' || ';end;';
 	execute immediate query
-	using out primary_column_name, in table_name;
+	using out primary_column_name, in t_object_name;
 	-- открываем курсор, который проходится по всем типам атрибута
         open col;
         loop
-            fetch col into id_attribute, column_type, attribute_name;
+            fetch col into t_attribute_type_id, column_type, t_attribute_name;
             if (col%notfound) then
                 exit;
             end if;
 	    -- выполняем динамический запрос, для получение значения атрибута
-            query := 'begin select ' || attribute_name || ' into :value from ' || scheme_name || '.' ||
-            table_name || ' where ' || primary_column_name || '= :table_object_id' || '; end;';
+            query := 'begin select ' || t_attribute_name || ' into :value from ' || t_owner_name || '.' ||
+            t_object_name || ' where ' || primary_column_name || '= :t_object_value' || '; end;';
             -- взависимости от типа устанавливаем в определенную переменную
             if (lower(column_type) = 'number') then
                 execute immediate query
-                using out value_number, in table_object_id;
+                using out value_number, in t_object_value;
             end if;
             if (lower(column_type) = 'varchar2') then
                 execute immediate query
-                using out value_str, in table_object_id;
+                using out value_str, in t_object_value;
             end if;
             if (lower(column_type) = 'date') then
                 execute immediate query
-                using out value_date, in table_object_id;
+                using out value_date, in t_object_value;
             end if;
 	    -- записываем новый кортеж в таблицу info_cache
             if (lower(column_type) = 'number') then
-                insert into info_cache(session_id, attribute_id, object_id, number_val) values(session_id, id_attribute, id_object, value_number);
+                insert into cache_attribute(session_id, attribute_id, object_id, number_val) values(session_id, t_attribute_type_id, t_object_id, value_number);
             elsif (lower(column_type) = 'varchar2') then
-                insert into info_cache(session_id, attribute_id, object_id, str_val) values(session_id, id_attribute, id_object, value_str);
+                insert into cache_attribute(session_id, attribute_id, object_id, str_val) values(session_id, t_attribute_type_id, t_object_id, value_str);
             elsif (lower(column_type) = 'date') then
-                insert into info_cache(session_id, attribute_id, object_id, date_val) values(session_id, id_attribute, id_object, value_date);
+                insert into cache_attribute(session_id, attribute_id, object_id, date_val) values(session_id, t_attribute_type_id, t_object_id, value_date);
             end if;
         end loop;
         close col;
