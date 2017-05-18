@@ -87,6 +87,12 @@
     <Compile Include="ConstructorRule.Designer.cs">
       <DependentUpon>ConstructorRule.cs</DependentUpon>
     </Compile>
+    <Compile Include="ControlSessions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ControlSessions.Designer.cs">
+      <DependentUpon>ControlSessions.cs</DependentUpon>
+    </Compile>
     <Compile Include="DecisionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +104,12 @@
     </Compile>
     <Compile Include="InfoOperation.Designer.cs">
       <DependentUpon>InfoOperation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InfoSession.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InfoSession.Designer.cs">
+      <DependentUpon>InfoSession.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -170,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InfoOperation.resx">
       <DependentUpon>InfoOperation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InfoSession.resx">
+      <DependentUpon>InfoSession.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

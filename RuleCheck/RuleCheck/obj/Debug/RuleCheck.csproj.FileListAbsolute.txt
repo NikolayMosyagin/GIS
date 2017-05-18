@@ -21,3 +21,4 @@ D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.RuleProcessing.resou
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.SearchBase.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.SelectOperation.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.Analysis.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.InfoSession.resources

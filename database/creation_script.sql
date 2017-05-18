@@ -129,7 +129,7 @@ object_id int not null,
 str_val varchar2(2000),
 number_val number,
 date_val date,
-foreign key(session_id) references cache_session(session_id),
+foreign key(session_id) references cache_session(session_id) on delete cascade,
 foreign key(attribute_id) references attribute_type(attribute_type_id),
 foreign key(object_id) references cache_object(object_id));
 

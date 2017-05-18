@@ -88,5 +88,11 @@ namespace RuleCheck
             var form = new Analysis();
             form.Show();
         }
+
+        private void OnClickSessionButton(object sender, EventArgs e)
+        {
+            var form = new ControlSessions();
+            form.Show();
+        }
     }
 }

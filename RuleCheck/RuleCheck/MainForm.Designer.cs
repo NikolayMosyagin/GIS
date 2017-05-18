@@ -36,6 +36,7 @@
             this.operationButton = new System.Windows.Forms.Button();
             this.ruleButton = new System.Windows.Forms.Button();
             this.analysisButton = new System.Windows.Forms.Button();
+            this.sessionButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -118,11 +119,22 @@
             this.analysisButton.UseVisualStyleBackColor = true;
             this.analysisButton.Click += new System.EventHandler(this.OnClickAnalysisButton);
             // 
+            // sessionButton
+            // 
+            this.sessionButton.Location = new System.Drawing.Point(350, 198);
+            this.sessionButton.Name = "sessionButton";
+            this.sessionButton.Size = new System.Drawing.Size(106, 23);
+            this.sessionButton.TabIndex = 9;
+            this.sessionButton.Text = "Сессии...";
+            this.sessionButton.UseVisualStyleBackColor = true;
+            this.sessionButton.Click += new System.EventHandler(this.OnClickSessionButton);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(468, 262);
+            this.Controls.Add(this.sessionButton);
             this.Controls.Add(this.analysisButton);
             this.Controls.Add(this.ruleButton);
             this.Controls.Add(this.operationButton);
@@ -150,6 +162,7 @@
         private System.Windows.Forms.Button operationButton;
         private System.Windows.Forms.Button ruleButton;
         private System.Windows.Forms.Button analysisButton;
+        private System.Windows.Forms.Button sessionButton;
     }
 }
 

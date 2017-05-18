@@ -15,7 +15,7 @@ namespace RuleCheck
 
         protected override void LoadData()
         {
-            if (this.indices.Count > 0)
+            if (this.table.RowCount > 0)
             {
                 this.table.Rows[0].Selected = true;
             }
