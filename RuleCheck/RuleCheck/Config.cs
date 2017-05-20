@@ -16,6 +16,7 @@ namespace RuleCheck
         "(SERVICE_NAME=orcl)" +
         ")" +
         ");User Id={0};Password={1}";
+        public static string s_attribute_type = "attribute_type";
         public static string s_log = "cache_log";
         public static string s_rule = "rule";
         public static string s_rule_operation = "rule_operation";

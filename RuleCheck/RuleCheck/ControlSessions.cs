@@ -62,5 +62,12 @@ namespace RuleCheck
             var form = InfoSession.Create(this.operationIds[this.indices[num]], t.Key, t.Value);
         }
 
+        protected override void OnUpdate()
+        {
+            int num = this.table.SelectedRows[0].Index;
+            var form = new CacheAttribute(this.operationIds[this.indices[num]]);
+            form.Show();
+        }
+
     }
 }

@@ -42,19 +42,8 @@ namespace RuleCheck
 
         private void OnClickAnalysisButton(object sender, EventArgs e)
         {
-            // создание сессии 
-            string query = "select sysdate from dual";
-            var result = QueryProvider.Execute(query, null);
-            query = "insert into {0}(creation_date, session_description) values(:idate, :descr)" + 
-                " returning {0}.session_id into :session_id";
-            result = QueryProvider.Execute(string.Format(query, Config.s_session), new OracleParameter[3]
-            {
-                new OracleParameter("idate", result.values[0][0]),
-                new OracleParameter("descr", this.sessionDescription.Text),
-                new OracleParameter("session_id", OracleDbType.Decimal, ParameterDirection.Output),
-            });
-            int session_id = ((OracleDecimal)result.parametersOut[0]).ToInt32();
-            query = "begin LOAD(:session_id); end;";
+            int session_id = CreateSession(this.sessionDescription.Text);
+            string query = "begin LOAD(:session_id); end;";
             QueryProvider.Execute(query, new OracleParameter[1]
             {
                 new OracleParameter("session_id", OracleDbType.Decimal, session_id, ParameterDirection.Input),
@@ -70,7 +59,7 @@ namespace RuleCheck
                         ", {1}.second_object_type_id, {1}.operation_procedure, {1}.operation_id from {0}" +
                         " inner join {1} on {0}.operation_id = {1}.operation_id" +
                         " where {0}.rule_id = :id";
-                    result = QueryProvider.Execute(string.Format(query, Config.s_rule_operation, Config.s_operation), new OracleParameter[1]
+                    var result = QueryProvider.Execute(string.Format(query, Config.s_rule_operation, Config.s_operation), new OracleParameter[1]
                     {
                         new OracleParameter("id", this._ruleIds[i]),
                     });
@@ -142,6 +131,21 @@ namespace RuleCheck
             {
                 this.RefreshButtons();
             }
+        }
+
+        public static int CreateSession(string description)
+        {
+            string query = "select sysdate from dual";
+            var result = QueryProvider.Execute(query, null);
+            query = "insert into {0}(creation_date, session_description) values(:idate, :descr)" +
+                " returning {0}.session_id into :session_id";
+            result = QueryProvider.Execute(string.Format(query, Config.s_session), new OracleParameter[3]
+            {
+                new OracleParameter("idate", result.values[0][0]),
+                new OracleParameter("descr", description),
+                new OracleParameter("session_id", OracleDbType.Decimal, ParameterDirection.Output),
+            });
+            return ((OracleDecimal)result.parametersOut[0]).ToInt32();
         }
     }
 }
