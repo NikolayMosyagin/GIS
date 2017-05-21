@@ -15,10 +15,16 @@ namespace RuleCheck
     public partial class Analysis : Form
     {
         private List<int> _ruleIds;
-        public Analysis()
+        private int _sessionId;
+        private object _date;
+        public Action<Analysis> onClose;
+
+        public Analysis(int sessionId = -1, object date = null)
         {
             InitializeComponent();
             this._ruleIds = new List<int>();
+            this._sessionId = sessionId;
+            this._date = date;
             this.LoadData();
         }
 
@@ -42,20 +48,32 @@ namespace RuleCheck
 
         private void OnClickAnalysisButton(object sender, EventArgs e)
         {
-            int session_id = CreateSession(this.sessionDescription.Text);
-            string query = "begin LOAD(:session_id); end;";
-            QueryProvider.Execute(query, new OracleParameter[1]
+            if (this._sessionId == -1)
             {
-                new OracleParameter("session_id", OracleDbType.Decimal, session_id, ParameterDirection.Input),
-            });
-
+                this._sessionId = CreateSession(this.sessionDescription.Text, out this._date);
+                string query = "begin LOAD(:session_id); end;";
+                QueryProvider.Execute(query, new OracleParameter[1]
+                {
+                    new OracleParameter("session_id", OracleDbType.Decimal, this._sessionId, ParameterDirection.Input),
+                });
+            }
+            else
+            {
+                string query = "update {0} set {0}.session_description = :description" +
+                    " where {0}.session_id = :session_id";
+                QueryProvider.Execute(string.Format(query, Config.s_session), new OracleParameter[2]
+                {
+                    new OracleParameter("description", this.sessionDescription.Text),
+                    new OracleParameter("session_id", this._sessionId)
+                });
+            }
             for (int i = 0; i < this.table.RowCount; ++i)
             {
                 var row = this.table.Rows[i];
                 if ((bool)row.Cells[0].Value)
                 {
                     this.Log.Items.Add(string.Format("Выполнение правила {0}", row.Cells[1].Value));
-                    query = "select {1}.operation_name, {1}.first_object_type_id" + 
+                    string query = "select {1}.operation_name, {1}.first_object_type_id" + 
                         ", {1}.second_object_type_id, {1}.operation_procedure, {1}.operation_id from {0}" +
                         " inner join {1} on {0}.operation_id = {1}.operation_id" +
                         " where {0}.rule_id = :id";
@@ -92,7 +110,7 @@ namespace RuleCheck
                                     " values(:s_id, :o_id, :fo_id, :so_id, :result)";
                                 QueryProvider.Execute(string.Format(query, Config.s_log), new OracleParameter[5]
                                 {
-                                    new OracleParameter("s_id", session_id),
+                                    new OracleParameter("s_id", this._sessionId),
                                     new OracleParameter("o_id", result.values[j][4]),
                                     new OracleParameter("fo_id", result1.values[k1][0]),
                                     new OracleParameter("so_id", result2.values[k2][0]),
@@ -133,12 +151,13 @@ namespace RuleCheck
             }
         }
 
-        public static int CreateSession(string description)
+        public static int CreateSession(string description, out object date)
         {
             string query = "select sysdate from dual";
             var result = QueryProvider.Execute(query, null);
             query = "insert into {0}(creation_date, session_description) values(:idate, :descr)" +
                 " returning {0}.session_id into :session_id";
+            date = result.values[0][0];
             result = QueryProvider.Execute(string.Format(query, Config.s_session), new OracleParameter[3]
             {
                 new OracleParameter("idate", result.values[0][0]),
@@ -146,6 +165,14 @@ namespace RuleCheck
                 new OracleParameter("session_id", OracleDbType.Decimal, ParameterDirection.Output),
             });
             return ((OracleDecimal)result.parametersOut[0]).ToInt32();
+        }
+
+        private void OnFormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (ControlSessions.current != null)
+            {
+                ControlSessions.current.AddData(this._sessionId, this._date, this.sessionDescription.Text);
+            }
         }
     }
 }

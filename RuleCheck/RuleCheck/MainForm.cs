@@ -92,6 +92,7 @@ namespace RuleCheck
         private void OnClickSessionButton(object sender, EventArgs e)
         {
             var form = new ControlSessions();
+            ControlSessions.current = form;
             form.Show();
         }
     }

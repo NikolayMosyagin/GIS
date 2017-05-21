@@ -13,11 +13,21 @@ namespace RuleCheck
 {
     public partial class ControlSessions : ConstructorBase
     {
+        public static ControlSessions current { get; set; }
+
+        public void AddData(int sessionId, object date, string description)
+        {
+            this.operationIds.Add(sessionId);
+            this.operations.Add(new KeyValuePair<string, string>(date.ToString(), description));
+            this.UpdateTable();
+        }
+
         protected override void LoadData()
         {
             string query = "select {0}.session_id, {0}.creation_date, {0}.session_description" +
                 " from {0}";
             var result = QueryProvider.Execute(string.Format(query, Config.s_session), null);
+            result.values.Sort((a, b) => { return ((decimal)a[0]).CompareTo((decimal)b[0]); });
             for (int i = 0; i < result.values.Count; ++i)
             {
                 this.operationIds.Add(int.Parse(result.values[i][0].ToString()));
@@ -37,7 +47,7 @@ namespace RuleCheck
             }
             this.deleteButton.Enabled = true;
             this.addButton.Enabled = true;
-            //this.updateButton.Enabled = false;
+            this.updateButton.Enabled = true;
             return true;
         }
 
@@ -53,6 +63,11 @@ namespace RuleCheck
             this.table.Rows.RemoveAt(num);
             this.operations.RemoveAt(this.indices[num]);
             this.UpdateTable();
+            if (this.table.RowCount > 0)
+            {
+                this.table.Rows[0].Selected = true;
+            }
+            this.RefreshButtons();
         }
 
         protected override void OnAdd()
@@ -69,5 +84,33 @@ namespace RuleCheck
             form.Show();
         }
 
+        protected override string addButtonText
+        {
+            get
+            {
+                return "Просмотр";
+            }
+        }
+
+        protected override string updateButtonText
+        {
+            get
+            {
+                return "Атрибуты";
+            }
+        }
+
+        public override string TextForm
+        {
+            get
+            {
+                return "Сессии";
+            }
+        }
+
+        private void OnFormClosing(object sender, FormClosingEventArgs e)
+        {
+            ControlSessions.current = null;
+        }
     }
 }

@@ -33,6 +33,21 @@ namespace RuleCheck
         {
         }
 
+        protected virtual string addButtonText
+        {
+            get { return "Добавить"; }
+        }
+
+        protected virtual string deleteButtonText
+        {
+            get { return "Удалить"; }
+        }
+
+        protected virtual string updateButtonText
+        {
+            get { return "Изменить"; }
+        }
+
         protected override bool RefreshButtons()
         {
             int index;

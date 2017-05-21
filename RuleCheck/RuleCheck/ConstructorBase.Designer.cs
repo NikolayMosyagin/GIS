@@ -41,7 +41,7 @@
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(94, 32);
             this.addButton.TabIndex = 4;
-            this.addButton.Text = "Добавить";
+            this.addButton.Text = this.addButtonText;
             this.addButton.UseVisualStyleBackColor = true;
             this.addButton.Click += new System.EventHandler(this.OnClickAddButton);
             // 
@@ -52,7 +52,7 @@
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(94, 32);
             this.updateButton.TabIndex = 5;
-            this.updateButton.Text = "Изменить";
+            this.updateButton.Text = this.updateButtonText;
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.OnClickUpdateButton);
             // 
@@ -63,7 +63,7 @@
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(94, 32);
             this.deleteButton.TabIndex = 6;
-            this.deleteButton.Text = "Удалить";
+            this.deleteButton.Text = this.deleteButtonText;
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.OnClickDeleteButton);
             // 

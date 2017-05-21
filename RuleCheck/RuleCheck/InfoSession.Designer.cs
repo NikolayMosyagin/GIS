@@ -34,11 +34,11 @@
             this.descriptionTextBox = new System.Windows.Forms.TextBox();
             this.dateTextBox = new System.Windows.Forms.TextBox();
             this.table = new System.Windows.Forms.DataGridView();
-            this.closeButton = new System.Windows.Forms.Button();
             this.descriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.firstObjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.secondObjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.resultColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.closeButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.table)).BeginInit();
             this.SuspendLayout();
             // 
@@ -104,19 +104,9 @@
             this.table.MultiSelect = false;
             this.table.Name = "table";
             this.table.ReadOnly = true;
+            this.table.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.table.Size = new System.Drawing.Size(565, 323);
             this.table.TabIndex = 5;
-            // 
-            // closeButton
-            // 
-            this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.closeButton.Location = new System.Drawing.Point(478, 518);
-            this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(94, 32);
-            this.closeButton.TabIndex = 6;
-            this.closeButton.Text = "Закрыть";
-            this.closeButton.UseVisualStyleBackColor = true;
-            this.closeButton.Click += new System.EventHandler(this.OnClickCloseButton);
             // 
             // descriptionColumn
             // 
@@ -145,6 +135,17 @@
             this.resultColumn.Name = "resultColumn";
             this.resultColumn.ReadOnly = true;
             // 
+            // closeButton
+            // 
+            this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.closeButton.Location = new System.Drawing.Point(478, 518);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(94, 32);
+            this.closeButton.TabIndex = 6;
+            this.closeButton.Text = "Закрыть";
+            this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.OnClickCloseButton);
+            // 
             // InfoSession
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -158,7 +159,8 @@
             this.Controls.Add(this.timeLabel);
             this.Controls.Add(this.creationDateLabel);
             this.Name = "InfoSession";
-            this.Text = "InfoSession";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Журнал";
             ((System.ComponentModel.ISupportInitialize)(this.table)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

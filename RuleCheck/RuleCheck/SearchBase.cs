@@ -19,6 +19,7 @@ namespace RuleCheck
         public SearchBase()
         {
             this.InitializeComponent();
+            this.Text = this.TextForm;
             this.operations = new List<KeyValuePair<string, string>>();
             this.operationIds = new List<int>();
             this.indices = new List<int>();

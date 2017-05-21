@@ -25,9 +25,14 @@
         public override void InitializeComponent()
         {
             base.InitializeComponent();
-            /*this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "ControlSessions";*/
+            this.SuspendLayout();
+            // 
+            // ControlSessions
+            // 
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion

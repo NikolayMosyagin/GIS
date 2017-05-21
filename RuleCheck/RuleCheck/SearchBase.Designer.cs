@@ -109,7 +109,8 @@
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.searchTextBox);
             this.Controls.Add(this.searchLabel);
-            this.Name = "SearchBase";
+            this.Name = "";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             ((System.ComponentModel.ISupportInitialize)(this.table)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

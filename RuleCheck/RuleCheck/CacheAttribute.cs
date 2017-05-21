@@ -17,6 +17,7 @@ namespace RuleCheck
 
         private List<int> _cacheIds;
         private List<string> _dataTypes;
+        private List<object> _values;
 
         public CacheAttribute(int session_id)
         {
@@ -24,6 +25,8 @@ namespace RuleCheck
             InitializeComponent();
             this._cacheIds = new List<int>();
             this._dataTypes = new List<string>();
+            this._values = new List<object>();
+            this.analisysButton.Enabled = false;
             this.LoadData();
         }
 
@@ -44,13 +47,14 @@ namespace RuleCheck
                 string dataType = row[3].ToString();
                 query = "select {0}.{1} from {0} where {0}.cache_id = :cache_id";
                 string nameColumn = this.GetColumnName(dataType);
-                this._dataTypes.Add(dataType);
-                this._cacheIds.Add(int.Parse(row[4].ToString()));
                 var data = QueryProvider.Execute(string.Format(query, Config.s_attribute, nameColumn), new OracleParameter[1]
                 {
                     new OracleParameter("cache_id", row[4]),
                 });
-                this.table.Rows.Add(row[0], row[1], row[2], data.values.Count > 0 ? data.values[0][0] : "");
+                this._dataTypes.Add(dataType);
+                this._cacheIds.Add(int.Parse(row[4].ToString()));
+                this._values.Add(data.values.Count > 0 ? data.values[0][0] : "");
+                this.table.Rows.Add(row[0], row[1], row[2], this._values[this._values.Count - 1]);
             }
         }
 
@@ -61,10 +65,11 @@ namespace RuleCheck
 
         private void OnClickAnalisysButton(object sender, EventArgs e)
         {
-            int session_id = Analysis.CreateSession("");
+            object date;
+            int session_id = Analysis.CreateSession("", out date);
             for (int i = 0; i < this._cacheIds.Count; ++i)
             {
-                string query = "select {0}.attribute_id, {0}.object_id, {0}.{1} from {0}" +
+                string query = "select {0}.attribute_id, {0}.object_id from {0}" +
                     " where {0}.cache_id = :cache_id";
                 string nameColumn = this.GetColumnName(this._dataTypes[i]);
                 var result = QueryProvider.Execute(string.Format(query, Config.s_attribute, nameColumn), new OracleParameter[1]
@@ -78,9 +83,12 @@ namespace RuleCheck
                     new OracleParameter("session_id", session_id),
                     new OracleParameter("attribute_id", result.values[0][0]),
                     new OracleParameter("object_id", result.values[0][1]),
-                    new OracleParameter("value", result.values[0][2]),
+                    new OracleParameter("value", this._values[i]),
                 });
             }
+            var form = new Analysis(session_id, date);
+            form.Show();
+            this.Close();
         }
 
         private string GetColumnName(string dataType)
@@ -99,6 +107,42 @@ namespace RuleCheck
                     break;
             }
             return nameColumn;
+        }
+
+        private DataType GetEnumDataType(string dataType)
+        {
+            switch (dataType)
+            {
+                case "NUMBER":
+                    return DataType.Number;
+                case "VARCHAR2":
+                    return DataType.String;
+                case "DATE":
+                    return DataType.Date;
+                default:
+                    return DataType.String;
+            }
+        }
+
+        private void OnClickChangeButton(object sender, EventArgs e)
+        {
+            int index = this.table.SelectedRows[0].Index;
+            var row = this.table.SelectedRows[0];
+            var form = ChangeAttribute.Create(
+                row.Cells[0].Value.ToString(), 
+                row.Cells[1].Value.ToString(), 
+                int.Parse(row.Cells[2].Value.ToString()), 
+                this.GetEnumDataType(this._dataTypes[index]), 
+                this._values[index]);
+            form.onClose = (f) =>
+            {
+                if (!object.Equals(this._values[index], f.value) && !this.analisysButton.Enabled)
+                {
+                    this.analisysButton.Enabled = true;
+                }
+                this._values[index] = f.value;
+                row.Cells[3].Value = f.value;
+            };
         }
     }
 }

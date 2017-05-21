@@ -23,3 +23,5 @@ D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.SelectOperation.reso
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.Analysis.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.InfoSession.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.CacheAttribute.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ChangeAttribute.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ControlSessions.resources

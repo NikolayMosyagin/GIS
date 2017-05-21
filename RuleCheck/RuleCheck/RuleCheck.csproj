@@ -68,6 +68,12 @@
     <Compile Include="CacheAttribute.Designer.cs">
       <DependentUpon>CacheAttribute.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChangeAttribute.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeAttribute.Designer.cs">
+      <DependentUpon>ChangeAttribute.cs</DependentUpon>
+    </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="ConnectionForm.cs">
       <SubType>Form</SubType>
@@ -180,11 +186,17 @@
     <EmbeddedResource Include="CacheAttribute.resx">
       <DependentUpon>CacheAttribute.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ChangeAttribute.resx">
+      <DependentUpon>ChangeAttribute.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConnectionForm.resx">
       <DependentUpon>ConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConstructorBase.resx">
       <DependentUpon>ConstructorBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlSessions.resx">
+      <DependentUpon>ControlSessions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DecisionForm.resx">
       <DependentUpon>DecisionForm.cs</DependentUpon>
