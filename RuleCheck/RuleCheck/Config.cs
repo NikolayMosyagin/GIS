@@ -9,13 +9,14 @@ namespace RuleCheck
 
     public static class Config
     {
-        public static string s_connectionString = "Data Source=(DESCRIPTION=" +
-        "(ADDRESS = (PROTOCOL=TCP)(HOST=192.168.218.128)(PORT=1521))" +
-        "(CONNECT_DATA=" +
-        "(SERVER=DEDICATED)" +
-        "(SERVICE_NAME=orcl)" +
-        ")" +
-        ");User Id={0};Password={1}";
+         /*public static string s_connectionString = "Data Source = (DESCRIPTION = " +
+         "(ADDRESS = (PROTOCOL = TCP)(HOST = ANDREY-ORA11R2)(PORT = 1521))" +
+         "(CONNECT_DATA = " +
+         "(SERVER = DEDICATED)" +
+         "(SERVICE_NAME = orcl)" +
+         ")" +
+         ");User Id = {0};Password = {1};";*/
+        public static string s_connectionString = "Data Source=ORCL;User Id={0};Password={1}";
         public static string s_attribute_type = "attribute_type";
         public static string s_log = "cache_log";
         public static string s_rule = "rule";

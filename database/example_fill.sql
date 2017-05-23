@@ -27,3 +27,5 @@ values('DATE_ACT', 2);
 insert into attribute_type(attribute_name, object_type_id)
 values('COMMENTS', 2);
 commit;
+
+grant mosyagin_users to domodedovo_uag;

@@ -228,3 +228,22 @@ begin
         select cache_log_seq.nextval into :new.log_id from dual;
     end if;
 end;
+
+
+-- Создаем роль пользователя.
+
+create role mosyagin_users;
+grant select on MOSYAGIN.ATTRIBUTE_TYPE to mosyagin_users;
+grant select on MOSYAGIN.OBJECT_TYPE to mosyagin_users;
+grant select on MOSYAGIN.OPERATION to mosyagin_users;
+grant select on MOSYAGIN.RULE to mosyagin_users;
+grant select on MOSYAGIN.RULE_OPERATION to mosyagin_users;
+grant select on MOSYAGIN.CACHE_ATTRIBUTE to mosyagin_users;
+grant select on MOSYAGIN.CACHE_LOG to mosyagin_users;
+grant select on MOSYAGIN.CACHE_OBJECT to mosyagin_users;
+grant select on MOSYAGIN.CACHE_SESSION to mosyagin_users;
+grant select on MOSYAGIN.OWNER to mosyagin_users;
+grant insert on MOSYAGIN.CACHE_ATTRIBUTE to mosyagin_users;
+grant insert on MOSYAGIN.CACHE_LOG to mosyagin_users;
+grant insert on MOSYAGIN.CACHE_OBJECT to mosyagin_users;
+grant insert on MOSYAGIN.CACHE_SESSION to mosyagin_users;
