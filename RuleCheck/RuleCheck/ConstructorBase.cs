@@ -12,13 +12,20 @@ namespace RuleCheck
 {
     public partial class ConstructorBase : SearchBase
     {
-
+        public ConstructorBase() : base()
+        {
+            this.addButton.Text = this.addButtonText;
+            this.updateButton.Text = this.updateButtonText;
+            this.deleteButton.Text = this.deleteButtonText;
+        }
         protected override void LoadData()
         {
-            if (this.table.RowCount > 0)
+            base.LoadData();
+            /*if (this.table.RowCount > 0)
             {
                 this.table.Rows[0].Selected = true;
-            }
+            }*/
+            
         }
 
         protected virtual void OnAdd()
@@ -33,17 +40,17 @@ namespace RuleCheck
         {
         }
 
-        protected virtual string addButtonText
+        public virtual string addButtonText
         {
             get { return "Добавить"; }
         }
 
-        protected virtual string deleteButtonText
+        public virtual string deleteButtonText
         {
             get { return "Удалить"; }
         }
 
-        protected virtual string updateButtonText
+        public virtual string updateButtonText
         {
             get { return "Изменить"; }
         }

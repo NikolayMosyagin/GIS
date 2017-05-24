@@ -247,3 +247,15 @@ grant insert on MOSYAGIN.CACHE_ATTRIBUTE to mosyagin_users;
 grant insert on MOSYAGIN.CACHE_LOG to mosyagin_users;
 grant insert on MOSYAGIN.CACHE_OBJECT to mosyagin_users;
 grant insert on MOSYAGIN.CACHE_SESSION to mosyagin_users;
+
+create role mosyagin_admins;
+grant mosyagin_users to mosyagin_admins;
+grant insert on mosyagin.operation to mosyagin_admins;
+grant insert on mosyagin.rule to mosyagin_admins;
+grant insert on mosyagin.rule_operation to mosyagin_admins;
+grant delete on mosyagin.operation to mosyagin_admins;
+grant delete on mosyagin.rule to mosyagin_admins;
+grant delete on mosyagin.rule_operation to mosyagin_admins;
+grant update on mosyagin.operation to mosyagin_admins;
+grant update on mosyagin.rule to mosyagin_admins;
+grant update on mosyagin.rule_operation to mosyagin_admins;

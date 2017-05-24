@@ -84,7 +84,7 @@ namespace RuleCheck
             form.Show();
         }
 
-        protected override string addButtonText
+        public override string addButtonText
         {
             get
             {
@@ -92,7 +92,7 @@ namespace RuleCheck
             }
         }
 
-        protected override string updateButtonText
+        public override string updateButtonText
         {
             get
             {

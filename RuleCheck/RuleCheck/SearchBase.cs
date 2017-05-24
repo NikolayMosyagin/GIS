@@ -50,7 +50,10 @@ namespace RuleCheck
 
         protected virtual void LoadData()
         {
-            
+            this.operations.Clear();
+            this.operationIds.Clear();
+            this.indices.Clear();
+            this.table.Rows.Clear();
         }
 
         protected void SelectedRow()
@@ -114,14 +117,14 @@ namespace RuleCheck
             }
         }
 
-        private void OnTextChangedSearchTextBox(object sender, EventArgs e)
-        {
-            this.UpdateTable();
-        }
-
         private void OnClickCloseButton(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void OnClickSearchButton(object sender, EventArgs e)
+        {
+            this.LoadData();
         }
     }
 }

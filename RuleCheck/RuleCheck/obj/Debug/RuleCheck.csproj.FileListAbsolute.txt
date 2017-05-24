@@ -25,3 +25,5 @@ D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.InfoSession.resource
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.CacheAttribute.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ChangeAttribute.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ControlSessions.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.MainForm1.resources
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.AdministrationForm.resources

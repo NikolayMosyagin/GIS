@@ -16,7 +16,7 @@ namespace RuleCheck
          "(SERVICE_NAME = orcl)" +
          ")" +
          ");User Id = {0};Password = {1};";*/
-        public static string s_connectionString = "Data Source=ORCL;User Id={0};Password={1}";
+        public static string s_connectionString = "Data Source={0};User Id={1};Password={2}";
         public static string s_attribute_type = "attribute_type";
         public static string s_log = "cache_log";
         public static string s_rule = "rule";
@@ -33,5 +33,9 @@ namespace RuleCheck
         public static string s_storage_attribute_type = "attribute_type"; // нету
         public static string s_user_procedures = "user_procedures";
         public static string s_user_arguments = "user_arguments";
+        public static string s_user_role_privs = "user_role_privs";
+        public static string role_admins = "MOSYAGIN_ADMINS";
+        public static string role_users = "MOSYAGIN_USERS";
+        public static int maxCountRow = 100;
     }
 }

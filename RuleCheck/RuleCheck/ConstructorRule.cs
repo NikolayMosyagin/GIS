@@ -15,9 +15,18 @@ namespace RuleCheck
     {
         protected override void LoadData()
         {
+            base.LoadData();
             string query = "select {0}.rule_id, {0}.rule_name, {0}.rule_description" +
-                " from {0}";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_rule), null);
+                " from {0} where rownum <= :first";
+            var parameters = new List<OracleParameter>();
+            parameters.Add(new OracleParameter("first", Config.maxCountRow));
+            if (!string.IsNullOrEmpty(this.searchTextBox.Text))
+            {
+                query = query + " and SUBSTR({0}.rule_name, 1, :second) = :third";
+                parameters.Add(new OracleParameter("second", this.searchTextBox.Text.Length));
+                parameters.Add(new OracleParameter("third", this.searchTextBox.Text));
+            }
+            var result = QueryProvider.Execute(string.Format(query, Config.s_rule), parameters.ToArray());
             for (int i = 0; i < result.values.Count; ++i)
             {
                 this.operations.Add(new KeyValuePair<string, string>(result.values[i][1].ToString(), result.values[i][2].ToString()));
@@ -25,7 +34,7 @@ namespace RuleCheck
                 this.table.Rows.Add(result.values[i][1], result.values[i][2]);
                 this.indices.Add(i);
             }
-            base.LoadData();
+            //base.LoadData();
         }
 
         protected override bool RefreshButtons()

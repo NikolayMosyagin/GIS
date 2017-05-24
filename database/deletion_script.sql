@@ -1,4 +1,6 @@
+drop role mosyagin_admins;
 drop role mosyagin_users;
+
 
 drop sequence cache_log_seq;
 drop table cache_log;
