@@ -21,9 +21,6 @@ namespace RuleCheck
         private List<int> operationIds;
         private List<KeyValuePair<string, string>> infoOperations;
 
-        private List<int> _allOperationIds;
-        private List<KeyValuePair<string, string>> _allInfoOperations;
-
         private List<KeyValuePair<int, bool>> changedOperations;
 
         public Action<RuleProcessing> onClose;
@@ -33,8 +30,6 @@ namespace RuleCheck
             InitializeComponent();
             this.operationIds = new List<int>();
             this.infoOperations = new List<KeyValuePair<string, string>>();
-            this._allOperationIds = new List<int>();
-            this._allInfoOperations = new List<KeyValuePair<string, string>>();
             this.changedOperations = new List<KeyValuePair<int, bool>>();
         }
 
@@ -49,20 +44,11 @@ namespace RuleCheck
 
         private void LoadData()
         {
-            string query = "select {0}.operation_id, {0}.operation_name, {0}.operation_description" +
-                " from {0}";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_operation), null);
-            for (int i = 0; i < result.values.Count; ++i)
-            {
-                this._allOperationIds.Add(int.Parse(result.values[i][0].ToString()));
-                this._allInfoOperations.Add(new KeyValuePair<string, string>(
-                    result.values[i][1].ToString(), result.values[i][2].ToString()));
-            }
             if (this.id != -1)
             {
-                query = "select {0}.rule_name, {0}.rule_description from {0} " +
+                string query = "select {0}.rule_name, {0}.rule_description from {0} " +
                     "where {0}.rule_id = :id";
-                result = QueryProvider.Execute(string.Format(query, Config.s_rule), new OracleParameter[1]
+                var result = QueryProvider.Execute(string.Format(query, Config.s_rule), new OracleParameter[1]
                 {
                     new OracleParameter("id", this.id)
                 });
@@ -88,14 +74,9 @@ namespace RuleCheck
                     this.infoOperations.Add(new KeyValuePair<string, string>(
                         result.values[i][1].ToString(), result.values[i][2].ToString()));
                     this.operations.Rows.Add(result.values[i][1], result.values[i][2]);
-                    int index = this._allOperationIds.IndexOf(opId);
-                    if (index >= 0)
-                    {
-                        this._allOperationIds.RemoveAt(index);
-                        this._allInfoOperations.RemoveAt(index);
-                    }
                 }
             }
+            this.SelectRow();
             this.RefreshButtons();
         }
 
@@ -187,21 +168,21 @@ namespace RuleCheck
 
         private void OnAddButtonClick(object sender, EventArgs e)
         {
-            var form = SelectOperation.Create(this._allOperationIds, this._allInfoOperations);
+            var form = new SelectOperation(this.operationIds);
             form.onClose = (f) =>
             {
-                int index = this._allOperationIds.IndexOf(f.selectId);
-                if (index >= 0)
+                if (f.selectedId != -1)
                 {
-                    this.operationIds.Add(f.selectId);
-                    var info = this._allInfoOperations[index];
+                    this.operationIds.Add(f.selectedId);
+                    var info = new KeyValuePair<string, string>(f.selectedName, f.selectedDescription);
                     this.infoOperations.Add(info);
                     this.operations.Rows.Add(info.Key, info.Value);
-                    this._allInfoOperations.RemoveAt(index);
-                    this._allOperationIds.RemoveAt(index);
-                    this.OnChangedOperations(f.selectId, true);
+                    this.OnChangedOperations(f.selectedId, true);
+                    this.SelectRow();
+                    this.RefreshButtons();
                 }
             };
+            form.Show();
         }
 
         private void OnChangedOperations(int id, bool add)
@@ -223,30 +204,27 @@ namespace RuleCheck
 
         private void OnClickDeleteButton(object sender, EventArgs e)
         {
-            if (this.operations.SelectedRows.Count <= 0)
+            if (this.operations.SelectedRows.Count != 1)
             {
                 var form = MessageForm.Create("Выберите одну операцию!");
                 return;
             }
-            if (this.operations.SelectedRows.Count > 1)
-            {
-                var form = MessageForm.Create("Необходимо выбрать только одну операцию!");
-                return;
-            }
             int num = this.operations.SelectedRows[0].Index;
-            if (num >= this.operationIds.Count)
-            {
-                var form = MessageForm.Create("Выберите операцию");
-                return;
-            }
             int id = this.operationIds[num];
-            var info = this.infoOperations[num];
             this.operationIds.RemoveAt(num);
             this.infoOperations.RemoveAt(num);
             this.operations.Rows.RemoveAt(num);
-            this._allOperationIds.Add(id);
-            this._allInfoOperations.Add(info);
             this.OnChangedOperations(id, false);
+            this.SelectRow();
+            this.RefreshButtons();
+        }
+
+        private void SelectRow()
+        {
+            if (this.operations.RowCount > 0)
+            {
+                this.operations.Rows[0].Selected = true;
+            }
         }
 
         private void OnRowEnterOperations(object sender, DataGridViewCellEventArgs e)

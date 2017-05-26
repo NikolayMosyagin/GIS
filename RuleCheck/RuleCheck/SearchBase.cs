@@ -7,24 +7,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Oracle.ManagedDataAccess.Client;
+using System.Collections.ObjectModel;
 
 namespace RuleCheck
 {
     public partial class SearchBase : Form
     {
-        protected List<KeyValuePair<string, string>> operations;
-        protected List<int> operationIds;
+        protected List<KeyValuePair<string, string>> data;
+        protected List<int> ids;
         protected List<int> indices;
+        protected List<OracleParameter> parameters;
+        protected ReadOnlyCollection<int> blockedIds;
+
+        public SearchBase(List<int> blockedIds = null)
+        {
+            this.InitializeComponent();
+            this.Text = this.TextForm;
+            this.data = new List<KeyValuePair<string, string>>();
+            this.ids = new List<int>();
+            this.indices = new List<int>();
+            this.parameters = new List<OracleParameter>();
+            this.blockedIds = blockedIds == null ? null : blockedIds.AsReadOnly();
+            this.LoadData();
+            this.SelectedRow();
+            this.RefreshButtons();
+        }
 
         public SearchBase()
         {
             this.InitializeComponent();
             this.Text = this.TextForm;
-            this.operations = new List<KeyValuePair<string, string>>();
-            this.operationIds = new List<int>();
+            this.data = new List<KeyValuePair<string, string>>();
+            this.ids = new List<int>();
             this.indices = new List<int>();
+            this.parameters = new List<OracleParameter>();
+            this.blockedIds = null;
             this.LoadData();
             this.SelectedRow();
+            this.RefreshButtons();
         }
 
         protected virtual string messageNotSelected
@@ -50,15 +71,29 @@ namespace RuleCheck
 
         protected virtual void LoadData()
         {
-            this.operations.Clear();
-            this.operationIds.Clear();
-            this.indices.Clear();
+            this.data.Clear();
+            this.ids.Clear();
+            //this.indices.Clear();
             this.table.Rows.Clear();
+            this.parameters.Clear();
+        }
+
+        protected string EndSelectQueryToLoadData()
+        {
+            string result = " where rownum <= :first";
+            this.parameters.Add(new OracleParameter("first", Config.maxCountRow));
+            if (!string.IsNullOrEmpty(this.searchTextBox.Text))
+            {
+                result = result + " and SUBSTR({0}.rule_name, 1, :second) = :third";
+                parameters.Add(new OracleParameter("second", this.searchTextBox.Text.Length));
+                parameters.Add(new OracleParameter("third", this.searchTextBox.Text));
+            }
+            return result;
         }
 
         protected void SelectedRow()
         {
-            if (this.indices.Count > 0)
+            if (this.table.RowCount > 0)
             {
                 this.table.Rows[0].Selected = true;
             }
@@ -81,12 +116,12 @@ namespace RuleCheck
                 var form = MessageForm.Create(this.messageManySeleceted);
                 return false;
             }
-            int num = this.table.SelectedRows[0].Index;
+            /*int num = this.table.SelectedRows[0].Index;
             if (num >= this.indices.Count)
             {
                 var form = MessageForm.Create(this.messageEmptySelected);
                 return false;
-            }
+            }*/
             return true;
         }
 
@@ -105,14 +140,14 @@ namespace RuleCheck
         {
             string value = this.searchTextBox.Text;
             this.table.Rows.Clear();
-            this.indices.Clear();
-            for (int i = 0; i < this.operations.Count; ++i)
+            //this.indices.Clear();
+            for (int i = 0; i < this.data.Count; ++i)
             {
-                var pr = this.operations[i];
+                var pr = this.data[i];
                 if (pr.Key.StartsWith(value))
                 {
                     this.table.Rows.Add(pr.Key, pr.Value);
-                    this.indices.Add(i);
+                    //this.indices.Add(i);
                 }
             }
         }
@@ -125,6 +160,8 @@ namespace RuleCheck
         private void OnClickSearchButton(object sender, EventArgs e)
         {
             this.LoadData();
+            this.SelectedRow();
+            this.RefreshButtons();
         }
     }
 }

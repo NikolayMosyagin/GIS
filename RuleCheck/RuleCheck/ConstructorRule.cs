@@ -29,12 +29,10 @@ namespace RuleCheck
             var result = QueryProvider.Execute(string.Format(query, Config.s_rule), parameters.ToArray());
             for (int i = 0; i < result.values.Count; ++i)
             {
-                this.operations.Add(new KeyValuePair<string, string>(result.values[i][1].ToString(), result.values[i][2].ToString()));
-                this.operationIds.Add(int.Parse(result.values[i][0].ToString()));
+                this.data.Add(new KeyValuePair<string, string>(result.values[i][1].ToString(), result.values[i][2].ToString()));
+                this.ids.Add(int.Parse(result.values[i][0].ToString()));
                 this.table.Rows.Add(result.values[i][1], result.values[i][2]);
-                this.indices.Add(i);
             }
-            //base.LoadData();
         }
 
         protected override bool RefreshButtons()
@@ -64,9 +62,12 @@ namespace RuleCheck
             {
                 if (f.id != -1)
                 {
-                    this.operationIds.Add(f.id);
-                    this.operations.Add(new KeyValuePair<string, string>(f.name, f.description));
-                    this.UpdateTable();
+                    if (string.IsNullOrEmpty(this.searchTextBox.Text) || f.name.StartsWith(this.searchTextBox.Text))
+                    {
+                        this.ids.Add(f.id);
+                        this.data.Add(new KeyValuePair<string, string>(f.name, f.description));
+                        this.table.Rows.Add(f.name, f.description);
+                    }
                 }
             };
         }
@@ -74,10 +75,10 @@ namespace RuleCheck
         protected override void OnDelete()
         {
             int num = this.table.SelectedRows[0].Index;
-            int id = this.operationIds[this.indices[num]];
-            this.operationIds.RemoveAt(this.indices[num]);
-            this.operations.RemoveAt(this.indices[num]);
-            this.UpdateTable();
+            int id = this.ids[num];
+            this.ids.RemoveAt(num);
+            this.data.RemoveAt(num);
+            this.table.Rows.RemoveAt(num);
             string query = "delete from {0} where {0}.rule_id = :id";
             QueryProvider.Execute(string.Format(query, Config.s_rule_operation), new OracleParameter[1]
             {
@@ -92,11 +93,20 @@ namespace RuleCheck
         protected override void OnUpdate()
         {
             int num = this.table.SelectedRows[0].Index;
-            var form = RuleProcessing.Create(this.operationIds[this.indices[num]]);
+            var form = RuleProcessing.Create(this.ids[num]);
             form.onClose = (f) =>
             {
-                this.operations[this.indices[num]] = new KeyValuePair<string, string>(f.name, f.description);
-                this.UpdateTable();
+                if (string.IsNullOrEmpty(this.searchTextBox.Text) || f.name.StartsWith(this.searchTextBox.Text))
+                {
+                    this.data[num] = new KeyValuePair<string, string>(f.name, f.description);
+                    this.table.Rows[num].SetValues(f.name, f.description);
+                }
+                else
+                {
+                    this.ids.RemoveAt(num);
+                    this.table.Rows.RemoveAt(num);
+                    this.data.RemoveAt(num);
+                }
             };
         }
     }

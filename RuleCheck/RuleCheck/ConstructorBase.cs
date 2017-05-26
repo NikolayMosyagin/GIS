@@ -18,15 +18,6 @@ namespace RuleCheck
             this.updateButton.Text = this.updateButtonText;
             this.deleteButton.Text = this.deleteButtonText;
         }
-        protected override void LoadData()
-        {
-            base.LoadData();
-            /*if (this.table.RowCount > 0)
-            {
-                this.table.Rows[0].Selected = true;
-            }*/
-            
-        }
 
         protected virtual void OnAdd()
         {
@@ -57,10 +48,8 @@ namespace RuleCheck
 
         protected override bool RefreshButtons()
         {
-            int index;
             if (this.table.SelectedRows.Count <= 0 ||
-                this.table.SelectedRows.Count > 1 ||
-                (index = this.table.SelectedRows[0].Index) >= this.indices.Count)
+                this.table.SelectedRows.Count > 1)
             {
                 this.addButton.Enabled = false;
                 this.updateButton.Enabled = false;
@@ -91,7 +80,7 @@ namespace RuleCheck
                 return;
             }
             int num = this.table.SelectedRows[0].Index;
-            if (this.operationIds[this.indices[num]] == -1)
+            if (this.ids[this.indices[num]] == -1)
             {
                 return;
             }

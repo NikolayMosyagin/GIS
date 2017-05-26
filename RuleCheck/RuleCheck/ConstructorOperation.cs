@@ -44,17 +44,17 @@ namespace RuleCheck
                     continue;
                 }
                 string name = result.values[i][1].ToString();
-                this.indices.Add(this.operations.Count);
+                this.indices.Add(this.data.Count);
 
                 query = "select {0}.operation_id, {0}.operation_description from {0} where {0}.operation_procedure = :operation";
                 table = QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[1]
                 {
                     new OracleParameter("operation", name),
                 });
-                this.operationIds.Add(table.values.Count == 0 ? -1 : int.Parse(table.values[0][0].ToString()));
+                this.ids.Add(table.values.Count == 0 ? -1 : int.Parse(table.values[0][0].ToString()));
                 string description = table.values.Count == 0 ? "" : table.values[0][1].ToString();
                 this.table.Rows.Add(name, description);
-                this.operations.Add(new KeyValuePair<string, string>(name, description));
+                this.data.Add(new KeyValuePair<string, string>(name, description));
             }
             base.LoadData();
         }
@@ -66,7 +66,7 @@ namespace RuleCheck
                 return true;
             }
             int index = this.table.SelectedRows[0].Index;
-            bool result = this.operationIds[this.indices[index]] <= 0;
+            bool result = this.ids[this.indices[index]] <= 0;
             this.addButton.Enabled = result;
             this.updateButton.Enabled = !result;
             this.deleteButton.Enabled = !result;
@@ -88,12 +88,12 @@ namespace RuleCheck
                 return;
             }
             int num = this.table.SelectedRows[0].Index;
-            var o = InfoOperation.Create(this.operations[indices[num]].Key, TypeOperation.Add);
+            var o = InfoOperation.Create(this.data[indices[num]].Key, TypeOperation.Add);
             o.onClose = (f) =>
             {
-                this.operationIds[this.indices[num]] = f.id;
-                var value = this.operations[this.indices[num]];
-                this.operations[this.indices[num]] = new KeyValuePair<string, string>(value.Key, f.description);
+                this.ids[this.indices[num]] = f.id;
+                var value = this.data[this.indices[num]];
+                this.data[this.indices[num]] = new KeyValuePair<string, string>(value.Key, f.description);
                 this.table.Rows[num].SetValues(value.Key, f.description);
                 this.RefreshButtons();
             };
@@ -102,24 +102,24 @@ namespace RuleCheck
         protected override void OnUpdate()
         {
             int num = this.table.SelectedRows[0].Index;
-            var form = InfoOperation.Create(this.operations[this.indices[num]].Key, TypeOperation.Change, this.operationIds[this.indices[num]]);
+            var form = InfoOperation.Create(this.data[this.indices[num]].Key, TypeOperation.Change, this.ids[this.indices[num]]);
             form.onClose = (f) =>
             {
-                var value = this.operations[this.indices[num]];
+                var value = this.data[this.indices[num]];
                 this.table.Rows[num].SetValues(value.Key, f.description);
-                this.operations[this.indices[num]] = new KeyValuePair<string, string>(value.Key, f.description);
+                this.data[this.indices[num]] = new KeyValuePair<string, string>(value.Key, f.description);
             };
         }
 
         protected override void OnDelete()
         {
             int num = this.table.SelectedRows[0].Index;
-            int id = this.operationIds[this.indices[num]];
-            this.operationIds[this.indices[num]] = -1;
-            this.operations[this.indices[num]] = new KeyValuePair<string, string>(
-                this.operations[this.indices[num]].Key,
+            int id = this.ids[this.indices[num]];
+            this.ids[this.indices[num]] = -1;
+            this.data[this.indices[num]] = new KeyValuePair<string, string>(
+                this.data[this.indices[num]].Key,
                 "");
-            this.table.Rows[num].SetValues(this.operations[this.indices[num]].Key, "");
+            this.table.Rows[num].SetValues(this.data[this.indices[num]].Key, "");
             string query = "delete from {0} where {0}.operation_id = :operation_id";
             QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[1]
             {

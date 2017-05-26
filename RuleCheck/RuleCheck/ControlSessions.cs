@@ -17,8 +17,8 @@ namespace RuleCheck
 
         public void AddData(int sessionId, object date, string description)
         {
-            this.operationIds.Add(sessionId);
-            this.operations.Add(new KeyValuePair<string, string>(date.ToString(), description));
+            this.ids.Add(sessionId);
+            this.data.Add(new KeyValuePair<string, string>(date.ToString(), description));
             this.UpdateTable();
         }
 
@@ -30,8 +30,8 @@ namespace RuleCheck
             result.values.Sort((a, b) => { return ((decimal)a[0]).CompareTo((decimal)b[0]); });
             for (int i = 0; i < result.values.Count; ++i)
             {
-                this.operationIds.Add(int.Parse(result.values[i][0].ToString()));
-                this.operations.Add(new KeyValuePair<string, string>
+                this.ids.Add(int.Parse(result.values[i][0].ToString()));
+                this.data.Add(new KeyValuePair<string, string>
                     (result.values[i][1].ToString(), result.values[i][2].ToString()));
                 this.indices.Add(i);
                 this.table.Rows.Add(result.values[i][1].ToString(), result.values[i][2].ToString());
@@ -57,11 +57,11 @@ namespace RuleCheck
             string query = "delete from {0} where {0}.session_id = :session_id";
             QueryProvider.Execute(string.Format(query, Config.s_session), new OracleParameter[1]
             {
-                new OracleParameter("session_id", this.operationIds[this.indices[num]]),
+                new OracleParameter("session_id", this.ids[this.indices[num]]),
             });
-            this.operationIds.RemoveAt(this.indices[num]);
+            this.ids.RemoveAt(this.indices[num]);
             this.table.Rows.RemoveAt(num);
-            this.operations.RemoveAt(this.indices[num]);
+            this.data.RemoveAt(this.indices[num]);
             this.UpdateTable();
             if (this.table.RowCount > 0)
             {
@@ -73,14 +73,14 @@ namespace RuleCheck
         protected override void OnAdd()
         {
             int num = this.table.SelectedRows[0].Index;
-            var t = this.operations[this.indices[num]];
-            var form = InfoSession.Create(this.operationIds[this.indices[num]], t.Key, t.Value);
+            var t = this.data[this.indices[num]];
+            var form = InfoSession.Create(this.ids[this.indices[num]], t.Key, t.Value);
         }
 
         protected override void OnUpdate()
         {
             int num = this.table.SelectedRows[0].Index;
-            var form = new CacheAttribute(this.operationIds[this.indices[num]]);
+            var form = new CacheAttribute(this.ids[this.indices[num]]);
             form.Show();
         }
 

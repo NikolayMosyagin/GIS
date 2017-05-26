@@ -135,7 +135,7 @@
         protected System.Windows.Forms.Button closeButton;
         protected System.Windows.Forms.DataGridView table;
         protected System.Windows.Forms.Label searchLabel;
-        private System.Windows.Forms.Button searchButton;
+        protected System.Windows.Forms.Button searchButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
     }

@@ -32,12 +32,17 @@
             this.selectButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
+            // closeButton
+            // 
+            this.closeButton.Location = new System.Drawing.Point(451, 406);
+            this.closeButton.Size = new System.Drawing.Size(121, 44);
+            // 
             // selectButton
             // 
             this.selectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.selectButton.Location = new System.Drawing.Point(225, 318);
+            this.selectButton.Location = new System.Drawing.Point(296, 406);
             this.selectButton.Name = "selectButton";
-            this.selectButton.Size = new System.Drawing.Size(94, 32);
+            this.selectButton.Size = new System.Drawing.Size(121, 44);
             this.selectButton.TabIndex = 4;
             this.selectButton.Text = "Выбрать";
             this.selectButton.UseVisualStyleBackColor = true;
@@ -45,8 +50,8 @@
             // 
             // SelectOperation
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.ClientSize = new System.Drawing.Size(484, 362);
+            //this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            //this.ClientSize = new System.Drawing.Size(584, 462);
             this.Controls.Add(this.selectButton);
             this.Name = "SelectOperation";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnClosingForm);

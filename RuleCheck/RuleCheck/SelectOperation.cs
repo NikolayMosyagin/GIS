@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -12,25 +13,35 @@ namespace RuleCheck
 {
     public partial class SelectOperation : SearchBase
     {
-        public int selectId;
+        public int selectedId;
+        public string selectedName;
+        public string selectedDescription;
 
         public Action<SelectOperation> onClose;
 
-        public SelectOperation(List<int> id, List<KeyValuePair<string, string>> info) : base()
+        protected override void LoadData()
         {
-            this.selectId = -1;
-            this.operationIds.AddRange(id);
-            this.operations.AddRange(info);
-            for (int i = 0; i < id.Count; ++i)
+            base.LoadData();
+            string query = "select {0}.operation_id, {0}.operation_name, {0}.operation_description from {0}"
+                + this.EndSelectQueryToLoadData();
+            var result = QueryProvider.Execute(string.Format(query, Config.s_operation), parameters.ToArray());
+            for (int i = 0; i < result.values.Count; ++i)
             {
-                this.indices.Add(i);
+                int opId = int.Parse(result.values[i][0].ToString());
+                if (this.blockedIds == null || this.blockedIds.IndexOf(opId) < 0)
+                {
+                    this.ids.Add(opId);
+                    this.data.Add(new KeyValuePair<string, string>(
+                        result.values[i][1].ToString(),
+                        result.values[i][2].ToString()));
+                    this.table.Rows.Add(result.values[i][1], result.values[i][2]);
+                }
             }
-            for (int i = 0; i < info.Count; ++i)
-            {
-                var o = info[i];
-                this.table.Rows.Add(o.Key, o.Value);
-            }
-            this.SelectedRow();
+        }
+
+        public SelectOperation(List<int> blockedIds = null) : base(blockedIds)
+        {
+            this.selectedId = -1;
         }
 
         public override string TextForm
@@ -41,21 +52,19 @@ namespace RuleCheck
             }
         }
 
-        public static SelectOperation Create(List<int> id, List<KeyValuePair<string, string>> info)
+        protected override bool RefreshButtons()
         {
-            var form = new SelectOperation(id, info);
-            form.Show();
-            return form;
+            var result = base.RefreshButtons();
+            this.selectButton.Enabled = this.table.SelectedRows.Count == 1;
+            return true;
         }
 
         private void OnClickSelectButton(object sender, EventArgs e)
         {
-            if (!this.CheckSelectRow())
-            {
-                return;
-            }
             int num = this.table.SelectedRows[0].Index;
-            this.selectId = this.operationIds[this.indices[num]];
+            this.selectedId = this.ids[num];
+            this.selectedName = this.data[num].Key;
+            this.selectedDescription = this.data[num].Value;
             this.Close();
         }
 
