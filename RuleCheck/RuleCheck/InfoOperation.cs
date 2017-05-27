@@ -39,10 +39,7 @@ namespace RuleCheck
             form.operationTextBox.Text = nameOperation;
             form.operationTextBox.ReadOnly = true;
             form._type = type;
-            if (id > 0)
-            {
-                form.id = id;
-            }
+            form.id = id;
             if (type == TypeOperation.Change)
             {
                 form.LoadOperationData();

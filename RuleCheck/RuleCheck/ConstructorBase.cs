@@ -46,6 +46,11 @@ namespace RuleCheck
             get { return "Изменить"; }
         }
 
+        public virtual string onDeleteText
+        {
+            get { return ""; }
+        }
+
         protected override bool RefreshButtons()
         {
             if (this.table.SelectedRows.Count <= 0 ||
@@ -79,12 +84,19 @@ namespace RuleCheck
             {
                 return;
             }
-            int num = this.table.SelectedRows[0].Index;
-            if (this.ids[this.indices[num]] == -1)
-            {
-                return;
-            }
-            this.OnDelete();
+            this.Enabled = false;
+            DecisionForm.Create(string.Format("Вы действительно хотите удалить {0}", this.onDeleteText),
+                (form) =>
+                {
+                    if (form.result == DecisionResult.Yes)
+                    {
+                        this.OnDelete();
+                    }
+                    else
+                    {
+                        this.Enabled = true;
+                    }
+                });
         }
 
     }

@@ -34,12 +34,12 @@
             this.descriptionText = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.operations = new System.Windows.Forms.DataGridView();
+            this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.addButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.applyButton = new System.Windows.Forms.Button();
-            this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.operations)).BeginInit();
             this.SuspendLayout();
             // 
@@ -107,6 +107,22 @@
             this.operations.TabIndex = 5;
             this.operations.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnRowEnterOperations);
             // 
+            // ColumnName
+            // 
+            this.ColumnName.HeaderText = "Имя";
+            this.ColumnName.Name = "ColumnName";
+            this.ColumnName.ReadOnly = true;
+            this.ColumnName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColumnName.Width = 170;
+            // 
+            // ColumnDescription
+            // 
+            this.ColumnDescription.HeaderText = "Описание";
+            this.ColumnDescription.Name = "ColumnDescription";
+            this.ColumnDescription.ReadOnly = true;
+            this.ColumnDescription.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColumnDescription.Width = 263;
+            // 
             // addButton
             // 
             this.addButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -151,22 +167,6 @@
             this.applyButton.UseVisualStyleBackColor = true;
             this.applyButton.Click += new System.EventHandler(this.OnClickApplyButton);
             // 
-            // ColumnName
-            // 
-            this.ColumnName.HeaderText = "Имя";
-            this.ColumnName.Name = "ColumnName";
-            this.ColumnName.ReadOnly = true;
-            this.ColumnName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ColumnName.Width = 170;
-            // 
-            // ColumnDescription
-            // 
-            this.ColumnDescription.HeaderText = "Описание";
-            this.ColumnDescription.Name = "ColumnDescription";
-            this.ColumnDescription.ReadOnly = true;
-            this.ColumnDescription.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ColumnDescription.Width = 263;
-            // 
             // RuleProcessing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -182,6 +182,10 @@
             this.Controls.Add(this.descriptionLabel);
             this.Controls.Add(this.nameText);
             this.Controls.Add(this.nameLabel);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(600, 500);
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(600, 500);
             this.Name = "RuleProcessing";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Правило";

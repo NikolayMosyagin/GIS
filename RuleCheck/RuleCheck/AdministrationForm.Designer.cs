@@ -61,9 +61,13 @@
             this.ClientSize = new System.Drawing.Size(363, 262);
             this.Controls.Add(this.ruleButton);
             this.Controls.Add(this.operationButton);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(379, 300);
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(379, 300);
             this.Name = "AdministrationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AdministrationForm";
+            this.Text = "Администрирование";
             this.ResumeLayout(false);
 
         }

@@ -97,19 +97,32 @@ namespace RuleCheck
 
         private void OnClickApplyButton(object sender, EventArgs e)
         {
+            this.Enabled = false;
             if (string.IsNullOrEmpty(this.nameText.Text))
             {
                 var form = MessageForm.Create("Необходимо указать имя правила.");
+                form.FormClosing += (s, e1) =>
+                {
+                    this.Enabled = true;
+                };
                 return;
             }
             if (string.IsNullOrEmpty(this.descriptionText.Text))
             {
                 var form = MessageForm.Create("Необходимо указать описание правила.");
+                form.FormClosing += (s, e1) =>
+                {
+                    this.Enabled = true;
+                };
                 return;
             }
             if (this.operationIds.Count <= 0)
             {
                 var form = MessageForm.Create("Добавьте хотя бы одну операцию.");
+                form.FormClosing += (s, e1) =>
+                {
+                    this.Enabled = true;
+                };
                 return;
             }
             string query;
@@ -163,14 +176,17 @@ namespace RuleCheck
                 }
                 
             }
+            this.Enabled = true;
             this.Close();
         }
 
         private void OnAddButtonClick(object sender, EventArgs e)
         {
+            this.Enabled = false;
             var form = new SelectOperation(this.operationIds);
             form.onClose = (f) =>
             {
+                this.Enabled = true;
                 if (f.selectedId != -1)
                 {
                     this.operationIds.Add(f.selectedId);
@@ -204,19 +220,32 @@ namespace RuleCheck
 
         private void OnClickDeleteButton(object sender, EventArgs e)
         {
+            this.Enabled = false;
             if (this.operations.SelectedRows.Count != 1)
             {
+                //this.Enabled = false;
                 var form = MessageForm.Create("Выберите одну операцию!");
+                form.FormClosing += (s, e1) =>
+                {
+                    this.Enabled = true;
+                };
                 return;
             }
             int num = this.operations.SelectedRows[0].Index;
-            int id = this.operationIds[num];
-            this.operationIds.RemoveAt(num);
-            this.infoOperations.RemoveAt(num);
-            this.operations.Rows.RemoveAt(num);
-            this.OnChangedOperations(id, false);
-            this.SelectRow();
-            this.RefreshButtons();
+            DecisionForm.Create(string.Format("Вы действительно хотите удалить операцию {0}\nиз списка", this.infoOperations[num].Key), (f) =>
+            {
+                if (f.result == DecisionResult.Yes)
+                {
+                    int id = this.operationIds[num];
+                    this.operationIds.RemoveAt(num);
+                    this.infoOperations.RemoveAt(num);
+                    this.operations.Rows.RemoveAt(num);
+                    this.OnChangedOperations(id, false);
+                    this.SelectRow();
+                    this.RefreshButtons();
+                }
+                this.Enabled = true;
+            });
         }
 
         private void SelectRow()

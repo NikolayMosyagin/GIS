@@ -55,11 +55,21 @@ namespace RuleCheck
             }
         }
 
+        public override string searchName
+        {
+            get
+            {
+                return "rule_name";
+            }
+        }
+
         protected override void OnAdd()
         {
+            this.Enabled = false;
             var form = RuleProcessing.Create();
             form.onClose = (f) =>
             {
+                this.Enabled = true;
                 if (f.id != -1)
                 {
                     if (string.IsNullOrEmpty(this.searchTextBox.Text) || f.name.StartsWith(this.searchTextBox.Text))
@@ -70,6 +80,15 @@ namespace RuleCheck
                     }
                 }
             };
+        }
+
+        public override string onDeleteText
+        {
+            get
+            {
+                return this.table.SelectedRows.Count == 0 ? "правило"
+                       : "правило " + this.data[this.table.SelectedRows[0].Index].Key;
+            }
         }
 
         protected override void OnDelete()
@@ -88,14 +107,20 @@ namespace RuleCheck
             {
                 new OracleParameter("id", id),
             });
+            MessageForm.Create("Правило успешно удалено!").FormClosing += (s, e) =>
+            {
+                this.Enabled = true;
+            };
         }
 
         protected override void OnUpdate()
         {
+            this.Enabled = false;
             int num = this.table.SelectedRows[0].Index;
             var form = RuleProcessing.Create(this.ids[num]);
             form.onClose = (f) =>
             {
+                this.Enabled = true;
                 if (string.IsNullOrEmpty(this.searchTextBox.Text) || f.name.StartsWith(this.searchTextBox.Text))
                 {
                     this.data[num] = new KeyValuePair<string, string>(f.name, f.description);

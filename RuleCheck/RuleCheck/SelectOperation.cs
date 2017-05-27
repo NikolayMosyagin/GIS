@@ -23,7 +23,7 @@ namespace RuleCheck
         {
             base.LoadData();
             string query = "select {0}.operation_id, {0}.operation_name, {0}.operation_description from {0}"
-                + this.EndSelectQueryToLoadData();
+                + this.ConditionalSelectToLoadData();
             var result = QueryProvider.Execute(string.Format(query, Config.s_operation), parameters.ToArray());
             for (int i = 0; i < result.values.Count; ++i)
             {

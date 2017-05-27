@@ -68,6 +68,11 @@ namespace RuleCheck
             get { return "Поиск"; }
         }
 
+        public virtual string searchName
+        {
+            get { return ""; }
+        }
+
 
         protected virtual void LoadData()
         {
@@ -78,13 +83,13 @@ namespace RuleCheck
             this.parameters.Clear();
         }
 
-        protected string EndSelectQueryToLoadData()
+        protected string ConditionalSelectToLoadData()
         {
             string result = " where rownum <= :first";
             this.parameters.Add(new OracleParameter("first", Config.maxCountRow));
             if (!string.IsNullOrEmpty(this.searchTextBox.Text))
             {
-                result = result + " and SUBSTR({0}.rule_name, 1, :second) = :third";
+                result = result + " and SUBSTR({0}." + this.searchName +", 1, :second) = :third";
                 parameters.Add(new OracleParameter("second", this.searchTextBox.Text.Length));
                 parameters.Add(new OracleParameter("third", this.searchTextBox.Text));
             }

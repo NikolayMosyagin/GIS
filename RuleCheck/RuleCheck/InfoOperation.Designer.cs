@@ -170,7 +170,12 @@
             this.Controls.Add(this.functionNameLabel);
             this.Controls.Add(this.applyButton);
             this.Controls.Add(this.closeButton);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(500, 400);
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(500, 400);
             this.Name = "InfoOperation";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Операция";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnClosingForm);
             this.ResumeLayout(false);

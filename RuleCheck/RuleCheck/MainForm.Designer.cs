@@ -61,9 +61,13 @@
             this.ClientSize = new System.Drawing.Size(363, 262);
             this.Controls.Add(this.analysisButton);
             this.Controls.Add(this.adminButton);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(379, 300);
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(379, 300);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MainForm";
+            this.Text = "Главная форма";
             this.ResumeLayout(false);
 
         }
