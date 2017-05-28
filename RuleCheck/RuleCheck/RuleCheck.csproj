@@ -62,6 +62,12 @@
     <Compile Include="Analysis.Designer.cs">
       <DependentUpon>Analysis.cs</DependentUpon>
     </Compile>
+    <Compile Include="AnalysisForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AnalysisForm.Designer.cs">
+      <DependentUpon>AnalysisForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AttributeProcessing.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Analysis.resx">
       <DependentUpon>Analysis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnalysisForm.resx">
+      <DependentUpon>AnalysisForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CacheAttribute.resx">
       <DependentUpon>CacheAttribute.cs</DependentUpon>

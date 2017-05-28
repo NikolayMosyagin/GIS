@@ -10,42 +10,33 @@ using System.Windows.Forms;
 
 namespace RuleCheck
 {
-    public enum Role
+    public partial class AnalysisForm : Form
     {
-        Admin = 0,
-        User = 1,
-    }
-
-    public partial class MainForm : Form
-    {
-        public static Role currentRole;
-
-        public MainForm()
+        public AnalysisForm()
         {
             InitializeComponent();
-            this.adminButton.Enabled = MainForm.currentRole == Role.Admin;
         }
 
-        private void OnClickAdminButton(object sender, EventArgs e)
+        private void OnClickAnalsysButton(object sender, EventArgs e)
         {
             this.Enabled = false;
-            var form = new AdministrationForm();
-            form.Show();
+            var form = new Analysis();
             form.FormClosing += (s, e1) =>
             {
                 this.Enabled = true;
             };
+            form.Show();
         }
 
-        private void OnClickAnalisysButton(object sender, EventArgs e)
+        private void OnClickSessionButton(object sender, EventArgs e)
         {
             this.Enabled = false;
-            var form = new AnalysisForm();
-            form.Show();
+            var form = new ControlSessions();
             form.FormClosing += (s, e1) =>
             {
                 this.Enabled = true;
             };
+            form.Show();
         }
     }
 }

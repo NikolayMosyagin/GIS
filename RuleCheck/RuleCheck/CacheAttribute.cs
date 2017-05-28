@@ -19,6 +19,8 @@ namespace RuleCheck
         private List<string> _dataTypes;
         private List<object> _values;
 
+        private Dictionary<int, object> _changedValues;
+
         public CacheAttribute(int session_id)
         {
             this._session_id = session_id;
@@ -27,33 +29,54 @@ namespace RuleCheck
             this._dataTypes = new List<string>();
             this._values = new List<object>();
             this.analisysButton.Enabled = false;
+            this._changedValues = new Dictionary<int, object>();
             this.LoadData();
         }
 
         private void LoadData()
         {
+            this._dataTypes.Clear();
+            this._cacheIds.Clear();
+            this._values.Clear();
+            this.table.Rows.Clear();
             string query = "select {1}.attribute_name, {2}.object_name, {3}.object_value, {1}.data_type, {0}.cache_id from {0}" +
                 " inner join {1} on {1}.attribute_type_id = {0}.attribute_id" +
                 " inner join {2} on {2}.object_type_id = {1}.object_type_id" +
                 " inner join {3} on {3}.object_id = {0}.object_id where " +
-                "{0}.session_id = :session_id";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_attribute, Config.s_attribute_type, Config.s_object_type, Config.s_object), new OracleParameter[1]
+                "{0}.session_id = :first and rownum <= :second";
+            List<OracleParameter> parameters = new List<OracleParameter>();
+            parameters.Add(new OracleParameter("first", this._session_id));
+            parameters.Add(new OracleParameter("second", Config.maxCountRow));
+            if (!string.IsNullOrEmpty(this.attributeTextBox.Text))
             {
-                new OracleParameter("session_id", this._session_id),
-            });
+                query = query + " and {1}.attribute_name = :third";
+                parameters.Add(new OracleParameter("third", this.attributeTextBox.Text));
+            }
+            if (!string.IsNullOrEmpty(this.objectTextBox.Text))
+            {
+                query = query + " and {2}.object_name = :fourth";
+                parameters.Add(new OracleParameter("fourth", this.objectTextBox.Text));
+            }
+            var result = QueryProvider.Execute(string.Format(query, Config.s_attribute, Config.s_attribute_type, Config.s_object_type, Config.s_object), parameters.ToArray());
             for (int i = 0; i < result.values.Count; ++i)
             {
                 var row = result.values[i];
                 string dataType = row[3].ToString();
-                query = "select {0}.{1} from {0} where {0}.cache_id = :cache_id";
-                string nameColumn = this.GetColumnName(dataType);
-                var data = QueryProvider.Execute(string.Format(query, Config.s_attribute, nameColumn), new OracleParameter[1]
+                object value = null;
+                if (!this._changedValues.TryGetValue(int.Parse(row[4].ToString()), out value))
                 {
-                    new OracleParameter("cache_id", row[4]),
-                });
+                    query = "select {0}.{1} from {0} where {0}.cache_id = :cache_id";
+                    string nameColumn = this.GetColumnName(dataType);
+                    var data = QueryProvider.Execute(string.Format(query, Config.s_attribute, nameColumn), new OracleParameter[1]
+                    {
+                        new OracleParameter("cache_id", row[4]),
+                    });
+                    value = data.values.Count > 0 ? data.values[0][0] : null;
+                }
+              
                 this._dataTypes.Add(dataType);
                 this._cacheIds.Add(int.Parse(row[4].ToString()));
-                this._values.Add(data.values.Count > 0 ? data.values[0][0] : "");
+                this._values.Add(value);
                 this.table.Rows.Add(row[0], row[1], row[2], this._values[this._values.Count - 1]);
             }
         }
@@ -67,25 +90,7 @@ namespace RuleCheck
         {
             object date;
             int session_id = Analysis.CreateSession("", out date);
-            for (int i = 0; i < this._cacheIds.Count; ++i)
-            {
-                string query = "select {0}.attribute_id, {0}.object_id from {0}" +
-                    " where {0}.cache_id = :cache_id";
-                string nameColumn = this.GetColumnName(this._dataTypes[i]);
-                var result = QueryProvider.Execute(string.Format(query, Config.s_attribute, nameColumn), new OracleParameter[1]
-                {
-                    new OracleParameter("cache_id", this._cacheIds[i]),
-                });
-                query = "insert into {0}(session_id, attribute_id, object_id, {1})" +
-                    " values(:session_id, :attribute_id, :object_id, :value)";
-                QueryProvider.Execute(string.Format(query, Config.s_attribute, nameColumn), new OracleParameter[4]
-                {
-                    new OracleParameter("session_id", session_id),
-                    new OracleParameter("attribute_id", result.values[0][0]),
-                    new OracleParameter("object_id", result.values[0][1]),
-                    new OracleParameter("value", this._values[i]),
-                });
-            }
+            this.CloneCache(session_id);
             var form = new Analysis(session_id, date);
             form.Show();
             this.Close();
@@ -124,6 +129,51 @@ namespace RuleCheck
             }
         }
 
+        private void CloneCache(int sessionId)
+        {
+            string query = "select {0}.cache_id, {1}.data_type, {0}.attribute_id, {0}.object_id from {0}" +
+                " inner join {1} on {0}.attribute_id = {1}.attribute_type_id" + 
+                " where {0}.session_id = :first";
+            query = string.Format(query, Config.s_attribute, Config.s_attribute_type);
+            using (var command = new OracleCommand(query, QueryProvider.s_connection))
+            {
+                command.Parameters.Add(new OracleParameter("first", this._session_id));
+                command.CommandType = CommandType.Text;
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int cacheId = int.Parse(reader.GetValue(0).ToString());
+                        string dataType = reader.GetValue(1).ToString();
+                        int attributeId = int.Parse(reader.GetValue(2).ToString());
+                        int objectId = int.Parse(reader.GetValue(3).ToString());
+                        object value = null;
+                        if (!this._changedValues.TryGetValue(cacheId, out value))
+                        {
+                            query = "select {0}.{1} from {0} where {0}.cache_id = :first";
+                            query = string.Format(query, Config.s_attribute, this.GetColumnName(dataType));
+                            var result = QueryProvider.Execute(query, new OracleParameter[1]
+                            {
+                                new OracleParameter("first", cacheId),
+                            });
+                            value = result.values[0][0];
+                        }
+                        query = "insert into {0}(session_id, attribute_id, object_id, {1})" +
+                            " values(:first, :second, :third, :fourth)";
+                        QueryProvider.Execute(string.Format(query, Config.s_attribute, this.GetColumnName(dataType)), new OracleParameter[4]
+                        {
+                            new OracleParameter("first", sessionId),
+                            new OracleParameter("second", attributeId),
+                            new OracleParameter("third", objectId),
+                            new OracleParameter("fourth", value),
+                        });
+                    }
+                    reader.Close();
+                }
+            }
+
+        }
+
         private void OnClickChangeButton(object sender, EventArgs e)
         {
             int index = this.table.SelectedRows[0].Index;
@@ -140,9 +190,15 @@ namespace RuleCheck
                 {
                     this.analisysButton.Enabled = true;
                 }
+                this._changedValues[this._cacheIds[index]] = f.value;
                 this._values[index] = f.value;
                 row.Cells[3].Value = f.value;
             };
+        }
+
+        private void OnClickSearchButton(object sender, EventArgs e)
+        {
+            this.LoadData();
         }
     }
 }

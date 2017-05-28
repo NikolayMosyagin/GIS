@@ -1,6 +1,6 @@
 ﻿namespace RuleCheck
 {
-    partial class MainForm
+    partial class AnalysisForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,54 +28,53 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.adminButton = new System.Windows.Forms.Button();
             this.analysisButton = new System.Windows.Forms.Button();
+            this.sessionButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // adminButton
-            // 
-            this.adminButton.BackColor = System.Drawing.SystemColors.Control;
-            this.adminButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.adminButton.Location = new System.Drawing.Point(61, 46);
-            this.adminButton.Name = "adminButton";
-            this.adminButton.Size = new System.Drawing.Size(240, 44);
-            this.adminButton.TabIndex = 0;
-            this.adminButton.Text = "Режим администрирования";
-            this.adminButton.UseVisualStyleBackColor = true;
-            this.adminButton.Click += new System.EventHandler(this.OnClickAdminButton);
             // 
             // analysisButton
             // 
-            this.analysisButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.analysisButton.Location = new System.Drawing.Point(61, 156);
+            this.analysisButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.analysisButton.Location = new System.Drawing.Point(61, 46);
             this.analysisButton.Name = "analysisButton";
             this.analysisButton.Size = new System.Drawing.Size(240, 44);
-            this.analysisButton.TabIndex = 1;
-            this.analysisButton.Text = "Режим анализа";
+            this.analysisButton.TabIndex = 0;
+            this.analysisButton.Text = "Анализ";
             this.analysisButton.UseVisualStyleBackColor = true;
-            this.analysisButton.Click += new System.EventHandler(this.OnClickAnalisysButton);
+            this.analysisButton.Click += new System.EventHandler(this.OnClickAnalsysButton);
             // 
-            // MainForm
+            // sessionButton
+            // 
+            this.sessionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.sessionButton.Location = new System.Drawing.Point(61, 156);
+            this.sessionButton.Name = "sessionButton";
+            this.sessionButton.Size = new System.Drawing.Size(240, 44);
+            this.sessionButton.TabIndex = 1;
+            this.sessionButton.Text = "Просмотр сессий";
+            this.sessionButton.UseVisualStyleBackColor = true;
+            this.sessionButton.Click += new System.EventHandler(this.OnClickSessionButton);
+            // 
+            // AnalysisForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(363, 262);
+            this.Controls.Add(this.sessionButton);
             this.Controls.Add(this.analysisButton);
-            this.Controls.Add(this.adminButton);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(379, 300);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(379, 300);
-            this.Name = "MainForm";
+            this.Name = "AnalysisForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Главная форма";
+            this.Text = "Анализ";
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button adminButton;
         private System.Windows.Forms.Button analysisButton;
+        private System.Windows.Forms.Button sessionButton;
     }
 }

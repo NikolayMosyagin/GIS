@@ -34,13 +34,25 @@ namespace RuleCheck
 
         private void LoadData()
         {
+            this.table.Rows.Clear();
             string query = "select {0}.first_object_id, {0}.second_object_id," + 
-                " {0}.result, {1}.operation_description from {0} inner join {1} on " +
-                "{0}.operation_id = {1}.operation_id where {0}.session_id = :session_id";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_log, Config.s_operation), new OracleParameter[1]
+                " {0}.result, {1}.operation_name from {0} inner join {1} on " +
+                "{0}.operation_id = {1}.operation_id where {0}.session_id = :session_id" + 
+                " and rownum <= :second";
+            List<OracleParameter> parameters = new List<OracleParameter>();
+            parameters.Add(new OracleParameter("session_id", this._session_id));
+            parameters.Add(new OracleParameter("second", Config.maxCountRow));
+            if (!string.IsNullOrEmpty(this.operationTextBox.Text))
             {
-                new OracleParameter("session_id", this._session_id),
-            });
+                query = query + " and {1}.operation_name = :third";
+                parameters.Add(new OracleParameter("third", this.operationTextBox.Text));
+            }
+            if (this.resultComboBox.SelectedIndex >= 0)
+            {
+                query = query + " and {0}.result = :fourth";
+                parameters.Add(new OracleParameter("fourth", (this.resultComboBox.SelectedIndex ^ 1)));
+            }
+            var result = QueryProvider.Execute(string.Format(query, Config.s_log, Config.s_operation), parameters.ToArray());
             
             for (int i = 0; i < result.values.Count; ++i)
             {
@@ -54,6 +66,11 @@ namespace RuleCheck
         private void OnClickCloseButton(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void OnClickSearchButton(object sender, EventArgs e)
+        {
+            this.LoadData();
         }
     }
 }

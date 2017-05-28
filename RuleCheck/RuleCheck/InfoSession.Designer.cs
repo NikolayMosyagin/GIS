@@ -39,6 +39,12 @@
             this.secondObjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.resultColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.closeButton = new System.Windows.Forms.Button();
+            this.searchLabel = new System.Windows.Forms.Label();
+            this.operationLabel = new System.Windows.Forms.Label();
+            this.operationTextBox = new System.Windows.Forms.TextBox();
+            this.searchButton = new System.Windows.Forms.Button();
+            this.resultLabel = new System.Windows.Forms.Label();
+            this.resultComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.table)).BeginInit();
             this.SuspendLayout();
             // 
@@ -100,17 +106,17 @@
             this.firstObjectColumn,
             this.secondObjectColumn,
             this.resultColumn});
-            this.table.Location = new System.Drawing.Point(12, 166);
+            this.table.Location = new System.Drawing.Point(12, 243);
             this.table.MultiSelect = false;
             this.table.Name = "table";
             this.table.ReadOnly = true;
             this.table.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.table.Size = new System.Drawing.Size(565, 323);
+            this.table.Size = new System.Drawing.Size(565, 246);
             this.table.TabIndex = 5;
             // 
             // descriptionColumn
             // 
-            this.descriptionColumn.HeaderText = "Описание";
+            this.descriptionColumn.HeaderText = "Имя операции";
             this.descriptionColumn.Name = "descriptionColumn";
             this.descriptionColumn.ReadOnly = true;
             this.descriptionColumn.Width = 190;
@@ -146,11 +152,76 @@
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.OnClickCloseButton);
             // 
+            // searchLabel
+            // 
+            this.searchLabel.AutoSize = true;
+            this.searchLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.searchLabel.Location = new System.Drawing.Point(12, 141);
+            this.searchLabel.Name = "searchLabel";
+            this.searchLabel.Size = new System.Drawing.Size(51, 16);
+            this.searchLabel.TabIndex = 7;
+            this.searchLabel.Text = "Поиск:";
+            // 
+            // operationLabel
+            // 
+            this.operationLabel.AutoSize = true;
+            this.operationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.operationLabel.Location = new System.Drawing.Point(44, 171);
+            this.operationLabel.Name = "operationLabel";
+            this.operationLabel.Size = new System.Drawing.Size(101, 16);
+            this.operationLabel.TabIndex = 8;
+            this.operationLabel.Text = "Имя операции";
+            // 
+            // operationTextBox
+            // 
+            this.operationTextBox.Location = new System.Drawing.Point(151, 171);
+            this.operationTextBox.Name = "operationTextBox";
+            this.operationTextBox.Size = new System.Drawing.Size(239, 20);
+            this.operationTextBox.TabIndex = 9;
+            // 
+            // searchButton
+            // 
+            this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.searchButton.Location = new System.Drawing.Point(478, 182);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(94, 32);
+            this.searchButton.TabIndex = 1;
+            this.searchButton.Text = "Поиск";
+            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.Click += new System.EventHandler(this.OnClickSearchButton);
+            // 
+            // resultLabel
+            // 
+            this.resultLabel.AutoSize = true;
+            this.resultLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.resultLabel.Location = new System.Drawing.Point(67, 198);
+            this.resultLabel.Name = "resultLabel";
+            this.resultLabel.Size = new System.Drawing.Size(78, 16);
+            this.resultLabel.TabIndex = 10;
+            this.resultLabel.Text = "Результат";
+            // 
+            // resultComboBox
+            // 
+            this.resultComboBox.FormattingEnabled = true;
+            this.resultComboBox.Items.AddRange(new object[] {
+            "Выполнено",
+            "Не выполнено"});
+            this.resultComboBox.Location = new System.Drawing.Point(151, 197);
+            this.resultComboBox.Name = "resultComboBox";
+            this.resultComboBox.Size = new System.Drawing.Size(239, 21);
+            this.resultComboBox.TabIndex = 11;
+            // 
             // InfoSession
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(592, 562);
+            this.Controls.Add(this.resultComboBox);
+            this.Controls.Add(this.resultLabel);
+            this.Controls.Add(this.searchButton);
+            this.Controls.Add(this.operationTextBox);
+            this.Controls.Add(this.operationLabel);
+            this.Controls.Add(this.searchLabel);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.table);
             this.Controls.Add(this.dateTextBox);
@@ -180,5 +251,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn firstObjectColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn secondObjectColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn resultColumn;
+        private System.Windows.Forms.Label searchLabel;
+        private System.Windows.Forms.Label operationLabel;
+        private System.Windows.Forms.TextBox operationTextBox;
+        private System.Windows.Forms.Button searchButton;
+        private System.Windows.Forms.Label resultLabel;
+        private System.Windows.Forms.ComboBox resultComboBox;
     }
 }
