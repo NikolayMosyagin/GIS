@@ -18,13 +18,13 @@ namespace RuleCheck
     {
         private bool _enterUserTextBox;
         private bool _enterPasswordTextBox;
-        private bool _enterServerTextBox;
+        private bool _enterServiceTextBox;
 
         public ConnectionForm()
         {
             InitializeComponent();
             this._enterPasswordTextBox = false;
-            this._enterServerTextBox = false;
+            this._enterServiceTextBox = false;
             this._enterUserTextBox = false;
             this.ReadXmlFile();
         }
@@ -46,7 +46,7 @@ namespace RuleCheck
                 var form = MessageForm.Create("Введите пароль");
                 return;
             }
-            if (string.IsNullOrEmpty(this.serviceTextBox.Text) || !this._enterServerTextBox)
+            if (string.IsNullOrEmpty(this.serviceTextBox.Text) || !this._enterServiceTextBox)
             {
                 var form = MessageForm.Create("Введите сервер");
                 return;
@@ -55,7 +55,12 @@ namespace RuleCheck
             QueryProvider.OpenConnection();
             if (QueryProvider.s_connection.State != ConnectionState.Open)
             {
-                var form = MessageForm.Create("Не удалось подключиться к базе данных.\nПроверьте подключение к сети");
+                string value = "";
+                if (QueryProvider.s_ErrorNumber == -1 || !Config.s_messageException.TryGetValue(QueryProvider.s_ErrorNumber, out value))
+                {
+                    value = "Не удалось подключиться к базе данных.\nПроверьте подключение к сети";
+                }
+                var form = MessageForm.Create(value);
                 return;
             }
             this.WriteXmlFile();
@@ -98,15 +103,25 @@ namespace RuleCheck
 
         private void OnEnterUserTextBox(object sender, EventArgs e)
         {
-            this._enterUserTextBox = true;
-            this.userTextBox.Text = "";
-            this.userTextBox.Enter -= this.OnEnterUserTextBox;
+            this.SetUserTextBox("");
         }
 
         private void OnEnterServerTextBox(object sender, EventArgs e)
         {
-            this._enterServerTextBox = true;
-            this.serviceTextBox.Text = "";
+            this.SetServiceTextBox("");
+        }
+
+        private void SetUserTextBox(string text)
+        {
+            this._enterUserTextBox = true;
+            this.userTextBox.Text = text;
+            this.userTextBox.Enter -= this.OnEnterUserTextBox;
+        }
+
+        private void SetServiceTextBox(string text)
+        {
+            this._enterServiceTextBox = true;
+            this.serviceTextBox.Text = text;
             this.serviceTextBox.Enter -= this.OnEnterServerTextBox;
         }
 
@@ -142,11 +157,11 @@ namespace RuleCheck
             {
                 if (node.Name == "name" && node.FirstChild != null && node.FirstChild.NodeType == XmlNodeType.Text)
                 {
-                    this.userTextBox.Text = node.FirstChild.Value;
+                    this.SetUserTextBox(node.FirstChild.Value);
                 }
                 else if (node.Name == "service" && node.FirstChild != null && node.FirstChild.NodeType == XmlNodeType.Text)
                 {
-                    this.serviceTextBox.Text = node.FirstChild.Value;
+                    this.SetServiceTextBox(node.FirstChild.Value);
                 }
             }
         }

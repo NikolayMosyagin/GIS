@@ -68,5 +68,10 @@ namespace RuleCheck
                 return s_pathSave;
             }
         }
+
+        public static Dictionary<int, string> s_messageException = new Dictionary<int, string>()
+        {
+            { 1017, "Неверное имя пользователя или пароль" }
+        };
     }
 }

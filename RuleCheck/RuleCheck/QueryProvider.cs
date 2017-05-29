@@ -20,6 +20,7 @@ namespace RuleCheck
 
         public static string s_cns;
         private static OracleConnection _s_connection;
+        public static int s_ErrorNumber = 0;
 
         public static void CloseConnection()
         {
@@ -36,7 +37,16 @@ namespace RuleCheck
                     _s_connection.State == System.Data.ConnectionState.Broken)
             {
                 _s_connection = new OracleConnection(s_cns);
-                _s_connection.Open();
+                try
+                {
+                    _s_connection.Open();
+                    s_ErrorNumber = -1;
+                }
+                catch (OracleException e)
+                {
+                    s_ErrorNumber = e.Number;
+                }
+
             }
         }
 
