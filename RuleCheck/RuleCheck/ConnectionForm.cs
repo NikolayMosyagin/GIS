@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Oracle.ManagedDataAccess.Client;
+using System.Xml;
+using System.IO;
+using System.Diagnostics;
 
 namespace RuleCheck
 {
@@ -23,6 +26,7 @@ namespace RuleCheck
             this._enterPasswordTextBox = false;
             this._enterServerTextBox = false;
             this._enterUserTextBox = false;
+            this.ReadXmlFile();
         }
 
         private void OnClickExitButton(object sender, EventArgs e)
@@ -42,18 +46,19 @@ namespace RuleCheck
                 var form = MessageForm.Create("Введите пароль");
                 return;
             }
-            if (string.IsNullOrEmpty(this.serverTextBox.Text) || !this._enterServerTextBox)
+            if (string.IsNullOrEmpty(this.serviceTextBox.Text) || !this._enterServerTextBox)
             {
                 var form = MessageForm.Create("Введите сервер");
                 return;
             }
-            QueryProvider.s_cns = string.Format(Config.s_connectionString, this.serverTextBox.Text, this.userTextBox.Text, this.passwordTextBox.Text);
+            QueryProvider.s_cns = string.Format(Config.s_connectionString, this.serviceTextBox.Text, this.userTextBox.Text, this.passwordTextBox.Text);
             QueryProvider.OpenConnection();
             if (QueryProvider.s_connection.State != ConnectionState.Open)
             {
                 var form = MessageForm.Create("Не удалось подключиться к базе данных.\nПроверьте подключение к сети");
                 return;
             }
+            this.WriteXmlFile();
             string query = "select {0}.granted_role from {0}" +
                 " where {0}.granted_role = :first or {0}.granted_role = :second";
             var result = QueryProvider.Execute(string.Format(query, Config.s_user_role_privs), new OracleParameter[2]
@@ -101,8 +106,49 @@ namespace RuleCheck
         private void OnEnterServerTextBox(object sender, EventArgs e)
         {
             this._enterServerTextBox = true;
-            this.serverTextBox.Text = "";
-            this.serverTextBox.Enter -= this.OnEnterServerTextBox;
+            this.serviceTextBox.Text = "";
+            this.serviceTextBox.Enter -= this.OnEnterServerTextBox;
+        }
+
+        private void WriteXmlFile()
+        {
+            var doc = new XmlDocument();
+            var user = doc.CreateElement("user");
+            var nameElem = doc.CreateElement("name");
+            nameElem.AppendChild(doc.CreateTextNode(this.userTextBox.Text));
+            var serviceElem = doc.CreateElement("service");
+            serviceElem.AppendChild(doc.CreateTextNode(this.serviceTextBox.Text));
+            user.AppendChild(nameElem);
+            user.AppendChild(serviceElem);
+            doc.AppendChild(user);
+            if (!Directory.Exists(Config.PathDirectorySave))
+            {
+                Directory.CreateDirectory(Config.PathDirectorySave);
+            }
+            doc.Save(Config.PathSave);
+        }
+
+        private void ReadXmlFile()
+        {
+            var doc = new XmlDocument();
+            var path = Config.PathSave;
+            if (!File.Exists(path))
+            {
+                return;
+            }
+            doc.Load(path);
+            var root = doc.DocumentElement;
+            foreach (XmlNode node in root)
+            {
+                if (node.Name == "name" && node.FirstChild != null && node.FirstChild.NodeType == XmlNodeType.Text)
+                {
+                    this.userTextBox.Text = node.FirstChild.Value;
+                }
+                else if (node.Name == "service" && node.FirstChild != null && node.FirstChild.NodeType == XmlNodeType.Text)
+                {
+                    this.serviceTextBox.Text = node.FirstChild.Value;
+                }
+            }
         }
     }
 }

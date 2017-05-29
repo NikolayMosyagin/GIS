@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RuleCheck
 {
@@ -37,5 +39,34 @@ namespace RuleCheck
         public static string role_admins = "MOSYAGIN_ADMINS";
         public static string role_users = "MOSYAGIN_USERS";
         public static int maxCountRow = 100;
+
+        private static string s_pathDirectorySave;
+        private static string s_pathSave;
+        private static string s_fileConfig = "user.xml";
+
+        public static string PathDirectorySave
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(s_pathDirectorySave))
+                {
+                    s_pathDirectorySave = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+                    , Path.GetFileNameWithoutExtension(Application.ExecutablePath));
+                }
+                return s_pathDirectorySave;
+            }
+        }
+
+        public static string PathSave
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(s_pathSave))
+                {
+                    s_pathSave = Path.Combine(PathDirectorySave, s_fileConfig);
+                }
+                return s_pathSave;
+            }
+        }
     }
 }

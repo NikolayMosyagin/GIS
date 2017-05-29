@@ -35,7 +35,7 @@
             this.userTextBox = new System.Windows.Forms.TextBox();
             this.passwordTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.serverTextBox = new System.Windows.Forms.TextBox();
+            this.serviceTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // EnterButton
@@ -106,26 +106,26 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.Location = new System.Drawing.Point(85, 142);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 16);
+            this.label1.Size = new System.Drawing.Size(58, 16);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Сервер";
+            this.label1.Text = "Служба";
             // 
-            // serverTextBox
+            // serviceTextBox
             // 
-            this.serverTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.serverTextBox.Location = new System.Drawing.Point(160, 139);
-            this.serverTextBox.Name = "serverTextBox";
-            this.serverTextBox.Size = new System.Drawing.Size(212, 21);
-            this.serverTextBox.TabIndex = 7;
-            this.serverTextBox.Text = "Введите сервер...";
-            this.serverTextBox.Enter += new System.EventHandler(this.OnEnterServerTextBox);
+            this.serviceTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.serviceTextBox.Location = new System.Drawing.Point(160, 139);
+            this.serviceTextBox.Name = "serviceTextBox";
+            this.serviceTextBox.Size = new System.Drawing.Size(212, 21);
+            this.serviceTextBox.TabIndex = 7;
+            this.serviceTextBox.Text = "Введите службу...";
+            this.serviceTextBox.Enter += new System.EventHandler(this.OnEnterServerTextBox);
             // 
             // ConnectionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 262);
-            this.Controls.Add(this.serverTextBox);
+            this.Controls.Add(this.serviceTextBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.passwordTextBox);
             this.Controls.Add(this.userTextBox);
@@ -150,6 +150,6 @@
         private System.Windows.Forms.TextBox userTextBox;
         private System.Windows.Forms.TextBox passwordTextBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox serverTextBox;
+        private System.Windows.Forms.TextBox serviceTextBox;
     }
 }
