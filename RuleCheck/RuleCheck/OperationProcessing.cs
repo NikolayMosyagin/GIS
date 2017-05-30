@@ -131,7 +131,7 @@ namespace RuleCheck
                 return;
             }
             int num = this.operationGrid.SelectedRows[0].Index;
-            var o = InfoOperation.Create(this.operations[indices[num]].Key, TypeOperation.Add);
+            /*var o = InfoOperation.Create(this.operations[indices[num]].Key, TypeOperation.Add);
             o.onClose = (f) =>
             {
                 this.operationIds[this.indices[num]] = f.id;
@@ -139,7 +139,7 @@ namespace RuleCheck
                 this.operations[this.indices[num]] = new KeyValuePair<string, string>(value.Key, f.description);
                 this.operationGrid.Rows[num].SetValues(value.Key, f.description);
                 this.RefreshButtons();
-            };
+            };*/
         }
 
         private void RefreshButtons()
@@ -198,13 +198,13 @@ namespace RuleCheck
                 return;
             }
             int num = this.operationGrid.SelectedRows[0].Index;
-            var form = InfoOperation.Create(this.operations[this.indices[num]].Key, TypeOperation.Change, this.operationIds[this.indices[num]]);
+            /*var form = InfoOperation.Create(this.operations[this.indices[num]].Key, TypeOperation.Change, this.operationIds[this.indices[num]]);
             form.onClose = (f) =>
             {
                 var value = this.operations[this.indices[num]];
                 this.operationGrid.Rows[num].SetValues(value.Key, f.description);
                 this.operations[this.indices[num]] = new KeyValuePair<string, string>(value.Key, f.description);
-            };
+            };*/
         }
     }
 }

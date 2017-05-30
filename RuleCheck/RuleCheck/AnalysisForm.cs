@@ -19,22 +19,22 @@ namespace RuleCheck
 
         private void OnClickAnalsysButton(object sender, EventArgs e)
         {
-            this.Enabled = false;
+            this.Hide();
             var form = new Analysis();
             form.FormClosing += (s, e1) =>
             {
-                this.Enabled = true;
+                this.Show();
             };
             form.Show();
         }
 
         private void OnClickSessionButton(object sender, EventArgs e)
         {
-            this.Enabled = false;
+            this.Hide();
             var form = new ControlSessions();
             form.FormClosing += (s, e1) =>
             {
-                this.Enabled = true;
+                this.Show();
             };
             form.Show();
         }

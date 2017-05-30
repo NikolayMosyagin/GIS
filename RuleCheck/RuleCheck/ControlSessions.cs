@@ -103,14 +103,13 @@ namespace RuleCheck
 
         protected override void OnUpdate()
         {
-            this.Enabled = false;
+            this.Hide();
             int num = this.table.SelectedRows[0].Index;
             var form = new CacheAttribute(this.ids[num]);
             form.FormClosing += (s, e) =>
             {
-                this.Enabled = true;
+                this.Show();
             };
-
             form.Show();
         }
 

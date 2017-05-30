@@ -12,3 +12,10 @@ is
 begin
     RETURN 0;
 end;
+
+create function Unary(first in number) return number
+is
+    result number;
+begin
+    RETURN 1;
+end;

@@ -65,11 +65,11 @@ namespace RuleCheck
 
         protected override void OnAdd()
         {
-            this.Enabled = false;
+            this.Hide();
             var form = RuleProcessing.Create();
             form.onClose = (f) =>
             {
-                this.Enabled = true;
+                this.Show();
                 if (f.id != -1)
                 {
                     if (string.IsNullOrEmpty(this.searchTextBox.Text) || f.name.StartsWith(this.searchTextBox.Text))
@@ -115,12 +115,12 @@ namespace RuleCheck
 
         protected override void OnUpdate()
         {
-            this.Enabled = false;
+            this.Hide();
             int num = this.table.SelectedRows[0].Index;
             var form = RuleProcessing.Create(this.ids[num]);
             form.onClose = (f) =>
             {
-                this.Enabled = true;
+                this.Show();
                 if (string.IsNullOrEmpty(this.searchTextBox.Text) || f.name.StartsWith(this.searchTextBox.Text))
                 {
                     this.data[num] = new KeyValuePair<string, string>(f.name, f.description);

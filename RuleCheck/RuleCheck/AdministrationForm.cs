@@ -19,22 +19,22 @@ namespace RuleCheck
 
         private void OnClickOperationButton(object sender, EventArgs e)
         {
-            this.Enabled = false;
+            this.Hide();
             var form = new ConstructorOperation();
             form.FormClosing += (s, e1) =>
             {
-                this.Enabled = true;
+                this.Show();//this.Enabled = true;
             };
             form.Show();
         }
 
         private void OnClickRuleButton(object sender, EventArgs e)
         {
-            this.Enabled = false;
+            this.Hide();
             var form = new ConstructorRule();
             form.FormClosing += (s, e1) =>
             {
-                this.Enabled = true;
+                this.Show();
             };
             form.Show();
         }

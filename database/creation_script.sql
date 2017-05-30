@@ -155,7 +155,7 @@ cache 2;
 create table operation(
 operation_id int not null primary key,
 first_object_type_id int not null,
-second_object_type_id int not null,
+second_object_type_id int,
 operation_name varchar2(15) not null,
 operation_procedure varchar2(15) not null,
 Operation_description varchar2(2000),
@@ -259,3 +259,5 @@ grant delete on mosyagin.rule_operation to mosyagin_admins;
 grant update on mosyagin.operation to mosyagin_admins;
 grant update on mosyagin.rule to mosyagin_admins;
 grant update on mosyagin.rule_operation to mosyagin_admins;
+
+Служба вместо сервер.

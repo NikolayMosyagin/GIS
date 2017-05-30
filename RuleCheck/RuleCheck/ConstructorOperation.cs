@@ -13,8 +13,19 @@ namespace RuleCheck
 {
     public partial class ConstructorOperation : ConstructorBase
     {
+        List<int> countInParameters;
+        
+         
         protected override void LoadData()
         {
+            if (this.countInParameters == null)
+            {
+                this.countInParameters = new List<int>();
+            }
+            else
+            {
+                this.countInParameters.Clear();
+            }
             base.LoadData();
             var query = "select {0}.object_id, {0}.object_name, {1}.in_out from {0} " +
                 "inner join {1} on {0}.object_id = {1}.object_id" + this.ConditionalSelectToLoadData() +
@@ -41,18 +52,20 @@ namespace RuleCheck
                 }
                 else
                 {
-                    if (countIn == 2 && countOut == 1)
+                    if ((countIn == 2 || countIn == 1) && countOut == 1)
                     {
                         nameOperations.Add(result.values[i - 1][1].ToString());
+                        this.countInParameters.Add(countIn);
                     }
                     id = curId;
                     countIn = result.values[i][2].ToString() == "IN" ? 1 : 0;
                     countOut = result.values[i][2].ToString() == "OUT" ? 1 : 0;
                 }
             }
-            if (countIn == 2 && countOut == 1)
+            if ((countIn == 2 || countIn == 1) && countOut == 1)
             {
                 nameOperations.Add(result.values[result.values.Count - 1][1].ToString());
+                this.countInParameters.Add(countIn);
             }
             query = "select {0}.operation_id, {0}.operation_description from {0} " +
                 "where {0}.operation_procedure = :operation";
@@ -116,7 +129,7 @@ namespace RuleCheck
             }
             this.Enabled = false;
             int num = this.table.SelectedRows[0].Index;
-            var o = InfoOperation.Create(this.data[num].Key, TypeOperation.Add);
+            var o = InfoOperation.Create(this.data[num].Key, TypeOperation.Add, this.countInParameters[num] == 1);
             o.onClose = (f) =>
             {
                 this.Enabled = true;
@@ -126,7 +139,7 @@ namespace RuleCheck
                     var value = this.data[num];
                     this.data[num] = new KeyValuePair<string, string>(value.Key, f.description);
                     this.table.Rows[num].SetValues(value.Key, f.description);
-                    this.SelectedRow();
+                    this.table.Rows[num].Selected = true;
                     this.RefreshButtons();
                 }
             };
@@ -136,14 +149,14 @@ namespace RuleCheck
         {
             this.Enabled = false;
             int num = this.table.SelectedRows[0].Index;
-            var form = InfoOperation.Create(this.data[num].Key, TypeOperation.Change, this.ids[num]);
+            var form = InfoOperation.Create(this.data[num].Key, TypeOperation.Change, this.countInParameters[num] == 1, this.ids[num]);
             form.onClose = (f) =>
             {
                 this.Enabled = true;
                 var value = this.data[num];
                 this.table.Rows[num].SetValues(value.Key, f.description);
                 this.data[num] = new KeyValuePair<string, string>(value.Key, f.description);
-                this.SelectedRow();
+                this.table.Rows[num].Selected = true;
                 this.RefreshButtons();
             };
         }

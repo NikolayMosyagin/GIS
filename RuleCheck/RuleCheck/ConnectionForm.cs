@@ -61,6 +61,7 @@ namespace RuleCheck
                     value = "Не удалось подключиться к базе данных.\nПроверьте подключение к сети";
                 }
                 var form = MessageForm.Create(value);
+                QueryProvider.CloseConnection();
                 return;
             }
             this.WriteXmlFile();
@@ -74,6 +75,7 @@ namespace RuleCheck
             if (result.values.Count == 0)
             {
                 var form = MessageForm.Create("Недостаточно прав");
+                QueryProvider.CloseConnection();
                 return;
             }
             MainForm.currentRole = Role.User;
@@ -90,6 +92,7 @@ namespace RuleCheck
             mainForm.FormClosing += (s, v) =>
             {
                 this.Close();
+                QueryProvider.CloseConnection();
             };
         }
 

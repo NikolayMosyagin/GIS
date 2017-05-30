@@ -28,23 +28,23 @@ namespace RuleCheck
 
         private void OnClickAdminButton(object sender, EventArgs e)
         {
-            this.Enabled = false;
+            this.Hide();
             var form = new AdministrationForm();
             form.Show();
             form.FormClosing += (s, e1) =>
             {
-                this.Enabled = true;
+                this.Show();
             };
         }
 
         private void OnClickAnalisysButton(object sender, EventArgs e)
         {
-            this.Enabled = false;
+            this.Hide();
             var form = new AnalysisForm();
             form.Show();
             form.FormClosing += (s, e1) =>
             {
-                this.Enabled = true;
+                this.Show();
             };
         }
     }

@@ -23,6 +23,7 @@ namespace RuleCheck
         public string description;
         private TypeOperation _type;
         private List<int> objectTypeIds;
+        private bool _isUnary;
 
         public Action<InfoOperation> onClose;
 
@@ -33,17 +34,21 @@ namespace RuleCheck
             this.FillObjectType();
         }
 
-        public static InfoOperation Create(string nameOperation, TypeOperation type, int id = -1)
+        public static InfoOperation Create(string nameOperation, TypeOperation type, bool isUnary, int id = -1)
         {
             var form = new InfoOperation();
             form.operationTextBox.Text = nameOperation;
             form.operationTextBox.ReadOnly = true;
             form._type = type;
             form.id = id;
+            form._isUnary = isUnary;
+            form.objectTypeBox2.Enabled = !isUnary;
+            form.objectTypeLabel2.Enabled = !isUnary;
             if (type == TypeOperation.Change)
             {
                 form.LoadOperationData();
             }
+            
             form.Show();
             return form;
         }
@@ -70,9 +75,9 @@ namespace RuleCheck
 
         private void LoadOperationData()
         {
-            string query = "select {0}.first_object_type_id, {0}.second_object_type_id," +
-                " {0}.operation_procedure, {0}.operation_description, {0}.operation_name" +
-                " from {0} where {0}.operation_id = :operation_id";
+            string query = "select {0}.first_object_type_id, {0}.second_object_type_id, " +
+                "{0}.operation_procedure, {0}.operation_description, " +  
+                "{0}.operation_name from {0} where {0}.operation_id = :operation_id";
 
             var result = QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[1]
             {
@@ -81,7 +86,7 @@ namespace RuleCheck
             if (result.values.Count > 0)
             {
                 int first_id = int.Parse(result.values[0][0].ToString());
-                int second_id = int.Parse(result.values[0][1].ToString());
+                int second_id = this._isUnary ? -1 : int.Parse(result.values[0][1].ToString());
                 string procedure = result.values[0][2].ToString();
                 this.description = result.values[0][3] != null ? result.values[0][3].ToString() : "";
                 this.operationTextBox.Text = procedure;
@@ -125,7 +130,7 @@ namespace RuleCheck
                 var f = MessageForm.Create("Необходимо выбрать тип объекта 1");
                 return false;
             }
-            if (this.objectTypeBox2.SelectedIndex < 0)
+            if (this.objectTypeBox2.SelectedIndex < 0 && !this._isUnary)
             {
                 var f = MessageForm.Create("Необходимо выбрать тип объекта 2");
                 return false;
@@ -144,17 +149,21 @@ namespace RuleCheck
             {
                 return;
             }
-            string query = "insert into {0}(first_object_type_id, second_object_type_id, operation_name, operation_procedure, operation_description)" +
-                " values(:id1, :id2, :name, :procedure, :description) returning {0}.operation_id into :operation_id";
-            var result = QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[6]
+            string query = "insert into {0}(first_object_type_id, {1}operation_name, operation_procedure, operation_description)" +
+                " values(:id1, {2}:name, :procedure, :description) returning {0}.operation_id into :operation_id";
+            List<OracleParameter> parameters = new List<OracleParameter>();
+            parameters.Add(new OracleParameter("id1", this.objectTypeIds[this.objectTypeBox1.SelectedIndex]));
+            if (!this._isUnary)
             {
-                new OracleParameter("id1", this.objectTypeIds[this.objectTypeBox1.SelectedIndex]),
-                new OracleParameter("id2", this.objectTypeIds[this.objectTypeBox2.SelectedIndex]),
-                new OracleParameter("name", this.nameTextBox.Text),
-                new OracleParameter("procedure", this.operationTextBox.Text),
-                new OracleParameter("description", this.descriptionTextBox.Text),
-                new OracleParameter("operation_id", OracleDbType.Decimal, ParameterDirection.Output)
-            });
+                parameters.Add(new OracleParameter("id2", this.objectTypeIds[this.objectTypeBox2.SelectedIndex]));
+            }
+            parameters.Add(new OracleParameter("name", this.nameTextBox.Text));
+            parameters.Add(new OracleParameter("procedure", this.operationTextBox.Text));
+            parameters.Add(new OracleParameter("description", this.descriptionTextBox.Text));
+            parameters.Add(new OracleParameter("operation_id", OracleDbType.Decimal, ParameterDirection.Output));
+            var result = QueryProvider.Execute(
+                string.Format(query, Config.s_operation, !this._isUnary ? "second_object_type_id, " : "", !this._isUnary ? ":id2, " : ""), 
+                parameters.ToArray());
             this.id = ((OracleDecimal)result.parametersOut[0]).ToInt32();
             this.description = this.descriptionTextBox.Text;
         }
@@ -165,19 +174,21 @@ namespace RuleCheck
             {
                 return;
             }
-            string query = "update {0} set {0}.first_object_type_id = :first," +
-                " {0}.second_object_type_id = :second, {0}.operation_procedure = :procedure," +
-                " {0}.operation_description = :description, {0}.operation_name = :name" +
-                " where {0}.operation_id = :operation_id";
-            QueryProvider.Execute(string.Format(query, Config.s_operation), new OracleParameter[6]
+            string query = "update {0} set {0}.first_object_type_id = :first, ";
+            List<OracleParameter> parameters = new List<OracleParameter>();
+            parameters.Add(new OracleParameter("first", this.objectTypeIds[this.objectTypeBox1.SelectedIndex]));
+            if (!this._isUnary)
             {
-                new OracleParameter("first", this.objectTypeIds[this.objectTypeBox1.SelectedIndex]),
-                new OracleParameter("second", this.objectTypeIds[this.objectTypeBox2.SelectedIndex]),
-                new OracleParameter("procedure", this.operationTextBox.Text),
-                new OracleParameter("description", this.descriptionTextBox.Text),
-                new OracleParameter("name", this.nameTextBox.Text),
-                new OracleParameter("operation_id", this.id),
-            });
+                query = query + "{0}.second_object_type_id = :second, ";
+                parameters.Add(new OracleParameter("second", this.objectTypeIds[this.objectTypeBox2.SelectedIndex]));
+            } 
+            query = query + "{0}.operation_procedure = :procedure, {0}.operation_description = :description, " +
+                "{0}.operation_name = :name where {0}.operation_id = :operation_id";
+            parameters.Add(new OracleParameter("procedure", this.operationTextBox.Text));
+            parameters.Add(new OracleParameter("description", this.descriptionTextBox.Text));
+            parameters.Add(new OracleParameter("name", this.nameTextBox.Text));
+            parameters.Add(new OracleParameter("operation_id", this.id));
+            QueryProvider.Execute(string.Format(query, Config.s_operation), parameters.ToArray());                
             this.description = this.descriptionTextBox.Text;
         }
 
