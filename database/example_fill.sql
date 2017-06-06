@@ -1,31 +1,32 @@
 insert into owner(owner_name)
-values('DOMODEDOVO_UAG');
+values('KALININGRAD_UAG');
 commit;
 
-insert into object_type(object_name, owner_id)
-values('BUILDINGS', 1);
-insert into object_type(object_name, owner_id)
-values('STREETS', 1);
+insert into object_type(object_name, owner_id, is_geo, theme_name, geo_object_name)
+values('BUILDINGS', 1, 0, 'KLG_BUILDINGS', 'GEO_BUILDINGS_AREA');
+
+insert into object_type(object_name, owner_id, is_geo, theme_name, geo_object_name)
+values('PARCELS', 1, 0, 'KLGD_GEO_PARCELS', 'GEO_PARCELS');
+
+insert into object_type(object_name, owner_id, is_geo, theme_name)
+values('GEO_BUILDINGS_AREA', 1, 1, 'KLG_GEO_BUILDINGS_AREA');
+
+insert into object_type(object_name, owner_id, is_geo, theme_name)
+values('GEO_PARCELS', 1, 1, 'KLGD_GEO_PARCELS');
+
 commit;
 
-insert into cache_object(object_type_id, object_value)
-values(1, 17501);
-insert into cache_object(object_type_id, object_value)
-values(1, 17567);
-insert into cache_object(object_type_id, object_value)
-values(2, 875);
-insert into cache_object(object_type_id, object_value)
-values(2, 881);
-commit;
 
 insert into attribute_type(attribute_name, object_type_id)
 values('FLOORS', 1);
 insert into attribute_type(attribute_name, object_type_id)
-values('TOTAL_AREA', 1);
+values('FUNCTIONALITY_GROUPS_ID', 3);
 insert into attribute_type(attribute_name, object_type_id)
-values('DATE_ACT', 2);
+values('GEOMETRY', 3);
 insert into attribute_type(attribute_name, object_type_id)
-values('COMMENTS', 2);
+values('GEOMETRY', 4);
+
 commit;
 
-grant mosyagin_users to domodedovo_uag;
+grant town_planning_users to kaliningrad_uag;
+grant town_planning_admins to town_planning_code;

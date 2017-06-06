@@ -31,7 +31,10 @@ cache 2;
 create table object_type(
 object_type_id int not null primary key,
 owner_id int not null,
-object_name varchar2(15) not null,
+object_name varchar2(100) not null,
+is_Geo int not null,
+theme_name varchar2(100) not null,
+geo_object_name varchar2(100),
 foreign key(owner_id) references owner(owner_id));
 
 -- создаем триггер для таблицы object_type. Он генерирует первичный ключ таблицы, если при добавление кортежа он отсутствует.
@@ -45,29 +48,6 @@ begin
 end;
 
 commit;
-
--- Создаем последовательность для генерации первичных ключей таблицы cache_object;
-create sequence cache_object_seq
-increment by 1
-start with 1
-cache 2;
-
--- Создаем таблицу cache_object, для хранения объектов доступных для анализа.
-create table cache_object(
-object_id int not null primary key,
-object_type_id int not null,
-object_value int not null,
-foreign key(object_type_id) references object_type(object_type_id));
-
--- создаем триггер для таблицы cache_object. Он генерирует первичный ключ таблицы, если при добавление кортежа он отсутствует.
-create trigger cache_object_trg
-before insert on cache_object
-for each row
-begin 
-    if :new.object_id is null then
-        select cache_object_seq.nextval into :new.object_id from dual;
-    end if;
-end;
 
 -- Создаем последовательность для генерации первичных ключей таблицы session;
 create sequence cache_session_seq start with 1 increment by 1 cache 2;
@@ -90,6 +70,16 @@ end;
 
 commit;
 
+-- Создаем таблицу cache_object, для хранения объектов доступных для анализа.
+create table cache_object(
+session_id int not null,
+object_type_id int not null,
+object_value int not null,
+foreign key(session_id) references cache_session(session_id) on delete cascade,
+foreign key(object_type_id) references object_type(object_type_id));
+
+
+
 -- Создаем последовательность для генерации первичных ключей таблицы attribute_type
 create sequence attribute_type_seq
 increment by 1
@@ -99,7 +89,7 @@ cache 2;
 -- создаем таблицу attribute_type, в которой хранятся метаданные по атрибутам таблиц доступных для анализа.
 create table attribute_type(
 attribute_type_id int not null primary key,
-attribute_name varchar2(15) not null,
+attribute_name varchar2(100) not null,
 object_type_id int not null,
 data_type varchar2(50),
 foreign key(object_type_id) references object_type(object_type_id));
@@ -117,31 +107,22 @@ end;
 commit;
 
 
--- Создаем последовательность для генерации первичных ключей таблицы cache_attribute;
-create sequence cache_attribute_seq start with 1 increment by 1 cache 2;
-
 -- Создаем таблицу cache_attribute, для хранения значений атрибутов.
 create table cache_attribute(
-cache_id int not null primary key,
 session_id int not null,
 attribute_id int not null,
-object_id int not null,
+object_value int not null,
 str_val varchar2(2000),
 number_val number,
 date_val date,
+geometry_val SDO_GEOMETRY,
 foreign key(session_id) references cache_session(session_id) on delete cascade,
-foreign key(attribute_id) references attribute_type(attribute_type_id),
-foreign key(object_id) references cache_object(object_id));
+foreign key(attribute_id) references attribute_type(attribute_type_id));
 
--- cоздаем триггер для таблицы cache_attribute. генерирует первичный ключ таблицы, если при добавление кортежа он отсутствует.
-create trigger cache_attribute_trg
-before insert on cache_attribute
-for each row
-begin
-    if :new.cache_id is null then
-        select cache_attribute_seq.nextval into :new.cache_id from dual;
-    end if;
-end;
+-- insert into user_sdo_geom_metadata(table_name, column_name, diminfo)
+-- values('CACHE_ATTRIBUTE', 'GEOMETRY_VAL', (select us.diminfo from user_sdo_geom_metadata us where table_name = 'GEO_BUILDINGS_AREA')); 
+create index cache_attribute_geometry_idx on cache_attribute(geometry_val)
+indextype is MDSYS.SPATIAL_INDEX;
 
 commit;
 
@@ -156,8 +137,8 @@ create table operation(
 operation_id int not null primary key,
 first_object_type_id int not null,
 second_object_type_id int,
-operation_name varchar2(15) not null,
-operation_procedure varchar2(15) not null,
+operation_name varchar2(100) not null,
+operation_procedure varchar2(100) not null,
 Operation_description varchar2(2000),
 foreign key(first_object_type_id) references object_type(object_type_id),
 foreign key(second_object_type_id) references object_type(object_type_id));
@@ -214,7 +195,7 @@ log_id int not null primary key,
 session_id int not null,
 operation_id int not null,
 first_object_id int not null,
-second_object_id int not null,
+second_object_id int,
 result int not null,
 foreign key(session_id) references cache_session(session_id) on delete cascade,
 foreign key(operation_id) references operation(operation_id) on delete cascade);
@@ -232,32 +213,30 @@ end;
 
 -- Создаем роль пользователя.
 
-create role mosyagin_users;
-grant select on MOSYAGIN.ATTRIBUTE_TYPE to mosyagin_users;
-grant select on MOSYAGIN.OBJECT_TYPE to mosyagin_users;
-grant select on MOSYAGIN.OPERATION to mosyagin_users;
-grant select on MOSYAGIN.RULE to mosyagin_users;
-grant select on MOSYAGIN.RULE_OPERATION to mosyagin_users;
-grant select on MOSYAGIN.CACHE_ATTRIBUTE to mosyagin_users;
-grant select on MOSYAGIN.CACHE_LOG to mosyagin_users;
-grant select on MOSYAGIN.CACHE_OBJECT to mosyagin_users;
-grant select on MOSYAGIN.CACHE_SESSION to mosyagin_users;
-grant select on MOSYAGIN.OWNER to mosyagin_users;
-grant insert on MOSYAGIN.CACHE_ATTRIBUTE to mosyagin_users;
-grant insert on MOSYAGIN.CACHE_LOG to mosyagin_users;
-grant insert on MOSYAGIN.CACHE_OBJECT to mosyagin_users;
-grant insert on MOSYAGIN.CACHE_SESSION to mosyagin_users;
+create role town_planning_users;
+grant select on ATTRIBUTE_TYPE to town_planning_users;
+grant select on OBJECT_TYPE to town_planning_users;
+grant select on OPERATION to town_planning_users;
+grant select on RULE to town_planning_users;
+grant select on RULE_OPERATION to town_planning_users;
+grant select on CACHE_ATTRIBUTE to town_planning_users;
+grant select on CACHE_LOG to town_planning_users;
+grant select on CACHE_OBJECT to town_planning_users;
+grant select on CACHE_SESSION to town_planning_users;
+grant select on OWNER to town_planning_users;
+grant insert on CACHE_ATTRIBUTE to town_planning_users;
+grant insert on CACHE_LOG to town_planning_users;
+grant insert on CACHE_OBJECT to town_planning_users;
+grant insert on CACHE_SESSION to town_planning_users;
 
-create role mosyagin_admins;
-grant mosyagin_users to mosyagin_admins;
-grant insert on mosyagin.operation to mosyagin_admins;
-grant insert on mosyagin.rule to mosyagin_admins;
-grant insert on mosyagin.rule_operation to mosyagin_admins;
-grant delete on mosyagin.operation to mosyagin_admins;
-grant delete on mosyagin.rule to mosyagin_admins;
-grant delete on mosyagin.rule_operation to mosyagin_admins;
-grant update on mosyagin.operation to mosyagin_admins;
-grant update on mosyagin.rule to mosyagin_admins;
-grant update on mosyagin.rule_operation to mosyagin_admins;
-
-Служба вместо сервер.
+create role town_planning_admins;
+grant town_planning_users to town_planning_admins;
+grant insert on operation to town_planning_admins;
+grant insert on rule to town_planning_admins;
+grant insert on rule_operation to town_planning_admins;
+grant delete on operation to town_planning_admins;
+grant delete on rule to town_planning_admins;
+grant delete on rule_operation to town_planning_admins;
+grant update on operation to town_planning_admins;
+grant update on rule to town_planning_admins;
+grant update on rule_operation to town_planning_admins;

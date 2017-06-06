@@ -1,0 +1,114 @@
+CREATE OR REPLACE procedure Load_Cache_Object(sessionId in number, boundaryId in number)
+is
+    type T is record(
+        T_id number
+    );
+    type curType is ref cursor;
+    
+    dataCursor curType;
+    dataTable T;
+
+    boundaryGeometry MDSYS.SDO_GEOMETRY;
+    objectTypeId number;
+    objectName varchar2(100);
+    isGeo number;
+    geoObjectName varchar2(100);
+    query varchar2(2000);
+    primary_column_name varchar2(2000);
+    ff number;
+    cursor allObject is
+    select ot.object_type_id, ot.object_name, ot.is_geo, ot.geo_object_name from object_type ot;
+begin
+    select gdb.geometry into boundaryGeometry
+    from geo_docs_boundary gdb
+    where gdb.docs_boundary_geo_id = boundaryId;
+    
+    open allObject;
+    loop
+        fetch allObject into objectTypeId, objectName, isGeo, geoObjectName;
+        if (allObject%notfound) then
+            exit;
+        end if;
+        query := 'begin select acc.column_name into :primary_column_name from all_constraints ac ' ||
+        'inner join all_cons_columns acc on ac.constraint_name = acc.constraint_name ' || 
+        'where ac.table_name = :table_name and ac.constraint_type = ''' || 'P''' || ';end;';
+        execute immediate query
+        using out primary_column_name, in objectName;
+        
+        if (isGeo = 1) then
+            query := 'select ' || objectName || '.' || primary_column_name ||
+            ' from ' || objectName || ' where SDO_AnyInteract(' ||
+            objectName || '.geometry, :first) = ''TRUE''';
+            -- dbms_output.put_line(query);
+            open dataCursor for query using boundaryGeometry;
+            loop
+                fetch dataCursor into dataTable;
+                if (dataCursor%notfound) then
+                    exit;
+                end if;
+                insert into cache_object(session_id, object_type_id, object_value)
+                values(sessionId, objectTypeId, dataTable.T_id);
+            end loop;
+            close dataCursor;
+            commit;
+        end if;
+        if (isGeo = 0) then
+            query := 'select ' || objectName || '.' || primary_column_name ||
+            ' from ' || objectName || ' inner join ' || geoObjectName || 
+            ' on ' || geoObjectName || '.attribute_id = ' || objectName || '.' ||
+            primary_column_name || ' where SDO_AnyInteract(' ||
+            geoObjectName || '.geometry, :first) = ''TRUE''';
+            -- dbms_output.put_line(query);
+            open dataCursor for query using boundaryGeometry;
+            loop
+                fetch dataCursor into dataTable;
+                if (dataCursor%notfound) then
+                    exit;
+                end if;
+                insert into cache_object(session_id, object_type_id, object_value)
+                values(sessionId, objectTypeId, dataTable.T_id);
+            end loop;
+            close dataCursor;
+            commit;
+        end if;
+    end loop;
+    close allObject;
+end;
+
+create or replace function GetGeoId(objectTypeId in number, objectValue in number) return number
+is   
+    result number;
+    objectName varchar2(100);
+    primary_column_name varchar2(100);
+    geo_primary_column_name varchar2(100);
+    isGeo number;
+    geoObjectName varchar2(100);
+    query varchar2(2000);
+begin
+
+    select ot.object_name, ot.is_geo, ot.geo_object_name
+    into objectName, isGeo, geoObjectName
+    from object_type ot 
+    where ot.object_type_id = objectTypeId;
+
+    if (isGeo = 1) then
+        return objectValue;
+    else
+        query := 'begin select acc.column_name into :primary_column_name from all_constraints ac ' ||
+            'inner join all_cons_columns acc on ac.constraint_name = acc.constraint_name ' || 
+            'where ac.table_name = :table_name and ac.constraint_type = ''' || 'P''' || ';end;';
+        
+            execute immediate query
+            using out primary_column_name, in objectName;
+        
+        execute immediate query
+        using out geo_primary_column_name, in geoObjectName;
+        
+        query := 'begin select ' || geoObjectName || '.' || geo_primary_column_name ||
+        ' into :first from ' || geoObjectName ||
+        ' where ' || geoObjectName || '.attribute_id = :second; end;';
+        execute immediate query
+        using out result, in objectValue;
+        return result;
+    end if;
+end;

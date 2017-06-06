@@ -1,5 +1,5 @@
-drop role mosyagin_admins;
-drop role mosyagin_users;
+drop role town_planning_admins;
+drop role town_planning_users;
 
 
 drop sequence cache_log_seq;
@@ -10,10 +10,8 @@ drop table rule_operation;
 drop sequence rule_seq;
 drop table rule;
 
-drop sequence cache_attribute_seq;
 drop table cache_attribute;
 
-drop sequence cache_object_seq;
 drop table cache_object;
 
 drop sequence operation_seq;

@@ -35,14 +35,19 @@
             this.nameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.searchButton = new System.Windows.Forms.Button();
+            this.searchGroupBox1 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tableGroupBox = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.table)).BeginInit();
+            this.searchGroupBox1.SuspendLayout();
+            this.tableGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // searchLabel
             // 
             this.searchLabel.AutoSize = true;
             this.searchLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.searchLabel.Location = new System.Drawing.Point(12, 14);
+            this.searchLabel.Location = new System.Drawing.Point(17, 42);
             this.searchLabel.Name = "searchLabel";
             this.searchLabel.Size = new System.Drawing.Size(48, 17);
             this.searchLabel.TabIndex = 0;
@@ -51,17 +56,17 @@
             // searchTextBox
             // 
             this.searchTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.searchTextBox.Location = new System.Drawing.Point(66, 14);
+            this.searchTextBox.Location = new System.Drawing.Point(71, 39);
             this.searchTextBox.Name = "searchTextBox";
-            this.searchTextBox.Size = new System.Drawing.Size(374, 23);
+            this.searchTextBox.Size = new System.Drawing.Size(483, 23);
             this.searchTextBox.TabIndex = 1;
             // 
             // closeButton
             // 
-            this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.closeButton.Location = new System.Drawing.Point(478, 418);
+            this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.closeButton.Location = new System.Drawing.Point(479, 352);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(94, 32);
+            this.closeButton.Size = new System.Drawing.Size(75, 23);
             this.closeButton.TabIndex = 2;
             this.closeButton.Text = "Закрыть";
             this.closeButton.UseVisualStyleBackColor = true;
@@ -77,12 +82,12 @@
             this.table.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameColumn,
             this.DescriptionColumn});
-            this.table.Location = new System.Drawing.Point(12, 69);
+            this.table.Location = new System.Drawing.Point(6, 40);
             this.table.MultiSelect = false;
             this.table.Name = "table";
             this.table.ReadOnly = true;
             this.table.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.table.Size = new System.Drawing.Size(560, 261);
+            this.table.Size = new System.Drawing.Size(548, 264);
             this.table.TabIndex = 3;
             this.table.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnEnterRowTable);
             // 
@@ -107,33 +112,65 @@
             // searchButton
             // 
             this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.searchButton.Location = new System.Drawing.Point(470, 9);
+            this.searchButton.Location = new System.Drawing.Point(479, 72);
             this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(102, 32);
+            this.searchButton.Size = new System.Drawing.Size(75, 23);
             this.searchButton.TabIndex = 4;
             this.searchButton.Text = "Искать";
             this.searchButton.UseVisualStyleBackColor = true;
             this.searchButton.Click += new System.EventHandler(this.OnClickSearchButton);
             // 
+            // searchGroupBox1
+            // 
+            this.searchGroupBox1.Controls.Add(this.label1);
+            this.searchGroupBox1.Controls.Add(this.searchLabel);
+            this.searchGroupBox1.Controls.Add(this.searchButton);
+            this.searchGroupBox1.Controls.Add(this.searchTextBox);
+            this.searchGroupBox1.Location = new System.Drawing.Point(12, 12);
+            this.searchGroupBox1.Name = "searchGroupBox1";
+            this.searchGroupBox1.Size = new System.Drawing.Size(560, 101);
+            this.searchGroupBox1.TabIndex = 5;
+            this.searchGroupBox1.TabStop = false;
+            this.searchGroupBox1.Text = "Поиск";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(288, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Для более точной выборки данных используйте поиск.";
+            // 
+            // tableGroupBox
+            // 
+            this.tableGroupBox.Controls.Add(this.table);
+            this.tableGroupBox.Controls.Add(this.closeButton);
+            this.tableGroupBox.Location = new System.Drawing.Point(12, 119);
+            this.tableGroupBox.Name = "tableGroupBox";
+            this.tableGroupBox.Size = new System.Drawing.Size(560, 381);
+            this.tableGroupBox.TabIndex = 6;
+            this.tableGroupBox.TabStop = false;
+            this.tableGroupBox.Text = "Данные";
+            // 
             // SearchBase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 462);
-            this.Controls.Add(this.searchButton);
-            this.Controls.Add(this.table);
-            this.Controls.Add(this.closeButton);
-            this.Controls.Add(this.searchTextBox);
-            this.Controls.Add(this.searchLabel);
+            this.ClientSize = new System.Drawing.Size(584, 512);
+            this.Controls.Add(this.tableGroupBox);
+            this.Controls.Add(this.searchGroupBox1);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(600, 500);
+            this.MaximumSize = new System.Drawing.Size(600, 550);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(600, 500);
+            this.MinimumSize = new System.Drawing.Size(600, 550);
             this.Name = "SearchBase";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             ((System.ComponentModel.ISupportInitialize)(this.table)).EndInit();
+            this.searchGroupBox1.ResumeLayout(false);
+            this.searchGroupBox1.PerformLayout();
+            this.tableGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -145,5 +182,8 @@
         protected System.Windows.Forms.Button searchButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
+        protected System.Windows.Forms.GroupBox searchGroupBox1;
+        protected System.Windows.Forms.Label label1;
+        protected System.Windows.Forms.GroupBox tableGroupBox;
     }
 }

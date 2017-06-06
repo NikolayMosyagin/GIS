@@ -29,7 +29,7 @@ namespace RuleCheck
             base.LoadData();
             var query = "select {0}.object_id, {0}.object_name, {1}.in_out from {0} " +
                 "inner join {1} on {0}.object_id = {1}.object_id" + this.ConditionalSelectToLoadData() +
-            " and {0}.object_type = 'FUNCTION' and {1}.data_type = 'NUMBER' " +
+                " and {0}.object_type = 'FUNCTION' and {1}.data_type = 'NUMBER' " +
                 "order by {0}.object_id";
 
             var result = QueryProvider.Execute(string.Format(query, Config.s_user_procedures, Config.s_user_arguments), this.parameters.ToArray());
@@ -52,7 +52,7 @@ namespace RuleCheck
                 }
                 else
                 {
-                    if ((countIn == 2 || countIn == 1) && countOut == 1)
+                    if ((countIn == 3 || countIn == 2) && countOut == 1)
                     {
                         nameOperations.Add(result.values[i - 1][1].ToString());
                         this.countInParameters.Add(countIn);
@@ -62,7 +62,7 @@ namespace RuleCheck
                     countOut = result.values[i][2].ToString() == "OUT" ? 1 : 0;
                 }
             }
-            if ((countIn == 2 || countIn == 1) && countOut == 1)
+            if ((countIn == 3 || countIn == 2) && countOut == 1)
             {
                 nameOperations.Add(result.values[result.values.Count - 1][1].ToString());
                 this.countInParameters.Add(countIn);
@@ -87,6 +87,14 @@ namespace RuleCheck
             get
             {
                 return "object_name";
+            }
+        }
+
+        protected override int maxCountRow
+        {
+            get
+            {
+                return 3 * base.maxCountRow;
             }
         }
 
@@ -129,7 +137,7 @@ namespace RuleCheck
             }
             this.Enabled = false;
             int num = this.table.SelectedRows[0].Index;
-            var o = InfoOperation.Create(this.data[num].Key, TypeOperation.Add, this.countInParameters[num] == 1);
+            var o = InfoOperation.Create(this.data[num].Key, TypeOperation.Add, this.countInParameters[num] == 2);
             o.onClose = (f) =>
             {
                 this.Enabled = true;
@@ -149,7 +157,7 @@ namespace RuleCheck
         {
             this.Enabled = false;
             int num = this.table.SelectedRows[0].Index;
-            var form = InfoOperation.Create(this.data[num].Key, TypeOperation.Change, this.countInParameters[num] == 1, this.ids[num]);
+            var form = InfoOperation.Create(this.data[num].Key, TypeOperation.Change, this.countInParameters[num] == 2, this.ids[num]);
             form.onClose = (f) =>
             {
                 this.Enabled = true;

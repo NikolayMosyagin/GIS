@@ -37,6 +37,7 @@ namespace RuleCheck
         public SearchBase()
         {
             this.InitializeComponent();
+            this.Configure();
             this.Text = this.TextForm;
             this.data = new List<KeyValuePair<string, string>>();
             this.ids = new List<int>();
@@ -46,6 +47,11 @@ namespace RuleCheck
             this.LoadData();
             this.SelectedRow();
             this.RefreshButtons();
+        }
+
+        protected virtual void Configure()
+        {
+
         }
 
         protected virtual string messageNotSelected
@@ -86,7 +92,7 @@ namespace RuleCheck
         protected string ConditionalSelectToLoadData()
         {
             string result = " where rownum <= :first";
-            this.parameters.Add(new OracleParameter("first", Config.maxCountRow));
+            this.parameters.Add(new OracleParameter("first", this.maxCountRow));
             if (!string.IsNullOrEmpty(this.searchTextBox.Text))
             {
                 result = result + " and SUBSTR({0}." + this.searchName +", 1, :second) = :third";
@@ -94,6 +100,11 @@ namespace RuleCheck
                 parameters.Add(new OracleParameter("third", this.searchTextBox.Text));
             }
             return result;
+        }
+
+        protected virtual int maxCountRow
+        {
+            get { return Config.maxCountRow; }
         }
 
         protected void SelectedRow()

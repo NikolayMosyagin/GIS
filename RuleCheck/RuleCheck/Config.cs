@@ -36,8 +36,12 @@ namespace RuleCheck
         public static string s_user_procedures = "user_procedures";
         public static string s_user_arguments = "user_arguments";
         public static string s_user_role_privs = "user_role_privs";
-        public static string role_admins = "MOSYAGIN_ADMINS";
-        public static string role_users = "MOSYAGIN_USERS";
+        public static string s_boundary = "geo_docs_boundary";
+        public static string role_admins = "TOWN_PLANNING_ADMINS";
+        public static string role_users = "TOWN_PLANNING_USERS";
+        public static string urlMap = "http://cstrade.koenig.ru:7001/Portal/faces/main.jspx?action=selectFeature&themaName={0}&geoAtributes={1}&projectID={2}&mode=PORTAL";
+        public static int projectIdMap = 301;
+        public static string s_themeBoundary = "KLGD_GEO_DOCS_BOUNDARY";
         public static int maxCountRow = 100;
 
         private static string s_pathDirectorySave;

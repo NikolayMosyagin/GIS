@@ -142,5 +142,9 @@ namespace RuleCheck
             ControlSessions.current = null;
         }
 
+        private void ControlSessions_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

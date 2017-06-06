@@ -19,3 +19,61 @@ is
 begin
     RETURN 1;
 end;
+
+
+create or replace function BuildingOutParcel(sessionId in number, objectId1 in number, objectId2 in number) return number
+is
+    	BuildingGeometry MDSYS.SDO_GEOMETRY;
+	ParcelGeometry MDSYS.SDO_GEOMETRY;
+	BuildingAttributeType number;
+	ParcelOAttributeType number;
+	result varchar2(100);
+begin
+	select at.attribute_type_id into BuildingAttributeType
+	from cache_object co
+	inner join attribute_type at on at.object_type_id = co.object_type_id
+	where co.session_id = sessionId and co.object_value = objectId1 and at.attribute_name = 'GEOMETRY';
+	
+	select at.attribute_type_id into ParcelOAttributeType 
+	from cache_object co
+	inner join attribute_type at on at.object_type_id = co.object_type_id
+	where co.session_id = sessionId and co.object_value = objectId2 and at.attribute_name = 'GEOMETRY';
+
+	select ca.geometry_val into ParcelGeometry 
+	from cache_attribute ca
+	where ca.session_id = sessionId and ca.attribute_id = ParcelOAttributeType and ca.object_value = objectId2;
+	
+	select SDO_Relate(ca.geometry_val, SDO_CS.MAKE_2D(ParcelGeometry), 'mask=OVERLAPBDYINTERSECT') into result 
+	from cache_attribute ca
+	where ca.session_id = sessionId and ca.attribute_id = BuildingAttributeType and ca.object_value = objectId1;
+	if result = 'YES' then
+		return 0;
+	else
+		return 1;
+	end if;
+
+end;
+
+create or replace function CheckFunctionalBuilding(sessionId in number, objectId1 in number) return number
+is
+	BuildingAttributeType number;
+	FunctionalId number;
+begin
+	select at.attribute_type_id into BuildingAttributeType
+	from cache_object co
+	inner join attribute_type at on at.object_type_id = co.object_type_id
+	where co.session_id = sessionId and co.object_value = objectId1 and at.attribute_name = 'FUNCTIONALITY_GROUPS_ID';
+	
+	select ca.number_val into FunctionalId
+	from cache_attribute ca
+	where ca.session_id = sessionId and ca.attribute_id = BuildingAttributeType and ca.object_value = objectId1;
+	
+	if (FunctionalId not in (1, 19, 20)) then
+		return 0;
+	else
+		return 1;
+	end if;
+end;
+	
+
+

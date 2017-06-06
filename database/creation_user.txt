@@ -1,0 +1,8 @@
+create user town_planning_code identified by town_planning_code
+default tablespace users quota 1000M on users;
+grant create session to town_planning_code;
+grant create table to town_planning_code;
+grant create procedure to town_planning_code;
+grant create role to town_planning_code;
+grant create trigger to town_planning_code;
+grant create sequence to town_planning_code;

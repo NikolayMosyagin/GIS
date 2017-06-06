@@ -17,6 +17,9 @@ namespace RuleCheck
             this.addButton.Text = this.addButtonText;
             this.updateButton.Text = this.updateButtonText;
             this.deleteButton.Text = this.deleteButtonText;
+            this.tableGroupBox.Controls.Add(this.addButton);
+            this.tableGroupBox.Controls.Add(this.updateButton);
+            this.tableGroupBox.Controls.Add(this.deleteButton);
         }
 
         protected virtual void OnAdd()

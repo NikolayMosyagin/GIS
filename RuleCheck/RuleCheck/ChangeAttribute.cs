@@ -15,6 +15,7 @@ namespace RuleCheck
         Number = 0,
         String = 1,
         Date = 2,
+        Geometry = 3,
     }
     public partial class ChangeAttribute : Form
     {

@@ -30,19 +30,21 @@
         {
             base.InitializeComponent();
             this.selectButton = new System.Windows.Forms.Button();
+            this.searchGroupBox1.SuspendLayout();
+            this.tableGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // closeButton
+            // tableGroupBox
             // 
-            this.closeButton.Location = new System.Drawing.Point(451, 406);
-            this.closeButton.Size = new System.Drawing.Size(121, 44);
+            this.tableGroupBox.Controls.Add(this.selectButton);
+            this.tableGroupBox.Controls.SetChildIndex(this.selectButton, 0);
             // 
             // selectButton
             // 
-            this.selectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.selectButton.Location = new System.Drawing.Point(296, 406);
+            this.selectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.selectButton.Location = new System.Drawing.Point(369, 352);
             this.selectButton.Name = "selectButton";
-            this.selectButton.Size = new System.Drawing.Size(121, 44);
+            this.selectButton.Size = new System.Drawing.Size(76, 23);
             this.selectButton.TabIndex = 4;
             this.selectButton.Text = "Выбрать";
             this.selectButton.UseVisualStyleBackColor = true;
@@ -50,17 +52,16 @@
             // 
             // SelectOperation
             // 
-            //this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            //this.ClientSize = new System.Drawing.Size(584, 462);
-            this.Controls.Add(this.selectButton);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.ClientSize = new System.Drawing.Size(584, 512);
             this.Name = "SelectOperation";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnClosingForm);
-            this.Controls.SetChildIndex(this.selectButton, 0);
-            this.Controls.SetChildIndex(this.searchLabel, 0);
-            this.Controls.SetChildIndex(this.searchTextBox, 0);
-            this.Controls.SetChildIndex(this.closeButton, 0);
+            this.Controls.SetChildIndex(this.searchGroupBox1, 0);
+            this.Controls.SetChildIndex(this.tableGroupBox, 0);
+            this.searchGroupBox1.ResumeLayout(false);
+            this.searchGroupBox1.PerformLayout();
+            this.tableGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

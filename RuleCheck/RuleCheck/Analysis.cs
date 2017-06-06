@@ -15,6 +15,7 @@ namespace RuleCheck
     public partial class Analysis : Form
     {
         private List<int> _ruleIds;
+        private List<int> _boundaryGeoId;
         private int _sessionId;
         private object _date;
         public Action<Analysis> onClose;
@@ -22,6 +23,7 @@ namespace RuleCheck
         public Analysis(int sessionId = -1, object date = null)
         {
             InitializeComponent();
+            this._boundaryGeoId = new List<int>();
             this._ruleIds = new List<int>();
             this._sessionId = sessionId;
             this._date = date;
@@ -39,6 +41,14 @@ namespace RuleCheck
                 this.table.Rows.Add(false, result.values[i][1], result.values[i][2]);
             }
             this.table.AllowUserToAddRows = false;
+
+            query = "select {0}.docs_boundary_geo_id, {0}.name from {0}";
+            result = QueryProvider.Execute(string.Format(query, Config.s_boundary), null);
+            for (int i = 0; i < result.values.Count; ++i)
+            {
+                this._boundaryGeoId.Add(int.Parse(result.values[i][0].ToString()));
+                this.regionComboBox.Items.Add(result.values[i][1]);
+            }
         }
 
         private void OnClickExitButton(object sender, EventArgs e)
@@ -46,34 +56,56 @@ namespace RuleCheck
             this.Close();
         }
 
+
         private void OnClickAnalysisButton(object sender, EventArgs e)
         {
+            if (this.regionComboBox.SelectedIndex < 0)
+            {
+                MessageForm.Create("Выберите область!");
+                return;
+            }
+            string query;
+            bool loadCacheAttribute = false;
             if (this._sessionId == -1)
             {
                 this._sessionId = CreateSession(this.sessionDescription.Text, out this._date);
-                string query = "begin LOAD(:session_id); end;";
-                QueryProvider.Execute(query, new OracleParameter[1]
-                {
-                    new OracleParameter("session_id", OracleDbType.Decimal, this._sessionId, ParameterDirection.Input),
-                });
+                loadCacheAttribute = true;
             }
             else
             {
-                string query = "update {0} set {0}.session_description = :description" +
-                    " where {0}.session_id = :session_id";
+                query = "update {0} set {0}.session_description = :description" +
+                " where {0}.session_id = :session_id";
                 QueryProvider.Execute(string.Format(query, Config.s_session), new OracleParameter[2]
                 {
                     new OracleParameter("description", this.sessionDescription.Text),
                     new OracleParameter("session_id", this._sessionId)
                 });
             }
+
+            query = "begin Load_Cache_Object(:first, :second); end;";
+            QueryProvider.Execute(query, new OracleParameter[2]
+            {
+                new OracleParameter("first", this._sessionId),
+                new OracleParameter("second", this._boundaryGeoId[this.regionComboBox.SelectedIndex]),
+            });
+            
+            if (loadCacheAttribute)
+            {
+                query = "begin Load_Cache_Attribute(:session_id); end;";
+                QueryProvider.Execute(query, new OracleParameter[1]
+                {
+                new OracleParameter("session_id", OracleDbType.Decimal, this._sessionId, ParameterDirection.Input),
+                });
+            }
+            
+
             for (int i = 0; i < this.table.RowCount; ++i)
             {
                 var row = this.table.Rows[i];
                 if ((bool)row.Cells[0].Value)
                 {
                     this.Log.Items.Add(string.Format("Выполнение правила {0}", row.Cells[1].Value));
-                    string query = "select {1}.operation_name, {1}.first_object_type_id" + 
+                    query = "select {1}.operation_name, {1}.first_object_type_id" + 
                         ", {1}.second_object_type_id, {1}.operation_procedure, {1}.operation_id from {0}" +
                         " inner join {1} on {0}.operation_id = {1}.operation_id" +
                         " where {0}.rule_id = :id";
@@ -85,37 +117,26 @@ namespace RuleCheck
                     {
                         this.Log.Items.Add(string.Format("    Выполнение операции {0}", result.values[j][0]));
                         // вытаскиваем все объекты первого типа и второго.
-                        query = "select {0}.object_value from {0} where {0}.object_type_id = :id";
-                        var result1 = QueryProvider.Execute(string.Format(query, Config.s_object), new OracleParameter[1]
+                        query = "select {0}.object_value from {0} where {0}.object_type_id = :id and {0}.session_id = :sessionId";
+                        var result1 = QueryProvider.Execute(string.Format(query, Config.s_object), new OracleParameter[2]
                         {
                             new OracleParameter("id", result.values[j][1]),
+                            new OracleParameter("sessionId", this._sessionId)
                         });
-                        var result2 = QueryProvider.Execute(string.Format(query, Config.s_object), new OracleParameter[1]
+                        var result2 = QueryProvider.Execute(string.Format(query, Config.s_object), new OracleParameter[2]
                         {
                             new OracleParameter("id", result.values[j][2]),
+                            new OracleParameter("sessionId", this._sessionId),
                         });
                         for (int k1 = 0; k1 < result1.values.Count; ++k1)
                         {
+                            if (result2.values.Count == 0)
+                            {
+                                this.ExecuteOperation(result.values[j][3].ToString(), int.Parse(result.values[j][4].ToString()), result1.values[k1][0], null);
+                            }
                             for (int k2 = 0; k2 < result2.values.Count; ++k2)
                             {
-                                // выполнить процедуру
-                                query = "select {0}(:first, :second) from dual";
-                                var resultFunction = QueryProvider.Execute(string.Format(query, result.values[j][3]), new OracleParameter[2]
-                                {
-                                    new OracleParameter("first", result1.values[k1][0]),
-                                    new OracleParameter("second", result2.values[k2][0]),
-                                });
-                                this.Log.Items.Add(string.Format("      Результат выполнения {0}-{1}: {2}", result1.values[k1][0], result2.values[k2][0], resultFunction.values[0][0]));
-                                query = "insert into {0}(session_id, operation_id, first_object_id, second_object_id, result)" +
-                                    " values(:s_id, :o_id, :fo_id, :so_id, :result)";
-                                QueryProvider.Execute(string.Format(query, Config.s_log), new OracleParameter[5]
-                                {
-                                    new OracleParameter("s_id", this._sessionId),
-                                    new OracleParameter("o_id", result.values[j][4]),
-                                    new OracleParameter("fo_id", result1.values[k1][0]),
-                                    new OracleParameter("so_id", result2.values[k2][0]),
-                                    new OracleParameter("result", resultFunction.values[0][0]),
-                                });
+                                this.ExecuteOperation(result.values[j][3].ToString(), int.Parse(result.values[j][4].ToString()), result1.values[k1][0], result2.values[k2][0]);
                             }
                         }
                     }
@@ -173,6 +194,44 @@ namespace RuleCheck
             {
                 ControlSessions.current.AddData(this._sessionId, this._date, this.sessionDescription.Text);
             }
+        }
+
+        private void ExecuteOperation(string name, int operationId, object obj1, object obj2)
+        {
+            string query = "select {0}(:first, :second";
+            List<OracleParameter> parameters = new List<OracleParameter>();
+            parameters.Add(new OracleParameter("first", this._sessionId));
+            parameters.Add(new OracleParameter("second", obj1));
+            if (obj2 != null)
+            {
+                query = query + ", :third";
+                parameters.Add(new OracleParameter("third", obj2));
+            }
+            query = query + ") from dual";
+            var resultFunction = QueryProvider.Execute(string.Format(query, name), parameters.ToArray());
+            this.Log.Items.Add(string.Format("      Результат выполнения {0}-{1}: {2}", obj1, obj2, resultFunction.values[0][0]));
+            query = "insert into {0}(session_id, operation_id, first_object_id, second_object_id, result)" +
+                " values(:s_id, :o_id, :fo_id, :so_id, :result)";
+            QueryProvider.Execute(string.Format(query, Config.s_log), new OracleParameter[5]
+            {
+                new OracleParameter("s_id", this._sessionId),
+                new OracleParameter("o_id", operationId),
+                new OracleParameter("fo_id", obj1),
+                new OracleParameter("so_id", obj2),
+                new OracleParameter("result", resultFunction.values[0][0]),
+            });
+        }
+
+        private void OnClickMapButton(object sender, EventArgs e)
+        {
+            int i = -1;
+            if ((i = this.regionComboBox.SelectedIndex) < 0)
+            {
+                MessageForm.Create("Выберите область.");
+                return;
+            }
+
+            System.Diagnostics.Process.Start(string.Format(Config.urlMap, Config.s_themeBoundary, this._boundaryGeoId[i], Config.projectIdMap));
         }
     }
 }

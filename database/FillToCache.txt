@@ -1,8 +1,8 @@
-create or replace procedure Load(session_id in number) is
+create or replace procedure Load_Cache_Attribute(sessionId in number) is
     value_number number;
     value_str varchar2(2000);
     value_date date;
-    t_object_id int;
+    value_geometry MDSYS.SDO_GEOMETRY;
     t_object_type_id int;
     t_object_value int;
     table_object_id int;
@@ -16,7 +16,7 @@ create or replace procedure Load(session_id in number) is
     t_attribute_type_id int;
     count_row int;
     cursor o is
-    select cache_object.object_id, cache_object.object_type_id, cache_object.object_value from cache_object;
+    select cache_object.object_type_id, cache_object.object_value from cache_object where cache_object.session_id = sessionId;
     cursor types is
     select attribute_type.attribute_type_id, attribute_type.attribute_name, attribute_type.object_type_id from attribute_type;
     cursor col is
@@ -44,7 +44,7 @@ begin
     -- Открываем курсор, который проходится по всем объектам
     open o;
     loop
-        fetch o into t_object_id, t_object_type_id, t_object_value;
+        fetch o into t_object_type_id, t_object_value;
         if (o%notfound) then
             exit;
         end if;
@@ -81,13 +81,19 @@ begin
                 execute immediate query
                 using out value_date, in t_object_value;
             end if;
+	    if (lower(column_type) = 'sdo_geometry') then
+                execute immediate query
+                using out value_geometry, in t_object_value;
+            end if;
 	    -- записываем новый кортеж в таблицу info_cache
             if (lower(column_type) = 'number') then
-                insert into cache_attribute(session_id, attribute_id, object_id, number_val) values(session_id, t_attribute_type_id, t_object_id, value_number);
+                insert into cache_attribute(session_id, attribute_id, object_value, number_val) values(sessionId, t_attribute_type_id, t_object_value, value_number);
             elsif (lower(column_type) = 'varchar2') then
-                insert into cache_attribute(session_id, attribute_id, object_id, str_val) values(session_id, t_attribute_type_id, t_object_id, value_str);
+                insert into cache_attribute(session_id, attribute_id, object_value, str_val) values(sessionId, t_attribute_type_id, t_object_value, value_str);
             elsif (lower(column_type) = 'date') then
-                insert into cache_attribute(session_id, attribute_id, object_id, date_val) values(session_id, t_attribute_type_id, t_object_id, value_date);
+                insert into cache_attribute(session_id, attribute_id, object_value, date_val) values(sessionId, t_attribute_type_id, t_object_value, value_date);
+	    elsif (lower(column_type) = 'sdo_geometry') then
+                insert into cache_attribute(session_id, attribute_id, object_value, geometry_val) values(sessionId, t_attribute_type_id, t_object_value, value_geometry);
             end if;
         end loop;
         close col;
