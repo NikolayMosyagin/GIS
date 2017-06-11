@@ -32,11 +32,17 @@ namespace RuleCheck
         {
             this.Hide();
             var form = new ControlSessions();
+            ControlSessions.current = form;
             form.FormClosing += (s, e1) =>
             {
                 this.Show();
             };
             form.Show();
+        }
+
+        private void OnClickCloseButton(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

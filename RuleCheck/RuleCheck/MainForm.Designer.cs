@@ -31,9 +31,10 @@
             this.adminButton = new System.Windows.Forms.Button();
             this.analysisButton = new System.Windows.Forms.Button();
             this.administrationGroupBox = new System.Windows.Forms.GroupBox();
-            this.analisysGroupBox = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.analisysGroupBox = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.exitButton = new System.Windows.Forms.Button();
             this.administrationGroupBox.SuspendLayout();
             this.analisysGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -72,6 +73,16 @@
             this.administrationGroupBox.TabStop = false;
             this.administrationGroupBox.Text = "Администрирование";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(313, 39);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Режим администрирования доступен пользователям,\r\nимеющим права администратора. Во" +
+    "зможность добавлять,\r\nудалять и изменять операции и правила.";
+            // 
             // analisysGroupBox
             // 
             this.analisysGroupBox.Controls.Add(this.label2);
@@ -82,16 +93,6 @@
             this.analisysGroupBox.TabIndex = 3;
             this.analisysGroupBox.TabStop = false;
             this.analisysGroupBox.Text = "Анализ";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(313, 39);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Режим администрирования доступен пользователям,\r\nимеющим права администратора. Во" +
-    "зможность добавлять,\r\nудалять и изменять операции и правила.";
             // 
             // label2
             // 
@@ -104,17 +105,28 @@
     "ратора. Возможность \r\nвыполнения одного или нескольких правил и просмотр \r\nрезул" +
     "ьтатов.";
             // 
+            // exitButton
+            // 
+            this.exitButton.Location = new System.Drawing.Point(276, 255);
+            this.exitButton.Name = "exitButton";
+            this.exitButton.Size = new System.Drawing.Size(75, 23);
+            this.exitButton.TabIndex = 4;
+            this.exitButton.Text = "Выход";
+            this.exitButton.UseVisualStyleBackColor = true;
+            this.exitButton.Click += new System.EventHandler(this.OnClickExitButton);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(363, 262);
+            this.ClientSize = new System.Drawing.Size(363, 290);
+            this.Controls.Add(this.exitButton);
             this.Controls.Add(this.analisysGroupBox);
             this.Controls.Add(this.administrationGroupBox);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(379, 300);
+            this.MaximumSize = new System.Drawing.Size(379, 328);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(379, 300);
+            this.MinimumSize = new System.Drawing.Size(379, 328);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Главная форма";
@@ -134,5 +146,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox analisysGroupBox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button exitButton;
     }
 }

@@ -149,7 +149,8 @@ namespace RuleCheck
             {
                 return;
             }
-            string query = "insert into {0}(first_object_type_id, {1}operation_name, operation_procedure, operation_description)" +
+            string query = "insert into {0}(first_object_type_id, {1}operation_name, operation_procedure, " + 
+                "operation_description)" +
                 " values(:id1, {2}:name, :procedure, :description) returning {0}.operation_id into :operation_id";
             List<OracleParameter> parameters = new List<OracleParameter>();
             parameters.Add(new OracleParameter("id1", this.objectTypeIds[this.objectTypeBox1.SelectedIndex]));
@@ -162,7 +163,10 @@ namespace RuleCheck
             parameters.Add(new OracleParameter("description", this.descriptionTextBox.Text));
             parameters.Add(new OracleParameter("operation_id", OracleDbType.Decimal, ParameterDirection.Output));
             var result = QueryProvider.Execute(
-                string.Format(query, Config.s_operation, !this._isUnary ? "second_object_type_id, " : "", !this._isUnary ? ":id2, " : ""), 
+                string.Format(query, 
+                    Config.s_operation, 
+                    !this._isUnary ? "second_object_type_id, " : "", 
+                    !this._isUnary ? ":id2, " : ""), 
                 parameters.ToArray());
             this.id = ((OracleDecimal)result.parametersOut[0]).ToInt32();
             this.description = this.descriptionTextBox.Text;

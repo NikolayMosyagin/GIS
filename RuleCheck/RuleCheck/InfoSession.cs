@@ -86,31 +86,36 @@ namespace RuleCheck
                 {
                     int objectValue = int.Parse(
                         this.table.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
-                    string query = "select {1}.theme_name, {1}.object_type_id from {0} inner join {1} " +
-                        "on {0}.object_type_id = {1}.object_type_id " +
-                        "where {0}.session_id = :first and {0}.object_value = :second";
-                    var result = QueryProvider.Execute(string.Format(query, Config.s_object, Config.s_object_type), new OracleParameter[2]
-                    {
-                        new OracleParameter("first", this._session_id),
-                        new OracleParameter("second", objectValue),
-                    });
-
-                    if (result.values.Count > 0)
-                    {
-                        string themeName = result.values[0][0].ToString();
-                        int objectTypeId = int.Parse(result.values[0][1].ToString());
-                        query = "select GetGeoId(:first, :second) from dual";
-                        result = QueryProvider.Execute(query, new OracleParameter[2]
-                        {
-                            new OracleParameter("first", objectTypeId),
-                            new OracleParameter("second", objectValue),
-                        });
-                        int geoObjectId = int.Parse(result.values[0][0].ToString());
-                        System.Diagnostics.Process.Start(string.Format(Config.urlMap, themeName, geoObjectId, Config.projectIdMap));
-                    }
+                    ShowObjectOnMap(this._session_id, objectValue);
                 }
             });
 
+        }
+
+        public static void ShowObjectOnMap(int sessionId, int objectValue)
+        {
+            string query = "select {1}.theme_name, {1}.object_type_id from {0} inner join {1} " +
+                "on {0}.object_type_id = {1}.object_type_id " +
+                "where {0}.session_id = :first and {0}.object_value = :second";
+            var result = QueryProvider.Execute(string.Format(query, Config.s_object, Config.s_object_type), new OracleParameter[2]
+            {
+                new OracleParameter("first", sessionId),
+                new OracleParameter("second", objectValue),
+            });
+
+            if (result.values.Count > 0)
+            {
+                string themeName = result.values[0][0].ToString();
+                int objectTypeId = int.Parse(result.values[0][1].ToString());
+                query = "select GetGeoId(:first, :second) from dual";
+                result = QueryProvider.Execute(query, new OracleParameter[2]
+                {
+                            new OracleParameter("first", objectTypeId),
+                            new OracleParameter("second", objectValue),
+                });
+                int geoObjectId = int.Parse(result.values[0][0].ToString());
+                System.Diagnostics.Process.Start(string.Format(Config.urlMap, themeName, geoObjectId, Config.projectIdMap));
+            }
         }
     }
 }

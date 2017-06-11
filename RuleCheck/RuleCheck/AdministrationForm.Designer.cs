@@ -35,6 +35,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.ruleGroupBox = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.exitButton = new System.Windows.Forms.Button();
             this.operationGroupBox.SuspendLayout();
             this.ruleGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -102,17 +103,28 @@
             this.label2.Text = "Просмотр, добавление, изменение и удаление правил.\r\nПравило - список операций, ко" +
     "торые необходимо проверить.";
             // 
+            // exitButton
+            // 
+            this.exitButton.Location = new System.Drawing.Point(276, 266);
+            this.exitButton.Name = "exitButton";
+            this.exitButton.Size = new System.Drawing.Size(75, 23);
+            this.exitButton.TabIndex = 4;
+            this.exitButton.Text = "Назад";
+            this.exitButton.UseVisualStyleBackColor = true;
+            this.exitButton.Click += new System.EventHandler(this.OnClickExitButton);
+            // 
             // AdministrationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(363, 262);
+            this.ClientSize = new System.Drawing.Size(363, 301);
+            this.Controls.Add(this.exitButton);
             this.Controls.Add(this.ruleGroupBox);
             this.Controls.Add(this.operationGroupBox);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(379, 300);
+            this.MaximumSize = new System.Drawing.Size(379, 339);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(379, 300);
+            this.MinimumSize = new System.Drawing.Size(379, 339);
             this.Name = "AdministrationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Администрирование";
@@ -132,5 +144,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox ruleGroupBox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button exitButton;
     }
 }

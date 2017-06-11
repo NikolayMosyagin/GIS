@@ -38,5 +38,10 @@ namespace RuleCheck
             };
             form.Show();
         }
+
+        private void OnClickExitButton(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

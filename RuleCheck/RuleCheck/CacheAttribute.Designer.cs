@@ -56,6 +56,9 @@
             this.table.AllowUserToDeleteRows = false;
             this.table.AllowUserToResizeColumns = false;
             this.table.AllowUserToResizeRows = false;
+            this.table.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.table.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.table.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.AttributeColumn,
@@ -69,37 +72,39 @@
             this.table.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.table.Size = new System.Drawing.Size(575, 272);
             this.table.TabIndex = 0;
+            this.table.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnClickCellTable);
             // 
             // AttributeColumn
             // 
+            this.AttributeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.AttributeColumn.HeaderText = "Атрибут";
             this.AttributeColumn.Name = "AttributeColumn";
             this.AttributeColumn.ReadOnly = true;
-            this.AttributeColumn.Width = 150;
             // 
             // ObjectColumn
             // 
+            this.ObjectColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ObjectColumn.HeaderText = "Объект";
             this.ObjectColumn.Name = "ObjectColumn";
             this.ObjectColumn.ReadOnly = true;
-            this.ObjectColumn.Width = 150;
             // 
             // numObjectColumn
             // 
+            this.numObjectColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.numObjectColumn.HeaderText = "Номер объекта";
             this.numObjectColumn.Name = "numObjectColumn";
             this.numObjectColumn.ReadOnly = true;
-            this.numObjectColumn.Width = 110;
             // 
             // ValueColumn
             // 
+            this.ValueColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ValueColumn.HeaderText = "Значение";
             this.ValueColumn.Name = "ValueColumn";
             this.ValueColumn.ReadOnly = true;
-            this.ValueColumn.Width = 120;
             // 
             // closeButton
             // 
+            this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.closeButton.Location = new System.Drawing.Point(504, 342);
             this.closeButton.Name = "closeButton";
@@ -111,6 +116,7 @@
             // 
             // analisysButton
             // 
+            this.analisysButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.analisysButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.analisysButton.Location = new System.Drawing.Point(338, 342);
             this.analisysButton.Name = "analisysButton";
@@ -122,6 +128,7 @@
             // 
             // changeButton
             // 
+            this.changeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.changeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.changeButton.Location = new System.Drawing.Point(423, 342);
             this.changeButton.Name = "changeButton";
@@ -153,9 +160,11 @@
             // 
             // attributeTextBox
             // 
+            this.attributeTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.attributeTextBox.Location = new System.Drawing.Point(59, 35);
             this.attributeTextBox.Name = "attributeTextBox";
-            this.attributeTextBox.Size = new System.Drawing.Size(365, 20);
+            this.attributeTextBox.Size = new System.Drawing.Size(405, 20);
             this.attributeTextBox.TabIndex = 6;
             // 
             // objectLabel
@@ -170,24 +179,29 @@
             // 
             // objectTextBox
             // 
+            this.objectTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.objectTextBox.Location = new System.Drawing.Point(57, 61);
             this.objectTextBox.Name = "objectTextBox";
-            this.objectTextBox.Size = new System.Drawing.Size(367, 20);
+            this.objectTextBox.Size = new System.Drawing.Size(407, 20);
             this.objectTextBox.TabIndex = 8;
             // 
             // searchButton
             // 
+            this.searchButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.searchButton.Location = new System.Drawing.Point(481, 45);
+            this.searchButton.Location = new System.Drawing.Point(500, 45);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(69, 23);
             this.searchButton.TabIndex = 9;
-            this.searchButton.Text = "Поиск";
+            this.searchButton.Text = "Искать";
             this.searchButton.UseVisualStyleBackColor = true;
             this.searchButton.Click += new System.EventHandler(this.OnClickSearchButton);
             // 
             // searchGroupBox
             // 
+            this.searchGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.searchGroupBox.Controls.Add(this.searchButton);
             this.searchGroupBox.Controls.Add(this.searchLabel);
             this.searchGroupBox.Controls.Add(this.objectTextBox);
@@ -203,6 +217,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.table);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.changeButton);
@@ -250,10 +267,6 @@
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button analisysButton;
         private System.Windows.Forms.Button changeButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AttributeColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ObjectColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn numObjectColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
         private System.Windows.Forms.Label searchLabel;
         private System.Windows.Forms.Label attributeLabel;
         private System.Windows.Forms.TextBox attributeTextBox;
@@ -263,5 +276,9 @@
         private System.Windows.Forms.GroupBox searchGroupBox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AttributeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ObjectColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numObjectColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ValueColumn;
     }
 }

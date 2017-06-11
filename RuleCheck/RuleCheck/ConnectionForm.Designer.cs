@@ -40,10 +40,10 @@
             // 
             // EnterButton
             // 
-            this.EnterButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.EnterButton.Location = new System.Drawing.Point(39, 218);
+            this.EnterButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.EnterButton.Location = new System.Drawing.Point(233, 227);
             this.EnterButton.Name = "EnterButton";
-            this.EnterButton.Size = new System.Drawing.Size(94, 32);
+            this.EnterButton.Size = new System.Drawing.Size(66, 23);
             this.EnterButton.TabIndex = 0;
             this.EnterButton.Text = "Войти";
             this.EnterButton.UseVisualStyleBackColor = true;
@@ -51,10 +51,10 @@
             // 
             // exitButton
             // 
-            this.exitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.exitButton.Location = new System.Drawing.Point(252, 218);
+            this.exitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.exitButton.Location = new System.Drawing.Point(305, 227);
             this.exitButton.Name = "exitButton";
-            this.exitButton.Size = new System.Drawing.Size(94, 32);
+            this.exitButton.Size = new System.Drawing.Size(67, 23);
             this.exitButton.TabIndex = 1;
             this.exitButton.Text = "Отмена";
             this.exitButton.UseVisualStyleBackColor = true;
@@ -122,8 +122,10 @@
             // 
             // ConnectionForm
             // 
+            this.AcceptButton = this.EnterButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.exitButton;
             this.ClientSize = new System.Drawing.Size(384, 262);
             this.Controls.Add(this.serviceTextBox);
             this.Controls.Add(this.label1);

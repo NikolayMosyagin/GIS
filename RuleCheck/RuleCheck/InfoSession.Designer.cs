@@ -34,6 +34,10 @@
             this.descriptionTextBox = new System.Windows.Forms.TextBox();
             this.dateTextBox = new System.Windows.Forms.TextBox();
             this.table = new System.Windows.Forms.DataGridView();
+            this.descriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.firstObjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.secondObjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.resultColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.closeButton = new System.Windows.Forms.Button();
             this.searchLabel = new System.Windows.Forms.Label();
             this.operationLabel = new System.Windows.Forms.Label();
@@ -45,10 +49,8 @@
             this.searchGroupBox = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.descriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.firstObjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.secondObjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.resultColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.mapButton1 = new System.Windows.Forms.Button();
+            this.mapButton2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.table)).BeginInit();
             this.InfoGroupBox.SuspendLayout();
             this.searchGroupBox.SuspendLayout();
@@ -88,6 +90,8 @@
             // 
             // descriptionTextBox
             // 
+            this.descriptionTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.descriptionTextBox.Location = new System.Drawing.Point(114, 41);
             this.descriptionTextBox.Multiline = true;
             this.descriptionTextBox.Name = "descriptionTextBox";
@@ -96,6 +100,8 @@
             // 
             // dateTextBox
             // 
+            this.dateTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dateTextBox.Location = new System.Drawing.Point(126, 27);
             this.dateTextBox.Name = "dateTextBox";
             this.dateTextBox.Size = new System.Drawing.Size(451, 20);
@@ -107,6 +113,9 @@
             this.table.AllowUserToDeleteRows = false;
             this.table.AllowUserToResizeColumns = false;
             this.table.AllowUserToResizeRows = false;
+            this.table.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.table.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.table.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.descriptionColumn,
@@ -118,12 +127,41 @@
             this.table.Name = "table";
             this.table.ReadOnly = true;
             this.table.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.table.Size = new System.Drawing.Size(554, 233);
+            this.table.Size = new System.Drawing.Size(554, 214);
             this.table.TabIndex = 5;
             this.table.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnClickCellTable);
             // 
+            // descriptionColumn
+            // 
+            this.descriptionColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.descriptionColumn.HeaderText = "Имя операции";
+            this.descriptionColumn.Name = "descriptionColumn";
+            this.descriptionColumn.ReadOnly = true;
+            // 
+            // firstObjectColumn
+            // 
+            this.firstObjectColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.firstObjectColumn.HeaderText = "Первый объект";
+            this.firstObjectColumn.Name = "firstObjectColumn";
+            this.firstObjectColumn.ReadOnly = true;
+            // 
+            // secondObjectColumn
+            // 
+            this.secondObjectColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.secondObjectColumn.HeaderText = "Второй объект";
+            this.secondObjectColumn.Name = "secondObjectColumn";
+            this.secondObjectColumn.ReadOnly = true;
+            // 
+            // resultColumn
+            // 
+            this.resultColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.resultColumn.HeaderText = "Результат";
+            this.resultColumn.Name = "resultColumn";
+            this.resultColumn.ReadOnly = true;
+            // 
             // closeButton
             // 
+            this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.closeButton.Location = new System.Drawing.Point(513, 527);
             this.closeButton.Name = "closeButton";
@@ -155,6 +193,8 @@
             // 
             // operationTextBox
             // 
+            this.operationTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.operationTextBox.Location = new System.Drawing.Point(92, 39);
             this.operationTextBox.Name = "operationTextBox";
             this.operationTextBox.Size = new System.Drawing.Size(351, 20);
@@ -162,12 +202,13 @@
             // 
             // searchButton
             // 
+            this.searchButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.searchButton.Location = new System.Drawing.Point(490, 48);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(70, 23);
             this.searchButton.TabIndex = 1;
-            this.searchButton.Text = "Поиск";
+            this.searchButton.Text = "Искать";
             this.searchButton.UseVisualStyleBackColor = true;
             this.searchButton.Click += new System.EventHandler(this.OnClickSearchButton);
             // 
@@ -183,6 +224,8 @@
             // 
             // resultComboBox
             // 
+            this.resultComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.resultComboBox.FormattingEnabled = true;
             this.resultComboBox.Items.AddRange(new object[] {
             "Выполнено",
@@ -194,6 +237,8 @@
             // 
             // InfoGroupBox
             // 
+            this.InfoGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.InfoGroupBox.Controls.Add(this.descriptionTextBox);
             this.InfoGroupBox.Controls.Add(this.creationDateLabel);
             this.InfoGroupBox.Controls.Add(this.descriptionLabel);
@@ -206,6 +251,8 @@
             // 
             // searchGroupBox
             // 
+            this.searchGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.searchGroupBox.Controls.Add(this.searchButton);
             this.searchGroupBox.Controls.Add(this.resultComboBox);
             this.searchGroupBox.Controls.Add(this.searchLabel);
@@ -221,6 +268,11 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.mapButton2);
+            this.groupBox1.Controls.Add(this.mapButton1);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.table);
             this.groupBox1.Location = new System.Drawing.Point(12, 214);
@@ -240,32 +292,23 @@
             this.label1.Text = "Информация результатов выполнения анализа. Макс. кол-во записей: 100. Нажмите на " +
     "ячейку с объектом, \r\nчтобы посмотреть его на карте\r\n";
             // 
-            // descriptionColumn
+            // mapButton1
             // 
-            this.descriptionColumn.HeaderText = "Имя операции";
-            this.descriptionColumn.Name = "descriptionColumn";
-            this.descriptionColumn.ReadOnly = true;
-            this.descriptionColumn.Width = 180;
+            this.mapButton1.Location = new System.Drawing.Point(6, 278);
+            this.mapButton1.Name = "mapButton1";
+            this.mapButton1.Size = new System.Drawing.Size(144, 23);
+            this.mapButton1.TabIndex = 16;
+            this.mapButton1.Text = "Первый объект на карте";
+            this.mapButton1.UseVisualStyleBackColor = true;
             // 
-            // firstObjectColumn
+            // mapButton2
             // 
-            this.firstObjectColumn.HeaderText = "Первый объект";
-            this.firstObjectColumn.Name = "firstObjectColumn";
-            this.firstObjectColumn.ReadOnly = true;
-            this.firstObjectColumn.Width = 115;
-            // 
-            // secondObjectColumn
-            // 
-            this.secondObjectColumn.HeaderText = "Второй объект";
-            this.secondObjectColumn.Name = "secondObjectColumn";
-            this.secondObjectColumn.ReadOnly = true;
-            this.secondObjectColumn.Width = 115;
-            // 
-            // resultColumn
-            // 
-            this.resultColumn.HeaderText = "Результат";
-            this.resultColumn.Name = "resultColumn";
-            this.resultColumn.ReadOnly = true;
+            this.mapButton2.Location = new System.Drawing.Point(156, 278);
+            this.mapButton2.Name = "mapButton2";
+            this.mapButton2.Size = new System.Drawing.Size(143, 23);
+            this.mapButton2.TabIndex = 17;
+            this.mapButton2.Text = "Второй объект на карте";
+            this.mapButton2.UseVisualStyleBackColor = true;
             // 
             // InfoSession
             // 
@@ -316,5 +359,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn firstObjectColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn secondObjectColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn resultColumn;
+        private System.Windows.Forms.Button mapButton2;
+        private System.Windows.Forms.Button mapButton1;
     }
 }

@@ -132,9 +132,9 @@ namespace RuleCheck
                     " values(:name, :description) returning {0}.rule_id into :id";
                 var result = QueryProvider.Execute(string.Format(query, Config.s_rule), new OracleParameter[3]
                 {
-                new OracleParameter("name", this.nameText.Text),
-                new OracleParameter("description", this.descriptionText.Text),
-                new OracleParameter("id", OracleDbType.Decimal, ParameterDirection.Output),
+                    new OracleParameter("name", this.nameText.Text),
+                    new OracleParameter("description", this.descriptionText.Text),
+                    new OracleParameter("id", OracleDbType.Decimal, ParameterDirection.Output),
                 });
                 this.id = ((OracleDecimal)result.parametersOut[0]).ToInt32();
             }

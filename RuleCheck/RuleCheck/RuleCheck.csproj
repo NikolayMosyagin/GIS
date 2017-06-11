@@ -219,6 +219,9 @@
     <EmbeddedResource Include="ConstructorBase.resx">
       <DependentUpon>ConstructorBase.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConstructorOperation.resx">
+      <DependentUpon>ConstructorOperation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ControlSessions.resx">
       <DependentUpon>ControlSessions.cs</DependentUpon>
     </EmbeddedResource>

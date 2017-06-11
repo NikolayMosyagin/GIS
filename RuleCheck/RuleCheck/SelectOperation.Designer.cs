@@ -37,12 +37,14 @@
             // tableGroupBox
             // 
             this.tableGroupBox.Controls.Add(this.selectButton);
+            this.tableGroupBox.Controls.SetChildIndex(this.closeButton, 0);
             this.tableGroupBox.Controls.SetChildIndex(this.selectButton, 0);
             // 
             // selectButton
             // 
+            this.selectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.selectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.selectButton.Location = new System.Drawing.Point(369, 352);
+            this.selectButton.Location = new System.Drawing.Point(397, 352);
             this.selectButton.Name = "selectButton";
             this.selectButton.Size = new System.Drawing.Size(76, 23);
             this.selectButton.TabIndex = 4;
@@ -61,6 +63,7 @@
             this.searchGroupBox1.ResumeLayout(false);
             this.searchGroupBox1.PerformLayout();
             this.tableGroupBox.ResumeLayout(false);
+            this.tableGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }

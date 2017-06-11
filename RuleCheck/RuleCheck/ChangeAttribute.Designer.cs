@@ -110,10 +110,10 @@
             // 
             // closeButton
             // 
-            this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.closeButton.Location = new System.Drawing.Point(299, 219);
+            this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.closeButton.Location = new System.Drawing.Point(322, 191);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(93, 32);
+            this.closeButton.Size = new System.Drawing.Size(70, 23);
             this.closeButton.TabIndex = 8;
             this.closeButton.Text = "Отмена";
             this.closeButton.UseVisualStyleBackColor = true;
@@ -121,10 +121,10 @@
             // 
             // applyButton
             // 
-            this.applyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.applyButton.Location = new System.Drawing.Point(170, 218);
+            this.applyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.applyButton.Location = new System.Drawing.Point(241, 191);
             this.applyButton.Name = "applyButton";
-            this.applyButton.Size = new System.Drawing.Size(93, 32);
+            this.applyButton.Size = new System.Drawing.Size(75, 23);
             this.applyButton.TabIndex = 9;
             this.applyButton.Text = "Применить";
             this.applyButton.UseVisualStyleBackColor = true;
@@ -134,7 +134,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(404, 262);
+            this.ClientSize = new System.Drawing.Size(404, 226);
             this.Controls.Add(this.applyButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.valueTextBox);
@@ -146,7 +146,7 @@
             this.Controls.Add(this.attributeTextBox);
             this.Controls.Add(this.attributeName);
             this.Name = "ChangeAttribute";
-            this.Text = "ChangeAttribute";
+            this.Text = "Изменение параметра";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnClosingForm);
             this.ResumeLayout(false);
             this.PerformLayout();

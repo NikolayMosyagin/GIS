@@ -33,8 +33,8 @@ namespace RuleCheck
 
         public static void OpenConnection()
         {
-            if (_s_connection == null || _s_connection.State == System.Data.ConnectionState.Closed ||
-                    _s_connection.State == System.Data.ConnectionState.Broken)
+            if (_s_connection == null || _s_connection.State == System.Data.ConnectionState.Closed
+                || _s_connection.State == System.Data.ConnectionState.Broken)
             {
                 _s_connection = new OracleConnection(s_cns);
                 try

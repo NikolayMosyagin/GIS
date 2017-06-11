@@ -36,7 +36,7 @@ namespace RuleCheck
 
         public virtual string addButtonText
         {
-            get { return "Добавить"; }
+            get { return "Добавить..."; }
         }
 
         public virtual string deleteButtonText
@@ -46,7 +46,7 @@ namespace RuleCheck
 
         public virtual string updateButtonText
         {
-            get { return "Изменить"; }
+            get { return "Изменить..."; }
         }
 
         public virtual string onDeleteText
@@ -101,6 +101,5 @@ namespace RuleCheck
                     }
                 });
         }
-
     }
 }

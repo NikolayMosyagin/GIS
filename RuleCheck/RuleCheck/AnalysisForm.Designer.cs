@@ -34,6 +34,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.sessionGroupBox = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.closeButton = new System.Windows.Forms.Button();
             this.analisysGroupBox.SuspendLayout();
             this.sessionGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -103,17 +104,28 @@
     "акже копирование и \r\nизменение данных объектов и выполенине анализа над \r\nэтими " +
     "данными.";
             // 
+            // closeButton
+            // 
+            this.closeButton.Location = new System.Drawing.Point(276, 263);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(75, 23);
+            this.closeButton.TabIndex = 4;
+            this.closeButton.Text = "Назад";
+            this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.OnClickCloseButton);
+            // 
             // AnalysisForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(363, 262);
+            this.ClientSize = new System.Drawing.Size(363, 298);
+            this.Controls.Add(this.closeButton);
             this.Controls.Add(this.sessionGroupBox);
             this.Controls.Add(this.analisysGroupBox);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(379, 300);
+            this.MaximumSize = new System.Drawing.Size(379, 336);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(379, 300);
+            this.MinimumSize = new System.Drawing.Size(379, 336);
             this.Name = "AnalysisForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Анализ";
@@ -133,5 +145,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox sessionGroupBox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button closeButton;
     }
 }

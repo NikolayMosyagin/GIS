@@ -33,6 +33,14 @@ namespace RuleCheck
             this.LoadData();
         }
 
+        public void OnClose(object sender, FormClosingEventArgs e)
+        {
+            if (ControlSessions.current != null)
+            {
+                ControlSessions.current.Show();
+            }
+        }
+
         private void LoadData()
         {
             this._dataTypes.Clear();
@@ -64,10 +72,10 @@ namespace RuleCheck
                 string dataType = row[2].ToString();
                 var primaryKey = new KeyValuePair<int, int>(int.Parse(row[3].ToString()), int.Parse(row[4].ToString()));
                 object value = null;
-                if (!this._changedValues.TryGetValue(primaryKey, out value))
+                string nameColumn = this.GetColumnName(dataType);
+                if (!this._changedValues.TryGetValue(primaryKey, out value) && this.GetEnumDataType(dataType) != DataType.Geometry)
                 {
                     query = "select {0}.{1} from {0} where {0}.attribute_id = :first and {0}.object_value = :second and {0}.session_id = :third";
-                    string nameColumn = this.GetColumnName(dataType);
                     var data = QueryProvider.Execute(string.Format(query, Config.s_attribute, nameColumn), new OracleParameter[3]
                     {
                         new OracleParameter("first", primaryKey.Key),
@@ -75,6 +83,10 @@ namespace RuleCheck
                         new OracleParameter("third", this._session_id),
                     });
                     value = data.values.Count > 0 ? data.values[0][0] : null;
+                }
+                if (value == null)
+                {
+                    value = "";
                 }
                 this._dataTypes.Add(dataType);
                 this._primaryKeysCache.Add(primaryKey);
@@ -95,6 +107,7 @@ namespace RuleCheck
             this.CloneCache(session_id);
             var form = new Analysis(session_id, date);
             form.Show();
+            this.FormClosing -= this.OnClose;
             this.Close();
         }
 
@@ -154,27 +167,35 @@ namespace RuleCheck
                         int attributeId = int.Parse(reader.GetValue(1).ToString());
                         int objectValue = int.Parse(reader.GetValue(2).ToString());
                         object value = null;
-                        if (!this._changedValues.TryGetValue(new KeyValuePair<int, int>(attributeId, objectValue), out value))
+                        if (this._changedValues.TryGetValue(new KeyValuePair<int, int>(attributeId, objectValue), out value))
                         {
-                            query = "select {0}.{1} from {0} where {0}.attribute_id = :first and {0}.object_value = :second and {0}.session_id = :third";
-                            query = string.Format(query, Config.s_attribute, this.GetColumnName(dataType));
-                            var result = QueryProvider.Execute(query, new OracleParameter[3]
+                            query = "insert into {0}(session_id, attribute_id, object_value, {1})" +
+                                " values(:first, :second, :third, :fourth)";
+                            QueryProvider.Execute(string.Format(query, Config.s_attribute, this.GetColumnName(dataType)), new OracleParameter[4]
                             {
-                                new OracleParameter("first", attributeId),
-                                new OracleParameter("second", objectValue),
-                                new OracleParameter("third", this._session_id),
+                                new OracleParameter("first", sessionId),
+                                new OracleParameter("second", attributeId),
+                                new OracleParameter("third", objectValue),
+                                new OracleParameter("fourth", value),
                             });
-                            value = result.values.Count > 0 ? result.values[0][0] : null;
                         }
-                        query = "insert into {0}(session_id, attribute_id, object_value, {1})" +
-                            " values(:first, :second, :third, :fourth)";
-                        QueryProvider.Execute(string.Format(query, Config.s_attribute, this.GetColumnName(dataType)), new OracleParameter[4]
+                        else
                         {
-                            new OracleParameter("first", sessionId),
-                            new OracleParameter("second", attributeId),
-                            new OracleParameter("third", objectValue),
-                            new OracleParameter("fourth", value),
-                        });
+                            query = "insert into {0}(session_id, attribute_id, object_value, {1})" +
+                                " values(:first, :second, :third, (select {0}.{1} from {0}" +
+                                " where {0}.attribute_id = :fourth and {0}.object_value = :fifth and {0}.session_id = :sixth))";
+                            query = string.Format(query, Config.s_attribute, this.GetColumnName(dataType));
+                            var result = QueryProvider.Execute(query, new OracleParameter[6]
+                            {
+                                new OracleParameter("first", sessionId),
+                                new OracleParameter("second", attributeId),
+                                new OracleParameter("third", objectValue),
+                                new OracleParameter("fourth", attributeId),
+                                new OracleParameter("fifth", objectValue),
+                                new OracleParameter("sixth", this._session_id),
+                            });
+                        }
+                       
                     }
                     reader.Close();
                 }
@@ -207,6 +228,23 @@ namespace RuleCheck
         private void OnClickSearchButton(object sender, EventArgs e)
         {
             this.LoadData();
+        }
+
+        private void OnClickCellTable(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex != 2 || e.RowIndex < 0)
+            {
+                return;
+            }
+            DecisionForm.Create("Вы хотите посмотреть объект на карте?", (f) =>
+            {
+                if (f.result == DecisionResult.Yes)
+                {
+                    int objectValue = int.Parse(
+                        this.table.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+                    InfoSession.ShowObjectOnMap(this._session_id, objectValue);
+                }
+            });
         }
     }
 }

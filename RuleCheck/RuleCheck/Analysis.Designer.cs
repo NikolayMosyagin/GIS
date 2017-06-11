@@ -29,9 +29,6 @@
         private void InitializeComponent()
         {
             this.table = new System.Windows.Forms.DataGridView();
-            this.NameColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Log = new System.Windows.Forms.ListBox();
             this.exitButton = new System.Windows.Forms.Button();
             this.analysisButton = new System.Windows.Forms.Button();
@@ -47,6 +44,9 @@
             this.mapButton = new System.Windows.Forms.Button();
             this.regionComboBox = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.NameColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DescriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.table)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -60,6 +60,9 @@
             this.table.AllowUserToDeleteRows = false;
             this.table.AllowUserToResizeColumns = false;
             this.table.AllowUserToResizeRows = false;
+            this.table.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.table.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.table.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NameColumn,
@@ -75,28 +78,10 @@
             this.table.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.table_CellValueChanged);
             this.table.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnEnterRowTable);
             // 
-            // NameColumn
-            // 
-            this.NameColumn.HeaderText = "";
-            this.NameColumn.Name = "NameColumn";
-            this.NameColumn.Width = 50;
-            // 
-            // ColumnName
-            // 
-            this.ColumnName.HeaderText = "Имя";
-            this.ColumnName.Name = "ColumnName";
-            this.ColumnName.ReadOnly = true;
-            this.ColumnName.Width = 150;
-            // 
-            // DescriptionColumn
-            // 
-            this.DescriptionColumn.HeaderText = "Описание";
-            this.DescriptionColumn.Name = "DescriptionColumn";
-            this.DescriptionColumn.ReadOnly = true;
-            this.DescriptionColumn.Width = 315;
-            // 
             // Log
             // 
+            this.Log.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Log.FormattingEnabled = true;
             this.Log.Location = new System.Drawing.Point(6, 36);
             this.Log.Name = "Log";
@@ -105,6 +90,7 @@
             // 
             // exitButton
             // 
+            this.exitButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.exitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.exitButton.Location = new System.Drawing.Point(482, 201);
             this.exitButton.Name = "exitButton";
@@ -116,6 +102,7 @@
             // 
             // analysisButton
             // 
+            this.analysisButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.analysisButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.analysisButton.Location = new System.Drawing.Point(384, 201);
             this.analysisButton.Name = "analysisButton";
@@ -137,14 +124,18 @@
             // 
             // sessionDescription
             // 
-            this.sessionDescription.Location = new System.Drawing.Point(77, 44);
+            this.sessionDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.sessionDescription.Location = new System.Drawing.Point(77, 32);
             this.sessionDescription.Multiline = true;
             this.sessionDescription.Name = "sessionDescription";
-            this.sessionDescription.Size = new System.Drawing.Size(483, 38);
+            this.sessionDescription.Size = new System.Drawing.Size(483, 43);
             this.sessionDescription.TabIndex = 6;
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.sessionDescription);
             this.groupBox1.Controls.Add(this.analysisLabel);
@@ -166,6 +157,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.table);
             this.groupBox2.Controls.Add(this.analysisButton);
@@ -188,6 +183,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.Log);
             this.groupBox3.Location = new System.Drawing.Point(12, 440);
@@ -208,6 +205,8 @@
             // 
             // regionGroupBox
             // 
+            this.regionGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.regionGroupBox.Controls.Add(this.mapButton);
             this.regionGroupBox.Controls.Add(this.regionComboBox);
             this.regionGroupBox.Controls.Add(this.label4);
@@ -220,6 +219,7 @@
             // 
             // mapButton
             // 
+            this.mapButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.mapButton.Location = new System.Drawing.Point(479, 50);
             this.mapButton.Name = "mapButton";
             this.mapButton.Size = new System.Drawing.Size(75, 23);
@@ -230,6 +230,8 @@
             // 
             // regionComboBox
             // 
+            this.regionComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.regionComboBox.FormattingEnabled = true;
             this.regionComboBox.Location = new System.Drawing.Point(9, 52);
             this.regionComboBox.Name = "regionComboBox";
@@ -245,6 +247,26 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Выберите область, в которой хотите произвести анализ. Для просмотра области на ка" +
     "рте нажмите \r\nкнопку \"На карте\"\r\n";
+            // 
+            // NameColumn
+            // 
+            this.NameColumn.HeaderText = "";
+            this.NameColumn.Name = "NameColumn";
+            this.NameColumn.Width = 50;
+            // 
+            // ColumnName
+            // 
+            this.ColumnName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnName.HeaderText = "Имя";
+            this.ColumnName.Name = "ColumnName";
+            this.ColumnName.ReadOnly = true;
+            // 
+            // DescriptionColumn
+            // 
+            this.DescriptionColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.DescriptionColumn.HeaderText = "Описание";
+            this.DescriptionColumn.Name = "DescriptionColumn";
+            this.DescriptionColumn.ReadOnly = true;
             // 
             // Analysis
             // 
@@ -280,9 +302,6 @@
         private System.Windows.Forms.Button analysisButton;
         private System.Windows.Forms.Label analysisLabel;
         private System.Windows.Forms.TextBox sessionDescription;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn NameColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -293,5 +312,8 @@
         private System.Windows.Forms.ComboBox regionComboBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button mapButton;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn NameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
     }
 }

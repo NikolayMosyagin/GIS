@@ -44,10 +44,10 @@
             // 
             // closeButton
             // 
-            this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.closeButton.Location = new System.Drawing.Point(378, 318);
+            this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.closeButton.Location = new System.Drawing.Point(408, 327);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(94, 32);
+            this.closeButton.Size = new System.Drawing.Size(64, 23);
             this.closeButton.TabIndex = 0;
             this.closeButton.Text = "Отмена";
             this.closeButton.UseVisualStyleBackColor = true;
@@ -55,10 +55,10 @@
             // 
             // applyButton
             // 
-            this.applyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.applyButton.Location = new System.Drawing.Point(258, 318);
+            this.applyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.applyButton.Location = new System.Drawing.Point(326, 327);
             this.applyButton.Name = "applyButton";
-            this.applyButton.Size = new System.Drawing.Size(94, 32);
+            this.applyButton.Size = new System.Drawing.Size(76, 23);
             this.applyButton.TabIndex = 1;
             this.applyButton.Text = "Применить";
             this.applyButton.UseVisualStyleBackColor = true;

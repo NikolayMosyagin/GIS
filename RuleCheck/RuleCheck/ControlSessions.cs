@@ -20,6 +20,8 @@ namespace RuleCheck
             this.searchTextBox.Text = "";
             this.searchTextBox.Hide();
             this.searchTextBox.Enabled = false;
+            this.updateButton.Location = new Point(155, 312);
+            this.deleteButton.Location = new Point(282, 312);
         }
 
         public void AddData(int sessionId, object date, string description)
@@ -71,6 +73,14 @@ namespace RuleCheck
             }
         }
 
+        public override string getInfoLabelText
+        {
+            get
+            {
+                return "Информация о проведенных анализов. Выберите анализ для просмотра результатов его выполнения,\nа также провести новый анализ, используя данные выбранного анализа. " + base.getInfoLabelText;
+            }
+        }
+
         protected override void OnDelete()
         {
             int num = this.table.SelectedRows[0].Index;
@@ -106,10 +116,7 @@ namespace RuleCheck
             this.Hide();
             int num = this.table.SelectedRows[0].Index;
             var form = new CacheAttribute(this.ids[num]);
-            form.FormClosing += (s, e) =>
-            {
-                this.Show();
-            };
+            form.FormClosing += form.OnClose;
             form.Show();
         }
 
@@ -117,7 +124,7 @@ namespace RuleCheck
         {
             get
             {
-                return "Просмотр результатов";
+                return "Просмотр результатов...";
             }
         }
 
@@ -125,7 +132,7 @@ namespace RuleCheck
         {
             get
             {
-                return "Выполнить анализ";
+                return "Выполнить анализ...";
             }
         }
 

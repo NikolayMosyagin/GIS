@@ -28,3 +28,4 @@ D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.MainForm1.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.AdministrationForm.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.AnalysisForm.resources
 D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.csprojResolveAssemblyReference.cache
+D:\Dissertation\GIS\RuleCheck\RuleCheck\obj\Debug\RuleCheck.ConstructorOperation.resources

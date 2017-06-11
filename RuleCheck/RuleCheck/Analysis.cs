@@ -193,6 +193,7 @@ namespace RuleCheck
             if (ControlSessions.current != null)
             {
                 ControlSessions.current.AddData(this._sessionId, this._date, this.sessionDescription.Text);
+                ControlSessions.current.Show();
             }
         }
 

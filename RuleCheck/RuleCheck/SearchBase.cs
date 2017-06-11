@@ -23,6 +23,7 @@ namespace RuleCheck
         public SearchBase(List<int> blockedIds = null)
         {
             this.InitializeComponent();
+            this.infoLabel.Text = this.getInfoLabelText;
             this.Text = this.TextForm;
             this.data = new List<KeyValuePair<string, string>>();
             this.ids = new List<int>();
@@ -37,6 +38,7 @@ namespace RuleCheck
         public SearchBase()
         {
             this.InitializeComponent();
+            this.infoLabel.Text = this.getInfoLabelText;
             this.Configure();
             this.Text = this.TextForm;
             this.data = new List<KeyValuePair<string, string>>();
@@ -79,6 +81,11 @@ namespace RuleCheck
             get { return ""; }
         }
 
+        public virtual string getInfoLabelText
+        {
+            get { return string.Format("Макс. кол-во строк: {0}", Config.maxCountRow); }
+        }
+
 
         protected virtual void LoadData()
         {
@@ -95,8 +102,7 @@ namespace RuleCheck
             this.parameters.Add(new OracleParameter("first", this.maxCountRow));
             if (!string.IsNullOrEmpty(this.searchTextBox.Text))
             {
-                result = result + " and SUBSTR({0}." + this.searchName +", 1, :second) = :third";
-                parameters.Add(new OracleParameter("second", this.searchTextBox.Text.Length));
+                result = result + " and UPPER({0}." + this.searchName +") LIKE UPPER('%' || :third || '%')";
                 parameters.Add(new OracleParameter("third", this.searchTextBox.Text));
             }
             return result;

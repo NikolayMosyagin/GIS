@@ -41,13 +41,16 @@
             this.tableGroupBox.Controls.Add(this.deleteButton);
             this.tableGroupBox.Controls.Add(this.updateButton);
             this.tableGroupBox.Controls.Add(this.addButton);
+            this.tableGroupBox.Controls.SetChildIndex(this.closeButton, 0);
             this.tableGroupBox.Controls.SetChildIndex(this.addButton, 0);
             this.tableGroupBox.Controls.SetChildIndex(this.updateButton, 0);
             this.tableGroupBox.Controls.SetChildIndex(this.deleteButton, 0);
             // 
             // addButton
             // 
-            this.addButton.Location = new System.Drawing.Point(6, 324);
+            this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.addButton.AutoSize = true;
+            this.addButton.Location = new System.Drawing.Point(6, 312);
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(75, 23);
             this.addButton.TabIndex = 7;
@@ -57,7 +60,9 @@
             // 
             // updateButton
             // 
-            this.updateButton.Location = new System.Drawing.Point(111, 324);
+            this.updateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.updateButton.AutoSize = true;
+            this.updateButton.Location = new System.Drawing.Point(87, 312);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(75, 23);
             this.updateButton.TabIndex = 8;
@@ -67,7 +72,9 @@
             // 
             // deleteButton
             // 
-            this.deleteButton.Location = new System.Drawing.Point(208, 324);
+            this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.deleteButton.AutoSize = true;
+            this.deleteButton.Location = new System.Drawing.Point(168, 312);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(75, 23);
             this.deleteButton.TabIndex = 9;
@@ -85,6 +92,7 @@
             this.searchGroupBox1.ResumeLayout(false);
             this.searchGroupBox1.PerformLayout();
             this.tableGroupBox.ResumeLayout(false);
+            this.tableGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }

@@ -35,6 +35,14 @@ namespace RuleCheck
             }
         }
 
+        public override string getInfoLabelText
+        {
+            get
+            {
+                return "Информация о существующих правилах. Добавьте новое правило или измените/удалите\nранее созданное. " + base.getInfoLabelText;
+            }
+        }
+
         protected override bool RefreshButtons()
         {
             var result = base.RefreshButtons();

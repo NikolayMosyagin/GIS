@@ -27,12 +27,14 @@ namespace RuleCheck
                 this.countInParameters.Clear();
             }
             base.LoadData();
-            var query = "select {0}.object_id, {0}.object_name, {1}.in_out from {0} " +
+            var query = "select {0}.object_id, {0}.object_name, {1}.in_out, {1}.data_type from {0} " +
                 "inner join {1} on {0}.object_id = {1}.object_id" + this.ConditionalSelectToLoadData() +
-                " and {0}.object_type = 'FUNCTION' and {1}.data_type = 'NUMBER' " +
+                " and {0}.object_type = 'FUNCTION' " +
                 "order by {0}.object_id";
 
-            var result = QueryProvider.Execute(string.Format(query, Config.s_user_procedures, Config.s_user_arguments), this.parameters.ToArray());
+            var result = QueryProvider.Execute(
+                string.Format(query, Config.s_user_procedures, Config.s_user_arguments), 
+                this.parameters.ToArray());
             if (result.values.Count == 0)
             {
                 return;
@@ -41,18 +43,26 @@ namespace RuleCheck
             int countIn = result.values[0][2].ToString() == "IN" ? 1 : 0;
             int countOut = result.values[0][2].ToString() == "OUT" ? 1 : 0;
             List<string> nameOperations = new List<string>();
+            bool isGood = result.values[0][3].ToString() == "NUMBER";
 
             for (int i = 1; i < result.values.Count; ++i)
             {
                 int curId = int.Parse(result.values[i][0].ToString());
                 if (curId == id)
                 {
-                    countIn += result.values[i][2].ToString() == "IN" ? 1 : 0;
-                    countOut += result.values[i][2].ToString() == "OUT" ? 1 : 0;
+                    if (result.values[i][3].ToString() == "NUMBER")
+                    {
+                        countIn += result.values[i][2].ToString() == "IN" ? 1 : 0;
+                        countOut += result.values[i][2].ToString() == "OUT" ? 1 : 0;
+                    }
+                    else
+                    {
+                        isGood = false;
+                    }
                 }
                 else
                 {
-                    if ((countIn == 3 || countIn == 2) && countOut == 1)
+                    if (isGood && (countIn == 3 || countIn == 2) && countOut == 1)
                     {
                         nameOperations.Add(result.values[i - 1][1].ToString());
                         this.countInParameters.Add(countIn);
@@ -60,6 +70,7 @@ namespace RuleCheck
                     id = curId;
                     countIn = result.values[i][2].ToString() == "IN" ? 1 : 0;
                     countOut = result.values[i][2].ToString() == "OUT" ? 1 : 0;
+                    isGood = result.values[i][3].ToString() == "NUMBER";
                 }
             }
             if ((countIn == 3 || countIn == 2) && countOut == 1)
@@ -79,6 +90,14 @@ namespace RuleCheck
                 string description = result.values.Count > 0 ? result.values[0][1].ToString() : "";
                 this.data.Add(new KeyValuePair<string, string>(nameOperations[i], description));
                 this.table.Rows.Add(nameOperations[i], description);
+            }
+        }
+
+        public override string getInfoLabelText
+        {
+            get
+            {
+                return "Информация о существующих операциях. Выберите операцию для выпонения одной из функций:\nДобавить, Изменить, Удалить. " + base.getInfoLabelText;
             }
         }
 
@@ -192,6 +211,11 @@ namespace RuleCheck
             {
                 this.Enabled = true;
             };
+        }
+
+        private void tableGroupBox_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

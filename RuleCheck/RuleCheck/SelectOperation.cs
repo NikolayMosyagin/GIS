@@ -52,6 +52,14 @@ namespace RuleCheck
             }
         }
 
+        public override string getInfoLabelText
+        {
+            get
+            {
+                return "Информация о доступных операциях. Выберите одну операцию для добавления ее в правило.\n" + base.getInfoLabelText;
+            }
+        }
+
         protected override bool RefreshButtons()
         {
             var result = base.RefreshButtons();
